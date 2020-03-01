@@ -33,11 +33,13 @@
             this.txtLog = new System.Windows.Forms.TextBox();
             this.txtCurrentFile = new System.Windows.Forms.TextBox();
             this.txtFilesProgress = new System.Windows.Forms.TextBox();
+            this.btnResolutionBitrate = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
             // 
-            this.BtnScanMediaFiles.Location = new System.Drawing.Point(15, 42);
+            this.BtnScanMediaFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnScanMediaFiles.Location = new System.Drawing.Point(841, 42);
             this.BtnScanMediaFiles.Name = "BtnScanMediaFiles";
             this.BtnScanMediaFiles.Size = new System.Drawing.Size(80, 45);
             this.BtnScanMediaFiles.TabIndex = 0;
@@ -86,17 +88,29 @@
             // 
             this.txtFilesProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFilesProgress.Location = new System.Drawing.Point(101, 64);
+            this.txtFilesProgress.Location = new System.Drawing.Point(15, 64);
             this.txtFilesProgress.Name = "txtFilesProgress";
             this.txtFilesProgress.ReadOnly = true;
-            this.txtFilesProgress.Size = new System.Drawing.Size(820, 23);
+            this.txtFilesProgress.Size = new System.Drawing.Size(734, 23);
             this.txtFilesProgress.TabIndex = 4;
+            // 
+            // btnResolutionBitrate
+            // 
+            this.btnResolutionBitrate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnResolutionBitrate.Location = new System.Drawing.Point(755, 42);
+            this.btnResolutionBitrate.Name = "btnResolutionBitrate";
+            this.btnResolutionBitrate.Size = new System.Drawing.Size(80, 45);
+            this.btnResolutionBitrate.TabIndex = 5;
+            this.btnResolutionBitrate.Text = "Resolution-Bitrate...";
+            this.btnResolutionBitrate.UseVisualStyleBackColor = true;
+            this.btnResolutionBitrate.Click += new System.EventHandler(this.btnResolutionBitrate_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(933, 519);
+            this.Controls.Add(this.btnResolutionBitrate);
             this.Controls.Add(this.txtFilesProgress);
             this.Controls.Add(this.txtCurrentFile);
             this.Controls.Add(this.txtLog);
@@ -104,7 +118,7 @@
             this.Controls.Add(this.BtnScanMediaFiles);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.Name = "FrmMain";
-            this.Text = "Form1";
+            this.Text = "gMediaTools";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -117,6 +131,7 @@
         private System.Windows.Forms.TextBox txtLog;
         private System.Windows.Forms.TextBox txtCurrentFile;
         private System.Windows.Forms.TextBox txtFilesProgress;
+        private System.Windows.Forms.Button btnResolutionBitrate;
     }
 }
 

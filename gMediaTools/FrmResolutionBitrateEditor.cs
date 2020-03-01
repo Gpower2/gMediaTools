@@ -7,38 +7,189 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using gMediaTools.Services;
 using Newtonsoft.Json;
 
 namespace gMediaTools
 {
     public partial class FrmResolutionBitrateEditor : gMediaTools.BaseForm
     {
-        private const string _CurveFittingDataFilename = "curveFittingData.json";
+        private readonly CurveFittingRepository _curveFittingRepo = new CurveFittingRepository();
 
-        // Get the Data for calculating the CurveFittingFunction
-        private static readonly List<CurveFittingModel> _DefaultCurveFittingData = new List<CurveFittingModel>()
-        {
-            {new CurveFittingModel(640,480, 1200) },
-            {new CurveFittingModel( 848,480, 1500 ) },
-            {new CurveFittingModel( 1280,720, 2500 ) },
-            {new CurveFittingModel( 1920,1080, 4000 ) }
-        };
+        private CurveFittingSettings _curveFittingSettings = new CurveFittingSettings();
+
+        private bool _ignoreEvents = false;
 
         public FrmResolutionBitrateEditor()
         {
-            InitializeComponent();
+            _ignoreEvents = true;
 
-            List<CurveFittingModel> curveData = new List<CurveFittingModel>();
-            if (!File.Exists(_CurveFittingDataFilename))
+            InitializeComponent();
+            
+            _curveFittingSettings = _curveFittingRepo.GetCurveFittingSettings();
+
+            cmbCurveFittingType.DataSource = Enum.GetValues(typeof(CurveFittingType));
+            cmbCurveFittingType.SelectedItem = _curveFittingSettings.CurveFittingType;
+
+            _ignoreEvents = false;
+
+            lstCurveData.DataSource = _curveFittingSettings.Data;
+        }
+
+        private void ClearFields()
+        {
+            txtWidth.Clear();
+            txtHeight.Clear();
+            txtBitrate.Clear();
+        }
+
+        private void FillFieldsFromData(CurveFittingModel data)
+        {
+            if (data == null)
             {
-                curveData = _DefaultCurveFittingData;
-            }            
-            using (StreamReader sr = new StreamReader(_CurveFittingDataFilename))
-            {
-                curveData = JsonConvert.DeserializeObject<List<CurveFittingModel>>(sr.ReadToEnd());
+                throw new ArgumentNullException(nameof(data), "Empty data!");
             }
 
-            lstCurveData.DataSource = curveData;
+            txtWidth.Int32Value = data.Width;
+            txtHeight.Int32Value = data.Height;
+            txtBitrate.Int32Value = data.Bitrate / 1000;
         }
+
+        private CurveFittingModel GetDataFromFields()
+        {
+            return new CurveFittingModel()
+            {
+                Width = txtWidth.Int32Value,
+                Height = txtHeight.Int32Value,
+                Bitrate = txtBitrate.Int32Value * 1000
+            };
+        }
+
+        private void cmbCurveFittingType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_ignoreEvents) return;
+
+            if (cmbCurveFittingType.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            _curveFittingSettings.CurveFittingType = (CurveFittingType)cmbCurveFittingType.SelectedItem;
+
+            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+        }
+
+        private void lstCurveData_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (_ignoreEvents) return;
+
+            if (lstCurveData.SelectedIndex == -1)
+            {
+                ClearFields();
+                return;
+            }
+
+            var data = lstCurveData.SelectedItem as CurveFittingModel;
+
+            FillFieldsFromData(data);        
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtWidth.Int32Value < 10)
+                {
+                    throw new Exception("Width can't be less than 10 pixels!");
+                }
+                if (txtHeight.Int32Value < 10)
+                {
+                    throw new Exception("Height can't be less than 10 pixels!");
+                }
+                if (txtBitrate.Int32Value < 100)
+                {
+                    throw new Exception("Bitrate can't be less than 100 kbps!");
+                }                
+
+                var data = GetDataFromFields();
+
+                if (_curveFittingSettings.Data.Any(x => x.Width == data.Width && x.Height == data.Height))
+                {
+                    throw new Exception($"There is already a record for resolution {data.Width} X {data.Height}!");
+                }
+
+                _curveFittingSettings.Data.Add(data);
+
+                _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+
+                lstCurveData.DataSource = null;
+                lstCurveData.DataSource = _curveFittingSettings.Data;
+
+                lstCurveData.Refresh();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnUpdate_Click(object sender, EventArgs e)
+        {
+            if (lstCurveData.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            var data = lstCurveData.SelectedItem as CurveFittingModel;
+
+            data.Width = txtWidth.Int32Value;
+            data.Height = txtHeight.Int32Value;
+            data.Bitrate = txtBitrate.Int32Value * 1000;
+
+            _curveFittingSettings.CurveFittingType = (CurveFittingType)cmbCurveFittingType.SelectedItem;
+
+            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+
+            int idx = lstCurveData.SelectedIndex;
+
+            lstCurveData.DataSource = null;
+            lstCurveData.DataSource = _curveFittingSettings.Data;
+
+            lstCurveData.Refresh();
+
+            lstCurveData.SelectedIndex = idx;
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            if (lstCurveData.SelectedIndex == -1)
+            {
+                return;
+            }
+
+            _curveFittingSettings.Data.Remove(lstCurveData.SelectedItem as CurveFittingModel);
+
+            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+
+            lstCurveData.DataSource = null;
+            lstCurveData.DataSource = _curveFittingSettings.Data;
+
+            lstCurveData.Refresh();
+        }
+
+        private void btnDefaults_Click(object sender, EventArgs e)
+        {
+            _curveFittingSettings = _curveFittingRepo.GetDefaultCurveFittingSettings();
+
+            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+           
+            lstCurveData.DataSource = null;
+            lstCurveData.DataSource = _curveFittingSettings.Data;
+
+            lstCurveData.Refresh();
+
+            cmbCurveFittingType.SelectedItem = _curveFittingSettings.CurveFittingType;
+        }
+
     }
 }

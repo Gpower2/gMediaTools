@@ -18,6 +18,7 @@ namespace gMediaTools
         private string[] _mediaExtensions = new string[] { "mkv", "mp4", "mov", "avi", "mpg", "mpeg", "flv", "wmv" };
         private int _reEncodeFiles = 0;
         private int _totalFiles = 0;
+        private readonly CurveFittingRepository _curveFittingRepo = new CurveFittingRepository();
 
         public FrmMain()
         {
@@ -61,17 +62,12 @@ namespace gMediaTools
                 if (targetFunction == null)
                 {
                     // Get the Data for calculating the CurveFittingFunction
-                    var initData = new Dictionary<double, double> {
-                        { 640*480, 1200 },
-                        { 848*480, 1500 },
-                        { 1280*720, 2500 },
-                        { 1920*1080, 4000 }
-                    };
+                    var curveSettings = _curveFittingRepo.GetCurveFittingSettings();
 
-                    var data = initData.ToDictionary(k => k.Key, v => v.Value * 1000 / v.Key);
+                    var data = curveSettings.Data.ToDictionary(k => (double)k.Width * k.Height, v => (double)v.Bitrate / (double)(v.Width * v.Height));
 
                     // Get the CurveFitting Function
-                    targetFunction = new CurveFittingFactory().GetCurveFittingService(CurveFittingType.Logarithmic)
+                    targetFunction = new CurveFittingFactory().GetCurveFittingService(curveSettings.CurveFittingType)
                         .GetCurveFittingFunction(data);
                 }
 
@@ -214,6 +210,12 @@ namespace gMediaTools
                 Debug.WriteLine(ex);
                 ShowExceptionMessage(ex);
             }
+        }
+
+        private void btnResolutionBitrate_Click(object sender, EventArgs e)
+        {
+            FrmResolutionBitrateEditor frm = new FrmResolutionBitrateEditor();
+            frm.ShowDialog(this);
         }
     }
 }

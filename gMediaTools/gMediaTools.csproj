@@ -75,6 +75,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="CurveFittingModel.cs" />
+    <Compile Include="CurveFittingPreviewService.cs" />
     <Compile Include="CurveFittingSettings.cs" />
     <Compile Include="FrmMain.cs">
       <SubType>Form</SubType>

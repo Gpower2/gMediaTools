@@ -43,6 +43,10 @@
             this.lblBitrate = new System.Windows.Forms.Label();
             this.cmbCurveFittingType = new System.Windows.Forms.ComboBox();
             this.lblCurveFittingType = new System.Windows.Forms.Label();
+            this.picPreview = new System.Windows.Forms.PictureBox();
+            this.grpPreview = new System.Windows.Forms.GroupBox();
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
+            this.grpPreview.SuspendLayout();
             this.SuspendLayout();
             // 
             // txtWidth
@@ -216,10 +220,30 @@
             this.lblCurveFittingType.TabIndex = 14;
             this.lblCurveFittingType.Text = "Curve Fitting Type";
             // 
+            // picPreview
+            // 
+            this.picPreview.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.picPreview.Location = new System.Drawing.Point(3, 19);
+            this.picPreview.Name = "picPreview";
+            this.picPreview.Size = new System.Drawing.Size(387, 269);
+            this.picPreview.TabIndex = 15;
+            this.picPreview.TabStop = false;
+            // 
+            // grpPreview
+            // 
+            this.grpPreview.Controls.Add(this.picPreview);
+            this.grpPreview.Location = new System.Drawing.Point(509, 7);
+            this.grpPreview.Name = "grpPreview";
+            this.grpPreview.Size = new System.Drawing.Size(393, 291);
+            this.grpPreview.TabIndex = 16;
+            this.grpPreview.TabStop = false;
+            this.grpPreview.Text = "Preview Curve";
+            // 
             // FrmResolutionBitrateEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-            this.ClientSize = new System.Drawing.Size(492, 312);
+            this.ClientSize = new System.Drawing.Size(914, 307);
+            this.Controls.Add(this.grpPreview);
             this.Controls.Add(this.lblCurveFittingType);
             this.Controls.Add(this.cmbCurveFittingType);
             this.Controls.Add(this.lblBitrate);
@@ -239,6 +263,8 @@
             this.Name = "FrmResolutionBitrateEditor";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Resolution - Bitrate Editor";
+            ((System.ComponentModel.ISupportInitialize)(this.picPreview)).EndInit();
+            this.grpPreview.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -261,5 +287,7 @@
         private System.Windows.Forms.Label lblBitrate;
         private System.Windows.Forms.ComboBox cmbCurveFittingType;
         private System.Windows.Forms.Label lblCurveFittingType;
+        private System.Windows.Forms.PictureBox picPreview;
+        private System.Windows.Forms.GroupBox grpPreview;
     }
 }

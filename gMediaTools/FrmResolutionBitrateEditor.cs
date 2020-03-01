@@ -16,24 +16,37 @@ namespace gMediaTools
     {
         private readonly CurveFittingRepository _curveFittingRepo = new CurveFittingRepository();
 
+        private readonly CurveFittingPreviewService _curveFittingPreviewService = new CurveFittingPreviewService();
+
         private CurveFittingSettings _curveFittingSettings = new CurveFittingSettings();
 
         private bool _ignoreEvents = false;
 
         public FrmResolutionBitrateEditor()
         {
-            _ignoreEvents = true;
+            try
+            {
+                _ignoreEvents = true;
 
-            InitializeComponent();
-            
-            _curveFittingSettings = _curveFittingRepo.GetCurveFittingSettings();
+                InitializeComponent();
 
-            cmbCurveFittingType.DataSource = Enum.GetValues(typeof(CurveFittingType));
-            cmbCurveFittingType.SelectedItem = _curveFittingSettings.CurveFittingType;
+                _curveFittingSettings = _curveFittingRepo.GetCurveFittingSettings();
 
-            _ignoreEvents = false;
+                cmbCurveFittingType.DataSource = Enum.GetValues(typeof(CurveFittingType));
+                cmbCurveFittingType.SelectedItem = _curveFittingSettings.CurveFittingType;
 
-            lstCurveData.DataSource = _curveFittingSettings.Data;
+                _ignoreEvents = false;
+
+                lstCurveData.DataSource = _curveFittingSettings.Data;
+
+                picPreview.Image = _curveFittingPreviewService.GetPreviewImage(_curveFittingSettings, picPreview.Width, picPreview.Height);
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+
+                _ignoreEvents = false;
+            }
         }
 
         private void ClearFields()
@@ -74,9 +87,18 @@ namespace gMediaTools
                 return;
             }
 
-            _curveFittingSettings.CurveFittingType = (CurveFittingType)cmbCurveFittingType.SelectedItem;
+            try
+            {
+                _curveFittingSettings.CurveFittingType = (CurveFittingType)cmbCurveFittingType.SelectedItem;
 
-            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+                _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+
+                picPreview.Image = _curveFittingPreviewService.GetPreviewImage(_curveFittingSettings, picPreview.Width, picPreview.Height);
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);            
+            }
         }
 
         private void lstCurveData_SelectedIndexChanged(object sender, EventArgs e)
@@ -89,9 +111,17 @@ namespace gMediaTools
                 return;
             }
 
-            var data = lstCurveData.SelectedItem as CurveFittingModel;
+            try
+            {
+                var data = lstCurveData.SelectedItem as CurveFittingModel;
 
-            FillFieldsFromData(data);        
+                FillFieldsFromData(data);
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
@@ -109,7 +139,7 @@ namespace gMediaTools
                 if (txtBitrate.Int32Value < 100)
                 {
                     throw new Exception("Bitrate can't be less than 100 kbps!");
-                }                
+                }
 
                 var data = GetDataFromFields();
 
@@ -126,6 +156,8 @@ namespace gMediaTools
                 lstCurveData.DataSource = _curveFittingSettings.Data;
 
                 lstCurveData.Refresh();
+
+                picPreview.Image = _curveFittingPreviewService.GetPreviewImage(_curveFittingSettings, picPreview.Width, picPreview.Height);
             }
             catch (Exception ex)
             {
@@ -140,24 +172,34 @@ namespace gMediaTools
                 return;
             }
 
-            var data = lstCurveData.SelectedItem as CurveFittingModel;
+            try
+            {
+                var data = lstCurveData.SelectedItem as CurveFittingModel;
 
-            data.Width = txtWidth.Int32Value;
-            data.Height = txtHeight.Int32Value;
-            data.Bitrate = txtBitrate.Int32Value * 1000;
+                data.Width = txtWidth.Int32Value;
+                data.Height = txtHeight.Int32Value;
+                data.Bitrate = txtBitrate.Int32Value * 1000;
 
-            _curveFittingSettings.CurveFittingType = (CurveFittingType)cmbCurveFittingType.SelectedItem;
+                _curveFittingSettings.CurveFittingType = (CurveFittingType)cmbCurveFittingType.SelectedItem;
 
-            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+                _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
 
-            int idx = lstCurveData.SelectedIndex;
+                int idx = lstCurveData.SelectedIndex;
 
-            lstCurveData.DataSource = null;
-            lstCurveData.DataSource = _curveFittingSettings.Data;
+                lstCurveData.DataSource = null;
+                lstCurveData.DataSource = _curveFittingSettings.Data;
 
-            lstCurveData.Refresh();
+                lstCurveData.Refresh();
 
-            lstCurveData.SelectedIndex = idx;
+                lstCurveData.SelectedIndex = idx;
+
+                picPreview.Image = _curveFittingPreviewService.GetPreviewImage(_curveFittingSettings, picPreview.Width, picPreview.Height);
+
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
@@ -167,29 +209,47 @@ namespace gMediaTools
                 return;
             }
 
-            _curveFittingSettings.Data.Remove(lstCurveData.SelectedItem as CurveFittingModel);
+            try
+            {
+                _curveFittingSettings.Data.Remove(lstCurveData.SelectedItem as CurveFittingModel);
 
-            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
+                _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
 
-            lstCurveData.DataSource = null;
-            lstCurveData.DataSource = _curveFittingSettings.Data;
+                lstCurveData.DataSource = null;
+                lstCurveData.DataSource = _curveFittingSettings.Data;
 
-            lstCurveData.Refresh();
+                lstCurveData.Refresh();
+
+                picPreview.Image = _curveFittingPreviewService.GetPreviewImage(_curveFittingSettings, picPreview.Width, picPreview.Height);
+
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
         }
 
         private void btnDefaults_Click(object sender, EventArgs e)
         {
-            _curveFittingSettings = _curveFittingRepo.GetDefaultCurveFittingSettings();
+            try
+            {
+                _curveFittingSettings = _curveFittingRepo.GetDefaultCurveFittingSettings();
 
-            _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
-           
-            lstCurveData.DataSource = null;
-            lstCurveData.DataSource = _curveFittingSettings.Data;
+                _curveFittingRepo.SaveCurveFittingData(_curveFittingSettings);
 
-            lstCurveData.Refresh();
+                lstCurveData.DataSource = null;
+                lstCurveData.DataSource = _curveFittingSettings.Data;
 
-            cmbCurveFittingType.SelectedItem = _curveFittingSettings.CurveFittingType;
+                lstCurveData.Refresh();
+
+                cmbCurveFittingType.SelectedItem = _curveFittingSettings.CurveFittingType;
+
+                picPreview.Image = _curveFittingPreviewService.GetPreviewImage(_curveFittingSettings, picPreview.Width, picPreview.Height);
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
         }
-
     }
 }

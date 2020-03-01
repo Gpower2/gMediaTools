@@ -10,14 +10,17 @@ namespace gMediaTools
 {
     public class CurveFittingPreviewService
     {
-        private const int _xAxisPadding = 5;
-        private const int _yAxisPadding = 5;
+        private const int _xAxisPadding = 10;
+        private const int _yAxisPadding = 10;
 
-        private const int _pointRadius = 3;
+        private const int _pointRadius = 5;
+
+        private readonly CurveFittingFactory _curveFittingFactory = new CurveFittingFactory();
 
         public Image GetPreviewImage(CurveFittingSettings curveSettings, int imgWidth, int imgHeight)
         {
-            ICurveFittingService service = new CurveFittingFactory().GetCurveFittingService(curveSettings.CurveFittingType);
+            // Get the Curve Fitting Function
+            ICurveFittingService service = _curveFittingFactory.GetCurveFittingService(curveSettings.CurveFittingType);
             var func = service.GetCurveFittingFunction(
                 curveSettings.Data.
                     ToDictionary(
@@ -26,10 +29,14 @@ namespace gMediaTools
                     )
             );
 
+            // Prepare the image for the graph
             Bitmap bmp = new Bitmap(imgWidth, imgHeight);
 
             using (var g = Graphics.FromImage(bmp))
             {
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
                 // Background
                 g.FillRectangle(Brushes.White, 0, 0, imgWidth, imgHeight);
 
@@ -61,12 +68,12 @@ namespace gMediaTools
                 }
 
                 // Find minX, maxX
-                double minXd = pointsData.Min(x => x.Key);
-                double maxXd = pointsData.Max(x => x.Key);
+                double minXd = pointsData.Min(x => x.Key) * 0.9;
+                double maxXd = pointsData.Max(x => x.Key) * 1.1;
 
                 // Find minY, maxY
-                double minY = pointsData.Min(y => y.Value);
-                double maxY = pointsData.Max(y => y.Value);
+                double minY = pointsData.Min(y => y.Value) * 0.9;
+                double maxY = pointsData.Max(y => y.Value) * 1.1;
 
                 // Normalize values to pixels to range [a - b]
                 int aX = _xAxisPadding;
@@ -76,10 +83,9 @@ namespace gMediaTools
                 int bY = imgHeight - _yAxisPadding;
 
                 // Normalize the data
-                pointsData = pointsData.ToDictionary(
-                    x => aX + (((x.Key - minXd) * ((double)bX)) / (maxXd - minXd))
-                    , y => (double)imgHeight - (aY + (((y.Value - minY) * ((double)bY)) / (maxY - minY)))
-                );
+                pointsData = pointsData.ScaleValues(minXd, maxXd, minY, maxY, aX, bX, aY, bY)
+                    // Inverse Y values for drawing
+                    .InverseYValues(imgHeight);
 
                 // Draw the data points
                 foreach (var point in pointsData)
@@ -88,14 +94,19 @@ namespace gMediaTools
                 }
 
                 // Normalize the data based on previous scale
-                data = data.ToDictionary(
-                    x => aX + (((x.Key - minXd) * ((double)bX)) / (maxXd - minXd))
-                    , y => (double)imgHeight - (aY + (((y.Value - minY) * ((double)bY)) / (maxY - minY)))
-                );
+                data = data.ScaleValues(minXd, maxXd, minY, maxY, aX, bX, aY, bY)
+                    // Inverse Y values for drawing
+                    .InverseYValues(imgHeight);
 
                 // Draw the line
-                g.DrawCurve(Pens.Blue, data.Select(x => new PointF((float)x.Key, (float)x.Value)).ToArray());
-
+                g.DrawCurve(Pens.Blue, 
+                    data
+                        // Filter out of scope values 
+                        .Where(x => x.Key >= _xAxisPadding)
+                        // Convert to PointF structure
+                        .Select(x => new PointF((float)x.Key, (float)x.Value))
+                        .ToArray()
+                );
             }
 
             return bmp;

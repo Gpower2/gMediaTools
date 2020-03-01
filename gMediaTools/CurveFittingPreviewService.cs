@@ -13,6 +13,8 @@ namespace gMediaTools
         private const int _xAxisPadding = 10;
         private const int _yAxisPadding = 10;
 
+        private const int _numberOfSteps = 50;
+
         private const int _pointRadius = 5;
 
         private readonly CurveFittingFactory _curveFittingFactory = new CurveFittingFactory();
@@ -50,30 +52,23 @@ namespace gMediaTools
                 var pointsData = curveSettings.Data
                     .ToDictionary(x => (double)x.Width * x.Height, y => (double)y.Bitrate / (y.Width * y.Height));
 
-                // Define minX
-                int minX = 240 * 240;
+                // Find minX, maxX with 10% off in order to have better visual graph
+                double minX = pointsData.Min(x => x.Key) * 0.9;
+                double maxX = pointsData.Max(x => x.Key) * 1.1;
 
-                // Define maxX
-                int maxX = 3840 * 2160;
+                // Find minY, maxY with 10% off in order to have better visual graph
+                double minY = pointsData.Min(y => y.Value) * 0.9;
+                double maxY = pointsData.Max(y => y.Value) * 1.1;
 
                 // Get X step for 100 steps
-                int xStep = Convert.ToInt32((double)(maxX - minX) / 100.0);
+                double xStep = Convert.ToInt32((maxX - minX) / (double)_numberOfSteps);
 
                 // Get Data Values
                 Dictionary<double, double> data = new Dictionary<double, double>();
-
-                for (int x = minX; x < maxX; x += xStep)
+                for (double x = minX; x < maxX; x += xStep)
                 {
                     data.Add(x, func(x));
                 }
-
-                // Find minX, maxX
-                double minXd = pointsData.Min(x => x.Key) * 0.9;
-                double maxXd = pointsData.Max(x => x.Key) * 1.1;
-
-                // Find minY, maxY
-                double minY = pointsData.Min(y => y.Value) * 0.9;
-                double maxY = pointsData.Max(y => y.Value) * 1.1;
 
                 // Normalize values to pixels to range [a - b]
                 int aX = _xAxisPadding;
@@ -83,7 +78,7 @@ namespace gMediaTools
                 int bY = imgHeight - _yAxisPadding;
 
                 // Normalize the data
-                pointsData = pointsData.ScaleValues(minXd, maxXd, minY, maxY, aX, bX, aY, bY)
+                pointsData = pointsData.ScaleValues(minX, maxX, minY, maxY, aX, bX, aY, bY)
                     // Inverse Y values for drawing
                     .InverseYValues(imgHeight);
 
@@ -94,7 +89,7 @@ namespace gMediaTools
                 }
 
                 // Normalize the data based on previous scale
-                data = data.ScaleValues(minXd, maxXd, minY, maxY, aX, bX, aY, bY)
+                data = data.ScaleValues(minX, maxX, minY, maxY, aX, bX, aY, bY)
                     // Inverse Y values for drawing
                     .InverseYValues(imgHeight);
 

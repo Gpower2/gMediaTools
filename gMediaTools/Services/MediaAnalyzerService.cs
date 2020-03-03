@@ -83,39 +83,34 @@ namespace gMediaTools.Services
             setCurrentFileAction(mediaFilename);
             using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(mediaFilename))
             {
-                var videoTrack = mi.Video.FirstOrDefault();
+                var videoTrack = mi?.Video?.FirstOrDefault();
                 if (videoTrack == null)
                 {
-                    return;
+                    logLineAction($"ERROR! {mediaFilename}");
                 }
-                string bitrate = videoTrack.BitRate;
-                string width = videoTrack.Width;
-                string height = videoTrack.Height;
-                string frameRate = videoTrack.FrameRate;
-                string videoCodec = videoTrack.CodecID;
 
-                if (Int32.TryParse(width, out int widthInt)
-                   && Int32.TryParse(height, out int heightInt)
-                   && Int32.TryParse(bitrate, out int bitrateInt))
+                if (int.TryParse(videoTrack.Width, out int width)
+                   && int.TryParse(videoTrack.Height, out int height)
+                   && int.TryParse(videoTrack.BitRate, out int bitrate))
                 {
-                    if (NeedsReencode(Convert.ToInt32(widthInt), Convert.ToInt32(heightInt), Convert.ToInt32(bitrateInt), bitratePercentageThreshold, targetFunction, out int targetBitrate))
+                    if (NeedsReencode(width, height, bitrate, bitratePercentageThreshold, targetFunction, out int targetBitrate))
                     {
-                        if (targetBitrate < bitrateInt)
+                        if (targetBitrate < bitrate)
                         {
                             // Check if the gain percentage is worth the reencode
-                            double gainPercentage = Math.Abs(((double)(targetBitrate - bitrateInt) / (double)bitrateInt) * 100.0);
+                            double gainPercentage = Math.Abs(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0);
                             if (gainPercentage >= gainPercentageThreshold)
                             {
                                 _reEncodeFiles++;
                                 updateProgressAction(_reEncodeFiles, _totalFiles);
-                                logLineAction($"{width}x{height} : {videoCodec} : {Math.Round(((double)bitrateInt) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrateInt) / (double)bitrateInt) * 100.0, 2)}%) {mediaFilename}");
+                                logLineAction($"{width}x{height} : {videoTrack.CodecID} : {Math.Round(((double)bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0, 2)}%) {mediaFilename}");
                             }
                         }
                     }
                 }
                 else
                 {
-                    logLineAction($"ERROR! {width}x{height} : {bitrate} : {videoCodec} : {mediaFilename}");
+                    logLineAction($"ERROR! {width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {mediaFilename}");
                 }
             }
         }
@@ -133,7 +128,5 @@ namespace gMediaTools.Services
 
             return (bitrate < minPercentage * targetBitrate || bitrate > maxPercentage * targetBitrate);
         }
-
-
     }
 }

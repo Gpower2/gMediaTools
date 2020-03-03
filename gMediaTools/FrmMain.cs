@@ -17,6 +17,8 @@ namespace gMediaTools
     {
         private readonly CurveFittingRepository _curveFittingRepo = new CurveFittingRepository();
 
+        private readonly MediaAnalyzerService _mediaAnalyzerService = new MediaAnalyzerService();
+
         public FrmMain()
         {
             InitializeComponent();
@@ -34,17 +36,20 @@ namespace gMediaTools
                 string rootPath = txtInputFolder.Text;
                 if (!Directory.Exists(txtInputFolder.Text))
                 {
+                    if (!File.Exists(txtInputFolder.Text))
+                    {
+                        throw new Exception($"Invalid directory '{txtInputFolder.Text}'!");
+                    }
+
                     rootPath = Path.GetDirectoryName(txtInputFolder.Text);
                 }
 
                 txtLog.Clear();
 
-                var mediaAnalyzerService = new MediaAnalyzerService();
-
                 // Get the CurveFittingSettings for calculating the CurveFittingFunction
                 var curveSettings = _curveFittingRepo.GetCurveFittingSettings();
 
-                mediaAnalyzerService.AnalyzePath(
+                _mediaAnalyzerService.AnalyzePath(
                     curveSettings, 
                     rootPath, 
                     10, 

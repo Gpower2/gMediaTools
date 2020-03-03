@@ -15,9 +15,6 @@ namespace gMediaTools
 {
     public partial class FrmMain : BaseForm
     {
-        private string[] _mediaExtensions = new string[] { "mkv", "mp4", "mov", "avi", "mpg", "mpeg", "flv", "wmv" };
-        private int _reEncodeFiles = 0;
-        private int _totalFiles = 0;
         private readonly CurveFittingRepository _curveFittingRepo = new CurveFittingRepository();
 
         public FrmMain()
@@ -33,8 +30,6 @@ namespace gMediaTools
                 {
                     throw new Exception("Empty path!");
                 }
-                _reEncodeFiles = 0;
-                _totalFiles = 0;
 
                 string rootPath = txtInputFolder.Text;
                 if (!Directory.Exists(txtInputFolder.Text))
@@ -44,122 +39,37 @@ namespace gMediaTools
 
                 txtLog.Clear();
 
-                AnalyzePath(rootPath, 10, 20);
+                var mediaAnalyzerService = new MediaAnalyzerService();
+
+                // Get the CurveFittingSettings for calculating the CurveFittingFunction
+                var curveSettings = _curveFittingRepo.GetCurveFittingSettings();
+
+                mediaAnalyzerService.AnalyzePath(
+                    curveSettings, 
+                    rootPath, 
+                    10, 
+                    20,
+                    (string currentFile) => 
+                        { 
+                            this.Invoke((MethodInvoker)(() => { this.txtCurrentFile.Text = currentFile; }));
+                            Application.DoEvents();
+                        },
+                    (string logText) => 
+                        { 
+                            this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
+                            Application.DoEvents();
+                        },
+                    (int reencodeFiles, int totalFiles) => 
+                        { 
+                            this.Invoke((MethodInvoker)(() => { this.txtFilesProgress.Text = $"{reencodeFiles}/{totalFiles} ({Math.Round((double)reencodeFiles / (double)totalFiles * 100.0, 2)}%)"; }));
+                            Application.DoEvents();
+                        }
+                    );
             }
             catch (Exception ex)
             {
                 ShowExceptionMessage(ex);
             }
-        }
-
-        private void AnalyzePath(string currentDir, double bitratePercentageThreshold, double gainPercentageThreshold, Func<double, double> targetFunction = null)
-        {
-            var files = Directory.GetFiles(currentDir);
-            var mediaFiles = files.Where(f => _mediaExtensions.Any(m => m.Equals(Path.GetExtension(f).Substring(1).ToLower()))).ToList();
-            if (mediaFiles.Any())
-            {
-                // Get the Function for the target bitrate, if not provided
-                if (targetFunction == null)
-                {
-                    // Get the Data for calculating the CurveFittingFunction
-                    var curveSettings = _curveFittingRepo.GetCurveFittingSettings();
-
-                    var data = curveSettings.Data.ToDictionary(k => (double)k.Width * k.Height, v => (double)v.Bitrate / (double)(v.Width * v.Height));
-
-                    // Get the CurveFitting Function
-                    targetFunction = new CurveFittingFactory().GetCurveFittingService(curveSettings.CurveFittingType)
-                        .GetCurveFittingFunction(data);
-                }
-
-                foreach (var mediaFile in mediaFiles)
-                {
-                    _totalFiles++;
-                    Log(_reEncodeFiles, _totalFiles);
-                    MediaAnalyze(mediaFile, bitratePercentageThreshold, gainPercentageThreshold, targetFunction);
-                    Application.DoEvents();
-                }
-            }
-
-            var subDirs = Directory.GetDirectories(currentDir);
-
-            if (subDirs.Any())
-            {
-                foreach (var subDir in subDirs)
-                {
-                    AnalyzePath(subDir, bitratePercentageThreshold, gainPercentageThreshold, targetFunction);
-                }
-            }
-        }
-
-        private void SetCurrentFile(string currentFile)
-        {
-            this.Invoke((MethodInvoker)(() => { this.txtCurrentFile.Text = currentFile; }));
-        }
-        
-        private void Log(string logText)
-        {
-            this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
-        }
-
-        private void Log(int reencodeFiles, int totalFiles)
-        {
-            this.Invoke((MethodInvoker)(() => { this.txtFilesProgress.Text = $"{reencodeFiles}/{totalFiles} ({Math.Round((double)reencodeFiles / (double)totalFiles * 100.0, 2)}%)"; }));
-        }
-
-        private void MediaAnalyze(string mediaFilename, double bitratePercentageThreshold, double gainPercentageThreshold, Func<double, double> targetFunction)
-        {
-            SetCurrentFile(mediaFilename);
-            using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(mediaFilename))
-            {
-                var videoTrack = mi.Video.FirstOrDefault();
-                if (videoTrack == null)
-                {
-                    return;
-                }
-                string bitrate = videoTrack.BitRate;
-                string width = videoTrack.Width;
-                string height = videoTrack.Height;
-                string frameRate = videoTrack.FrameRate;
-                string videoCodec = videoTrack.CodecID;
-                
-                if (Int32.TryParse(width, out int widthInt)
-                   && Int32.TryParse(height, out int heightInt)
-                   && Int32.TryParse(bitrate, out int bitrateInt))
-                {
-                    if (NeedsReencode(Convert.ToInt32(widthInt), Convert.ToInt32(heightInt), Convert.ToInt32(bitrateInt), bitratePercentageThreshold, targetFunction, out int targetBitrate))
-                    {
-                        if (targetBitrate < bitrateInt)
-                        {
-                            // Check if the gain percentage is worth the reencode
-                            double gainPercentage = Math.Abs(((double)(targetBitrate - bitrateInt) / (double)bitrateInt) * 100.0);
-                            if (gainPercentage >= gainPercentageThreshold)
-                            {
-                                _reEncodeFiles++;
-                                Log(_reEncodeFiles, _totalFiles);
-                                Log($"{width}x{height} : {videoCodec} : {Math.Round(((double)bitrateInt) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrateInt) / (double)bitrateInt) * 100.0, 2)}%) {mediaFilename}");
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Log($"ERROR! {width}x{height} : {bitrate} : {videoCodec} : {mediaFilename}");
-                }
-            }
-        }
-
-        private bool NeedsReencode(int width, int height, int bitrate, double percentageThreshold, Func<double, double> targetFunction, out int targetBitrate)
-        {
-            long pixels = width * height;
-
-            var targetRatio = targetFunction(pixels);
-
-            targetBitrate = Convert.ToInt32(pixels * targetRatio);
-
-            double minPercentage = 1.0 - (percentageThreshold / 100.0);
-            double maxPercentage = 1.0 + (percentageThreshold / 100.0);
-
-            return (bitrate < minPercentage * targetBitrate || bitrate > maxPercentage * targetBitrate);
         }
 
         private void txtInputFolder_DragEnter(object sender, DragEventArgs e)

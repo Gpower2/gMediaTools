@@ -105,6 +105,7 @@
     <Compile Include="Services\CurveFittingRepository.cs" />
     <Compile Include="Services\ICurveFittingService.cs" />
     <Compile Include="Services\LogarithmicCurveFittingService.cs" />
+    <Compile Include="Services\MediaAnalyzerService.cs" />
     <Compile Include="Services\PowerLawCurveFittingService.cs" />
     <Compile Include="StringExtensions.cs" />
     <EmbeddedResource Include="FrmMain.resx">

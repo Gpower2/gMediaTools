@@ -93,6 +93,9 @@
     <Compile Include="GTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MediaAnalyzeActions.cs" />
+    <Compile Include="MediaAnalyzeFileRequest.cs" />
+    <Compile Include="MediaAnalyzePathRequest.cs" />
     <Compile Include="MediaInfo\gMediaInfo.cs" />
     <Compile Include="MediaInfo\AudioTrack.cs" />
     <Compile Include="MediaInfo\ChaptersTrack.cs" />

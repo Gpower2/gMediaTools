@@ -50,26 +50,32 @@ namespace gMediaTools
                 var curveSettings = _curveFittingRepo.GetCurveFittingSettings();
 
                 _mediaAnalyzerService.AnalyzePath(
-                    curveSettings, 
-                    rootPath, 
-                    10, 
-                    20,
-                    (string currentFile) => 
-                        { 
-                            this.Invoke((MethodInvoker)(() => { this.txtCurrentFile.Text = currentFile; }));
-                            Application.DoEvents();
-                        },
-                    (string logText) => 
-                        { 
-                            this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
-                            Application.DoEvents();
-                        },
-                    (int reencodeFiles, int totalFiles) => 
-                        { 
-                            this.Invoke((MethodInvoker)(() => { this.txtFilesProgress.Text = $"{reencodeFiles}/{totalFiles} ({Math.Round((double)reencodeFiles / (double)totalFiles * 100.0, 2)}%)"; }));
-                            Application.DoEvents();
-                        }
-                    );
+                    new MediaAnalyzePathRequest
+                    {
+                        MediaDirectoryName = rootPath,
+                        BitratePercentageThreshold = 10,
+                        GainPercentageThreshold = 20
+                    },
+                    curveSettings,
+                    new MediaAnalyzeActions
+                    {
+                        SetCurrentFileAction = (string currentFile) =>
+                           {
+                               this.Invoke((MethodInvoker)(() => { this.txtCurrentFile.Text = currentFile; }));
+                               Application.DoEvents();
+                           },
+                        LogLineAction = (string logText) =>
+                             {
+                                 this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
+                                 Application.DoEvents();
+                             },
+                        UpdateProgressAction = (int reencodeFiles, int totalFiles) =>
+                             {
+                                 this.Invoke((MethodInvoker)(() => { this.txtFilesProgress.Text = $"{reencodeFiles}/{totalFiles} ({Math.Round((double)reencodeFiles / (double)totalFiles * 100.0, 2)}%)"; }));
+                                 Application.DoEvents();
+                             }
+                    }
+                );
             }
             catch (Exception ex)
             {

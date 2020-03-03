@@ -15,13 +15,9 @@ namespace gMediaTools.Services
         private int _totalFiles = 0;
 
         public void AnalyzePath(
+            MediaAnalyzePathRequest request,
             CurveFittingSettings curveFittingSettings, 
-            string currentDir, 
-            double bitratePercentageThreshold, 
-            double gainPercentageThreshold,
-            Action<string> setCurrentFileAction,
-            Action<string> logLineAction,
-            Action<int, int> updateProgressAction
+            MediaAnalyzeActions actions
         )
         {
             // Reset counters
@@ -40,77 +36,116 @@ namespace gMediaTools.Services
                 .GetCurveFittingFunction(data);
 
             // Call the internal recursive method
-            AnalyzePathInternal(currentDir, bitratePercentageThreshold, gainPercentageThreshold, targetFunction, setCurrentFileAction, logLineAction, updateProgressAction);
+            AnalyzePathInternal(request, targetFunction, actions);
         }
 
         private void AnalyzePathInternal(
-            string currentDir, 
-            double bitratePercentageThreshold, 
-            double gainPercentageThreshold, 
+            MediaAnalyzePathRequest request,
             Func<double, double> targetFunction,
-            Action<string> setCurrentFileAction,
-            Action<string> logLineAction,
-            Action<int, int> updateProgressAction)
+            MediaAnalyzeActions actions
+        )
         {
-            var files = Directory.GetFiles(currentDir);
+            var files = Directory.GetFiles(request.MediaDirectoryName);
+
             var mediaFiles = files.Where(f => _mediaExtensions.Any(m => m.Equals(Path.GetExtension(f).Substring(1).ToLower()))).ToList();
             if (mediaFiles.Any())
             {
                 foreach (var mediaFile in mediaFiles)
                 {
                     _totalFiles++;
-                    updateProgressAction(_reEncodeFiles, _totalFiles);
-                    AnalyzeVideoFile(mediaFile, bitratePercentageThreshold, gainPercentageThreshold, targetFunction, setCurrentFileAction, logLineAction, updateProgressAction);
+                    actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
+                    AnalyzeVideoFileInternal(
+                        new MediaAnalyzeFileRequest 
+                        { 
+                             MediaFile = mediaFile,
+                             BitratePercentageThreshold = request.BitratePercentageThreshold,
+                             GainPercentageThreshold = request.GainPercentageThreshold
+                        },
+                        targetFunction, 
+                        actions
+                    );
                 }
             }
 
-            var subDirs = Directory.GetDirectories(currentDir);
+            var subDirs = Directory.GetDirectories(request.MediaDirectoryName);
 
             if (subDirs.Any())
             {
                 foreach (var subDir in subDirs)
                 {
-                    AnalyzePathInternal(subDir, bitratePercentageThreshold, gainPercentageThreshold, targetFunction, setCurrentFileAction, logLineAction, updateProgressAction);
+                    AnalyzePathInternal(
+                        new MediaAnalyzePathRequest 
+                        { 
+                            MediaDirectoryName = subDir,
+                            BitratePercentageThreshold = request.BitratePercentageThreshold,
+                            GainPercentageThreshold = request.GainPercentageThreshold
+                        },
+                        targetFunction, 
+                        actions
+                    );
                 }
             }
         }
 
-        public void AnalyzeVideoFile(string mediaFilename, double bitratePercentageThreshold, double gainPercentageThreshold, Func<double, double> targetFunction,
-            Action<string> setCurrentFileAction,
-            Action<string> logLineAction,
-            Action<int, int> updateProgressAction)
+        public void AnalyzeVideoFile(
+            MediaAnalyzeFileRequest request,
+            CurveFittingSettings curveFittingSettings,
+            MediaAnalyzeActions actions
+        )
         {
-            setCurrentFileAction(mediaFilename);
-            using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(mediaFilename))
+            // Get the Data for calculating the CurveFittingFunction
+            var data = curveFittingSettings.Data.ToDictionary(
+                k => (double)k.Width * k.Height,
+                v => (double)v.Bitrate / (double)(v.Width * v.Height)
+            );
+
+            // Get the CurveFitting Function
+            var targetFunction = new CurveFittingFactory()
+                .GetCurveFittingService(curveFittingSettings.CurveFittingType)
+                .GetCurveFittingFunction(data);
+
+            // Call the internal recursive method
+            AnalyzeVideoFileInternal(request, targetFunction, actions);
+        }
+
+        private void AnalyzeVideoFileInternal(
+            MediaAnalyzeFileRequest request,
+            Func<double, double> targetFunction,
+            MediaAnalyzeActions actions
+        )
+        {
+            actions.SetCurrentFileAction(request.MediaFile);
+
+            using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(request.MediaFile))
             {
                 var videoTrack = mi?.Video?.FirstOrDefault();
                 if (videoTrack == null)
                 {
-                    logLineAction($"ERROR! {mediaFilename}");
+                    actions.LogLineAction($"ERROR! {request.MediaFile}");
                 }
 
                 if (int.TryParse(videoTrack.Width, out int width)
                    && int.TryParse(videoTrack.Height, out int height)
                    && int.TryParse(videoTrack.BitRate, out int bitrate))
                 {
-                    if (NeedsReencode(width, height, bitrate, bitratePercentageThreshold, targetFunction, out int targetBitrate))
+                    if (NeedsReencode(width, height, bitrate, request.BitratePercentageThreshold, targetFunction, out int targetBitrate))
                     {
                         if (targetBitrate < bitrate)
                         {
                             // Check if the gain percentage is worth the reencode
                             double gainPercentage = Math.Abs(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0);
-                            if (gainPercentage >= gainPercentageThreshold)
+                            if (gainPercentage >= request.GainPercentageThreshold)
                             {
                                 _reEncodeFiles++;
-                                updateProgressAction(_reEncodeFiles, _totalFiles);
-                                logLineAction($"{width}x{height} : {videoTrack.CodecID} : {Math.Round(((double)bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0, 2)}%) {mediaFilename}");
+                                actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
+                                actions.LogLineAction($"{width}x{height} : {videoTrack.CodecID} : {Math.Round(((double)bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0, 2)}%) {request.MediaFile}");
                             }
                         }
                     }
                 }
                 else
                 {
-                    logLineAction($"ERROR! {width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {mediaFilename}");
+                    actions.LogLineAction($"ERROR! {width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {request.MediaFile}");
                 }
             }
         }

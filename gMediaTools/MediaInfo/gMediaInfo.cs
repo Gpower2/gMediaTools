@@ -62,7 +62,7 @@ namespace gMediaTools.MediaInfo
         internal delegate int MediaInfo_Open(IntPtr Handle, string FileName);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        internal delegate int MediaInfo_Close(IntPtr Handle);
+        internal delegate void MediaInfo_Close(IntPtr Handle);
 
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
@@ -75,13 +75,13 @@ namespace gMediaTools.MediaInfo
         internal delegate IntPtr MediaInfo_Get(IntPtr Handle, [MarshalAs(UnmanagedType.U4)] MediaInfoStreamKind StreamKind, uint StreamNumber, string Parameter, [MarshalAs(UnmanagedType.U4)] MediaInfoInfoKind KindOfInfo, [MarshalAs(UnmanagedType.U4)] MediaInfoInfoKind KindOfSearch);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        internal delegate string MediaInfo_GetI(IntPtr Handle, [MarshalAs(UnmanagedType.U4)] MediaInfoStreamKind StreamKind, uint StreamNumber, uint Parameter, [MarshalAs(UnmanagedType.U4)] MediaInfoInfoKind KindOfInfo);
+        internal delegate IntPtr MediaInfo_GetI(IntPtr Handle, [MarshalAs(UnmanagedType.U4)] MediaInfoStreamKind StreamKind, uint StreamNumber, uint Parameter, [MarshalAs(UnmanagedType.U4)] MediaInfoInfoKind KindOfInfo);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        internal delegate string MediaInfo_Inform(IntPtr Handle, uint Reserved);
+        internal delegate IntPtr MediaInfo_Inform(IntPtr Handle, uint Reserved);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
-        internal delegate string MediaInfo_Option(IntPtr Handle, string OptionString, string Value);
+        internal delegate IntPtr MediaInfo_Option(IntPtr Handle, [MarshalAs(UnmanagedType.LPWStr)] string Option, [MarshalAs(UnmanagedType.LPWStr)] string Value);
 
         [UnmanagedFunctionPointer(CallingConvention.StdCall, CharSet = CharSet.Unicode)]
         internal delegate int MediaInfo_State_Get(IntPtr Handle);
@@ -217,6 +217,21 @@ namespace gMediaTools.MediaInfo
             }
         }
 
+        private string GetOption(string optionName)
+        {
+            try
+            {
+                IntPtr p = GetFunctionDelegate<MediaInfo_Option>()(_Handle, optionName, "");
+
+                return Marshal.PtrToStringUni(p);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+                return null;
+            }
+        }
+
         public gMediaInfo(string argPath)
         {
             if (!File.Exists(argPath))
@@ -289,16 +304,16 @@ namespace gMediaTools.MediaInfo
         /// <returns></returns>
         public string Capacities()
         {
-            return GetFunctionDelegate<MediaInfo_Option>()(IntPtr.Zero, "Info_Capacities", "");
+            return GetOption("Info_Capacities");
         }
 
         /// <summary>
         /// Lists media info parameter list for MediaInfo_Get
         /// </summary>
         /// <returns></returns>
-        private string ParameterList()
+        public string ParameterList()
         {
-            return GetFunctionDelegate<MediaInfo_Option>()(IntPtr.Zero, "Info_Parameters", "");
+            return GetOption("Info_Parameters");
         }
 
         /// <summary>
@@ -307,7 +322,7 @@ namespace gMediaTools.MediaInfo
         /// <returns></returns>
         public string KnownCodecs()
         {
-            return GetFunctionDelegate<MediaInfo_Option>()(IntPtr.Zero, "Info_Codecs", "");
+            return GetOption("Info_Codecs");
         }
 
         private string GetCustomInfo()

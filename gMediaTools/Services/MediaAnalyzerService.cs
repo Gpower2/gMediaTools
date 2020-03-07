@@ -118,7 +118,7 @@ namespace gMediaTools.Services
 
             using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(request.MediaFile))
             {
-                var videoTrack = mi?.Video?.FirstOrDefault();
+                var videoTrack = mi?.VideoTracks?.FirstOrDefault();
                 if (videoTrack == null)
                 {
                     actions.LogLineAction($"ERROR! {request.MediaFile}");

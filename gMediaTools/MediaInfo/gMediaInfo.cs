@@ -561,6 +561,7 @@ namespace gMediaTools.MediaInfo
                 tmpVideoTrack.StreamKind = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "StreamKind");
                 tmpVideoTrack.StreamKindID = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "StreamKindID");
                 tmpVideoTrack.StreamOrder = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "StreamOrder");
+                tmpVideoTrack.StreamSize = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "StreamSize");
                 tmpVideoTrack.Inform = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "Inform");
                 tmpVideoTrack.ID = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "ID");
                 tmpVideoTrack.UniqueID = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "UniqueID");
@@ -656,6 +657,7 @@ namespace gMediaTools.MediaInfo
                 tmpAudioTrack.MenuID = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "MenuID");
                 tmpAudioTrack.MenuIDString = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "MenuID/String");
                 tmpAudioTrack.Format = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "Format");
+                tmpAudioTrack.FormatString = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "Format/String");
                 tmpAudioTrack.FormatInfo = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "Format/Info");
                 tmpAudioTrack.FormatUrl = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "Format/Url");
                 tmpAudioTrack.FormatVersion = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "Format_Version");
@@ -883,8 +885,8 @@ namespace gMediaTools.MediaInfo
 
         protected virtual void DisposeUnmanagedResources()
         {
-            GetFunctionDelegate<MediaInfo_Close>()(this._Handle);
-            GetFunctionDelegate<MediaInfo_Delete>()(this._Handle);
+            GetFunctionDelegate<MediaInfo_Close>()(_Handle);
+            GetFunctionDelegate<MediaInfo_Delete>()(_Handle);
         }
 
         #endregion

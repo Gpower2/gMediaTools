@@ -19,6 +19,7 @@ namespace gMediaTools.MediaInfo
         private string _MenuID;
         private string _MenuIDString;
         private string _Format;
+        private string _FormatString;
         private string _FormatInfo;
         private string _FormatUrl;
         private string _FormatVersion;
@@ -117,13 +118,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Count))
-                    this._Count="";
+                if (string.IsNullOrWhiteSpace(_Count))
+                    _Count="";
                 return _Count;
             }
             set
             {
-                this._Count=value;
+                _Count=value;
             }
         }
 
@@ -132,13 +133,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamCount))
-                    this._StreamCount="";
+                if (string.IsNullOrWhiteSpace(_StreamCount))
+                    _StreamCount="";
                 return _StreamCount;
             }
             set
             {
-                this._StreamCount=value;
+                _StreamCount=value;
             }
         }
 
@@ -147,13 +148,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamKind))
-                    this._StreamKind="";
+                if (string.IsNullOrWhiteSpace(_StreamKind))
+                    _StreamKind="";
                 return _StreamKind;
             }
             set
             {
-                this._StreamKind=value;
+                _StreamKind=value;
             }
         }
 
@@ -162,13 +163,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamKindString))
-                    this._StreamKindString = "";
+                if (string.IsNullOrWhiteSpace(_StreamKindString))
+                    _StreamKindString = "";
                 return _StreamKindString;
             }
             set
             {
-                this._StreamKindString = value;
+                _StreamKindString = value;
             }
         }
 
@@ -177,13 +178,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamKindID))
-                    this._StreamKindID="";
+                if (string.IsNullOrWhiteSpace(_StreamKindID))
+                    _StreamKindID="";
                 return _StreamKindID;
             }
             set
             {
-                this._StreamKindID=value;
+                _StreamKindID=value;
             }
         }
 
@@ -192,13 +193,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamKindPos))
-                    this._StreamKindPos = "";
+                if (string.IsNullOrWhiteSpace(_StreamKindPos))
+                    _StreamKindPos = "";
                 return _StreamKindPos;
             }
             set
             {
-                this._StreamKindPos = value;
+                _StreamKindPos = value;
             }
         }
 
@@ -207,13 +208,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamOrder))
-                    this._StreamOrder = "";
+                if (string.IsNullOrWhiteSpace(_StreamOrder))
+                    _StreamOrder = "";
                 return _StreamOrder;
             }
             set
             {
-                this._StreamOrder = value;
+                _StreamOrder = value;
             }
         }
 
@@ -222,13 +223,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Inform))
-                    this._Inform="";
+                if (string.IsNullOrWhiteSpace(_Inform))
+                    _Inform="";
                 return _Inform;
             }
             set
             {
-                this._Inform=value;
+                _Inform=value;
             }
         }
 
@@ -237,13 +238,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ID))
-                    this._ID="";
+                if (string.IsNullOrWhiteSpace(_ID))
+                    _ID="";
                 return _ID;
             }
             set
             {
-                this._ID=value;
+                _ID=value;
             }
         }
 
@@ -252,13 +253,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._IDString))
-                    this._IDString = "";
+                if (string.IsNullOrWhiteSpace(_IDString))
+                    _IDString = "";
                 return _IDString;
             }
             set
             {
-                this._IDString = value;
+                _IDString = value;
             }
         }
 
@@ -267,13 +268,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._UniqueID))
-                    this._UniqueID="";
+                if (string.IsNullOrWhiteSpace(_UniqueID))
+                    _UniqueID="";
                 return _UniqueID;
             }
             set
             {
-                this._UniqueID=value;
+                _UniqueID=value;
             }
         }
 
@@ -282,13 +283,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._MenuID))
-                    this._MenuID = "";
+                if (string.IsNullOrWhiteSpace(_MenuID))
+                    _MenuID = "";
                 return _MenuID;
             }
             set
             {
-                this._MenuID = value;
+                _MenuID = value;
             }
         }
 
@@ -297,13 +298,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._MenuIDString))
-                    this._MenuIDString = "";
+                if (string.IsNullOrWhiteSpace(_MenuIDString))
+                    _MenuIDString = "";
                 return _MenuIDString;
             }
             set
             {
-                this._MenuIDString = value;
+                _MenuIDString = value;
             }
         }
 
@@ -312,13 +313,28 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Format))
-                    this._Format = "";
+                if (string.IsNullOrWhiteSpace(_Format))
+                    _Format = "";
                 return _Format;
             }
             set
             {
-                this._Format = value;
+                _Format = value;
+            }
+        }
+
+        ///<summary> the Format used + additional features</summary>
+        public string FormatString
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_FormatString))
+                    _FormatString = "";
+                return _FormatString;
+            }
+            set
+            {
+                _FormatString = value;
             }
         }
 
@@ -327,13 +343,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatInfo))
-                    this._FormatInfo = "";
+                if (string.IsNullOrWhiteSpace(_FormatInfo))
+                    _FormatInfo = "";
                 return _FormatInfo;
             }
             set
             {
-                this._FormatInfo = value;
+                _FormatInfo = value;
             }
         }
 
@@ -342,13 +358,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatUrl))
-                    this._FormatUrl = "";
+                if (string.IsNullOrWhiteSpace(_FormatUrl))
+                    _FormatUrl = "";
                 return _FormatUrl;
             }
             set
             {
-                this._FormatUrl = value;
+                _FormatUrl = value;
             }
         }
 
@@ -357,13 +373,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatVersion))
-                    this._FormatVersion = "";
+                if (string.IsNullOrWhiteSpace(_FormatVersion))
+                    _FormatVersion = "";
                 return _FormatVersion;
             }
             set
             {
-                this._FormatVersion = value;
+                _FormatVersion = value;
             }
         }
 
@@ -372,13 +388,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatProfile))
-                    this._FormatProfile = "";
+                if (string.IsNullOrWhiteSpace(_FormatProfile))
+                    _FormatProfile = "";
                 return _FormatProfile;
             }
             set
             {
-                this._FormatProfile = value;
+                _FormatProfile = value;
             }
         }
 
@@ -387,13 +403,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettings))
-                    this._FormatSettings = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettings))
+                    _FormatSettings = "";
                 return _FormatSettings;
             }
             set
             {
-                this._FormatSettings = value;
+                _FormatSettings = value;
             }
         }
 
@@ -402,13 +418,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsSBR))
-                    this._FormatSettingsSBR = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsSBR))
+                    _FormatSettingsSBR = "";
                 return _FormatSettingsSBR;
             }
             set
             {
-                this._FormatSettingsSBR = value;
+                _FormatSettingsSBR = value;
             }
         }
 
@@ -417,13 +433,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsSBRString))
-                    this._FormatSettingsSBRString = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsSBRString))
+                    _FormatSettingsSBRString = "";
                 return _FormatSettingsSBRString;
             }
             set
             {
-                this._FormatSettingsSBRString = value;
+                _FormatSettingsSBRString = value;
             }
         }
 
@@ -432,13 +448,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsPS))
-                    this._FormatSettingsPS = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsPS))
+                    _FormatSettingsPS = "";
                 return _FormatSettingsPS;
             }
             set
             {
-                this._FormatSettingsPS = value;
+                _FormatSettingsPS = value;
             }
         }
 
@@ -447,13 +463,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsPSString))
-                    this._FormatSettingsPSString = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsPSString))
+                    _FormatSettingsPSString = "";
                 return _FormatSettingsPSString;
             }
             set
             {
-                this._FormatSettingsPSString = value;
+                _FormatSettingsPSString = value;
             }
         }
 
@@ -462,13 +478,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsFloor))
-                    this._FormatSettingsFloor = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsFloor))
+                    _FormatSettingsFloor = "";
                 return _FormatSettingsFloor;
             }
             set
             {
-                this._FormatSettingsFloor = value;
+                _FormatSettingsFloor = value;
             }
         }
 
@@ -477,13 +493,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsFirm))
-                    this._FormatSettingsFirm = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsFirm))
+                    _FormatSettingsFirm = "";
                 return _FormatSettingsFirm;
             }
             set
             {
-                this._FormatSettingsFirm = value;
+                _FormatSettingsFirm = value;
             }
         }
 
@@ -492,13 +508,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsEndianness))
-                    this._FormatSettingsEndianness = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsEndianness))
+                    _FormatSettingsEndianness = "";
                 return _FormatSettingsEndianness;
             }
             set
             {
-                this._FormatSettingsEndianness = value;
+                _FormatSettingsEndianness = value;
             }
         }
 
@@ -507,13 +523,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsSign))
-                    this._FormatSettingsSign = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsSign))
+                    _FormatSettingsSign = "";
                 return _FormatSettingsSign;
             }
             set
             {
-                this._FormatSettingsSign = value;
+                _FormatSettingsSign = value;
             }
         }
 
@@ -522,13 +538,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsLaw))
-                    this._FormatSettingsLaw = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsLaw))
+                    _FormatSettingsLaw = "";
                 return _FormatSettingsLaw;
             }
             set
             {
-                this._FormatSettingsLaw = value;
+                _FormatSettingsLaw = value;
             }
         }
 
@@ -537,13 +553,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._FormatSettingsITU))
-                    this._FormatSettingsITU = "";
+                if (string.IsNullOrWhiteSpace(_FormatSettingsITU))
+                    _FormatSettingsITU = "";
                 return _FormatSettingsITU;
             }
             set
             {
-                this._FormatSettingsITU = value;
+                _FormatSettingsITU = value;
             }
         }
 
@@ -552,13 +568,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._MuxingMode))
-                    this._MuxingMode = "";
+                if (string.IsNullOrWhiteSpace(_MuxingMode))
+                    _MuxingMode = "";
                 return _MuxingMode;
             }
             set
             {
-                this._MuxingMode = value;
+                _MuxingMode = value;
             }
         }
 
@@ -567,13 +583,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._CodecID))
-                    this._CodecID = "";
+                if (string.IsNullOrWhiteSpace(_CodecID))
+                    _CodecID = "";
                 return _CodecID;
             }
             set
             {
-                this._CodecID = value;
+                _CodecID = value;
             }
         }
 
@@ -582,13 +598,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._CodecIDInfo))
-                    this._CodecIDInfo = "";
+                if (string.IsNullOrWhiteSpace(_CodecIDInfo))
+                    _CodecIDInfo = "";
                 return _CodecIDInfo;
             }
             set
             {
-                this._CodecIDInfo = value;
+                _CodecIDInfo = value;
             }
         }
 
@@ -597,13 +613,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._CodecIDHint))
-                    this._CodecIDHint = "";
+                if (string.IsNullOrWhiteSpace(_CodecIDHint))
+                    _CodecIDHint = "";
                 return _CodecIDHint;
             }
             set
             {
-                this._CodecIDHint = value;
+                _CodecIDHint = value;
             }
         }
 
@@ -612,13 +628,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._CodecIDUrl))
-                    this._CodecIDUrl = "";
+                if (string.IsNullOrWhiteSpace(_CodecIDUrl))
+                    _CodecIDUrl = "";
                 return _CodecIDUrl;
             }
             set
             {
-                this._CodecIDUrl = value;
+                _CodecIDUrl = value;
             }
         }
 
@@ -627,13 +643,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._CodecIDDescription))
-                    this._CodecIDDescription = "";
+                if (string.IsNullOrWhiteSpace(_CodecIDDescription))
+                    _CodecIDDescription = "";
                 return _CodecIDDescription;
             }
             set
             {
-                this._CodecIDDescription = value;
+                _CodecIDDescription = value;
             }
         }
 
@@ -642,13 +658,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Title))
-                    this._Title="";
+                if (string.IsNullOrWhiteSpace(_Title))
+                    _Title="";
                 return _Title;
             }
             set
             {
-                this._Title=value;
+                _Title=value;
             }
         }
 
@@ -657,13 +673,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRate))
-                    this._BitRate="";
+                if (string.IsNullOrWhiteSpace(_BitRate))
+                    _BitRate="";
                 return _BitRate;
             }
             set
             {
-                this._BitRate=value;
+                _BitRate=value;
             }
         }
 
@@ -672,13 +688,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateString))
-                    this._BitRateString="";
+                if (string.IsNullOrWhiteSpace(_BitRateString))
+                    _BitRateString="";
                 return _BitRateString;
             }
             set
             {
-                this._BitRateString=value;
+                _BitRateString=value;
             }
         }
 
@@ -687,13 +703,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateMode))
-                    this._BitRateMode="";
+                if (string.IsNullOrWhiteSpace(_BitRateMode))
+                    _BitRateMode="";
                 return _BitRateMode;
             }
             set
             {
-                this._BitRateMode=value;
+                _BitRateMode=value;
             }
         }
 
@@ -702,13 +718,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateModeString))
-                    this._BitRateModeString = "";
+                if (string.IsNullOrWhiteSpace(_BitRateModeString))
+                    _BitRateModeString = "";
                 return _BitRateModeString;
             }
             set
             {
-                this._BitRateModeString = value;
+                _BitRateModeString = value;
             }
         }
 
@@ -717,13 +733,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateMinimum))
-                    this._BitRateMinimum = "";
+                if (string.IsNullOrWhiteSpace(_BitRateMinimum))
+                    _BitRateMinimum = "";
                 return _BitRateMinimum;
             }
             set
             {
-                this._BitRateMinimum = value;
+                _BitRateMinimum = value;
             }
         }
 
@@ -732,13 +748,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateMinimumString))
-                    this._BitRateMinimumString = "";
+                if (string.IsNullOrWhiteSpace(_BitRateMinimumString))
+                    _BitRateMinimumString = "";
                 return _BitRateMinimumString;
             }
             set
             {
-                this._BitRateMinimumString = value;
+                _BitRateMinimumString = value;
             }
         }
 
@@ -747,13 +763,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateNominal))
-                    this._BitRateNominal = "";
+                if (string.IsNullOrWhiteSpace(_BitRateNominal))
+                    _BitRateNominal = "";
                 return _BitRateNominal;
             }
             set
             {
-                this._BitRateNominal = value;
+                _BitRateNominal = value;
             }
         }
 
@@ -762,13 +778,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateNominalString))
-                    this._BitRateNominalString = "";
+                if (string.IsNullOrWhiteSpace(_BitRateNominalString))
+                    _BitRateNominalString = "";
                 return _BitRateNominalString;
             }
             set
             {
-                this._BitRateNominalString = value;
+                _BitRateNominalString = value;
             }
         }
 
@@ -777,13 +793,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateMaximum))
-                    this._BitRateMaximum = "";
+                if (string.IsNullOrWhiteSpace(_BitRateMaximum))
+                    _BitRateMaximum = "";
                 return _BitRateMaximum;
             }
             set
             {
-                this._BitRateMaximum = value;
+                _BitRateMaximum = value;
             }
         }
 
@@ -792,13 +808,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitRateMaximumString))
-                    this._BitRateMaximumString = "";
+                if (string.IsNullOrWhiteSpace(_BitRateMaximumString))
+                    _BitRateMaximumString = "";
                 return _BitRateMaximumString;
             }
             set
             {
-                this._BitRateMaximumString = value;
+                _BitRateMaximumString = value;
             }
         }
 
@@ -807,13 +823,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Channels))
-                    this._Channels="";
+                if (string.IsNullOrWhiteSpace(_Channels))
+                    _Channels="";
                 return _Channels;
             }
             set
             {
-                this._Channels=value;
+                _Channels=value;
             }
         }
 
@@ -822,13 +838,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ChannelsString))
-                    this._ChannelsString="";
+                if (string.IsNullOrWhiteSpace(_ChannelsString))
+                    _ChannelsString="";
                 return _ChannelsString;
             }
             set
             {
-                this._ChannelsString=value;
+                _ChannelsString=value;
             }
         }
 
@@ -837,13 +853,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ChannelPositions))
-                    this._ChannelPositions = "";
+                if (string.IsNullOrWhiteSpace(_ChannelPositions))
+                    _ChannelPositions = "";
                 return _ChannelPositions;
             }
             set
             {
-                this._ChannelPositions = value;
+                _ChannelPositions = value;
             }
         }
 
@@ -852,13 +868,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ChannelPositionsString2))
-                    this._ChannelPositionsString2 = "";
+                if (string.IsNullOrWhiteSpace(_ChannelPositionsString2))
+                    _ChannelPositionsString2 = "";
                 return _ChannelPositionsString2;
             }
             set
             {
-                this._ChannelPositionsString2 = value;
+                _ChannelPositionsString2 = value;
             }
         }
 
@@ -867,13 +883,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ChannelMode))
-                    this._ChannelMode="";
+                if (string.IsNullOrWhiteSpace(_ChannelMode))
+                    _ChannelMode="";
                 return _ChannelMode;
             }
             set
             {
-                this._ChannelMode=value;
+                _ChannelMode=value;
             }
         }
 
@@ -882,13 +898,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._SamplingRate))
-                    this._SamplingRate="";
+                if (string.IsNullOrWhiteSpace(_SamplingRate))
+                    _SamplingRate="";
                 return _SamplingRate;
             }
             set
             {
-                this._SamplingRate=value;
+                _SamplingRate=value;
             }
         }
 
@@ -897,13 +913,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._SamplingRateString))
-                    this._SamplingRateString="";
+                if (string.IsNullOrWhiteSpace(_SamplingRateString))
+                    _SamplingRateString="";
                 return _SamplingRateString;
             }
             set
             {
-                this._SamplingRateString=value;
+                _SamplingRateString=value;
             }
         }
 
@@ -912,13 +928,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._SamplingCount))
-                    this._SamplingCount="";
+                if (string.IsNullOrWhiteSpace(_SamplingCount))
+                    _SamplingCount="";
                 return _SamplingCount;
             }
             set
             {
-                this._SamplingCount=value;
+                _SamplingCount=value;
             }
         }
 
@@ -927,13 +943,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitDepth))
-                    this._BitDepth="";
+                if (string.IsNullOrWhiteSpace(_BitDepth))
+                    _BitDepth="";
                 return _BitDepth;
             }
             set
             {
-                this._BitDepth=value;
+                _BitDepth=value;
             }
         }
 
@@ -942,13 +958,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._BitDepthString))
-                    this._BitDepthString = "";
+                if (string.IsNullOrWhiteSpace(_BitDepthString))
+                    _BitDepthString = "";
                 return _BitDepthString;
             }
             set
             {
-                this._BitDepthString = value;
+                _BitDepthString = value;
             }
         }
 
@@ -957,13 +973,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._CompressionRatio))
-                    this._CompressionRatio = "";
+                if (string.IsNullOrWhiteSpace(_CompressionRatio))
+                    _CompressionRatio = "";
                 return _CompressionRatio;
             }
             set
             {
-                this._CompressionRatio = value;
+                _CompressionRatio = value;
             }
         }
 
@@ -972,13 +988,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Delay))
-                    this._Delay="";
+                if (string.IsNullOrWhiteSpace(_Delay))
+                    _Delay="";
                 return _Delay;
             }
             set
             {
-                this._Delay=value;
+                _Delay=value;
             }
         }
 
@@ -987,13 +1003,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DelayString))
-                    this._DelayString = "";
+                if (string.IsNullOrWhiteSpace(_DelayString))
+                    _DelayString = "";
                 return _DelayString;
             }
             set
             {
-                this._DelayString = value;
+                _DelayString = value;
             }
         }
 
@@ -1002,13 +1018,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DelayString1))
-                    this._DelayString1 = "";
+                if (string.IsNullOrWhiteSpace(_DelayString1))
+                    _DelayString1 = "";
                 return _DelayString1;
             }
             set
             {
-                this._DelayString1 = value;
+                _DelayString1 = value;
             }
         }
 
@@ -1017,13 +1033,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DelayString2))
-                    this._DelayString2 = "";
+                if (string.IsNullOrWhiteSpace(_DelayString2))
+                    _DelayString2 = "";
                 return _DelayString2;
             }
             set
             {
-                this._DelayString2 = value;
+                _DelayString2 = value;
             }
         }
 
@@ -1032,13 +1048,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DelayString3))
-                    this._DelayString3 = "";
+                if (string.IsNullOrWhiteSpace(_DelayString3))
+                    _DelayString3 = "";
                 return _DelayString3;
             }
             set
             {
-                this._DelayString3 = value;
+                _DelayString3 = value;
             }
         }
 
@@ -1047,13 +1063,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._VideoDelay))
-                    this._VideoDelay="";
+                if (string.IsNullOrWhiteSpace(_VideoDelay))
+                    _VideoDelay="";
                 return _VideoDelay;
             }
             set
             {
-                this._VideoDelay=value;
+                _VideoDelay=value;
             }
         }
 
@@ -1062,13 +1078,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._VideoDelayString))
-                    this._VideoDelayString = "";
+                if (string.IsNullOrWhiteSpace(_VideoDelayString))
+                    _VideoDelayString = "";
                 return _VideoDelayString;
             }
             set
             {
-                this._VideoDelayString = value;
+                _VideoDelayString = value;
             }
         }
 
@@ -1077,13 +1093,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._VideoDelayString1))
-                    this._VideoDelayString1 = "";
+                if (string.IsNullOrWhiteSpace(_VideoDelayString1))
+                    _VideoDelayString1 = "";
                 return _VideoDelayString1;
             }
             set
             {
-                this._VideoDelayString1 = value;
+                _VideoDelayString1 = value;
             }
         }
 
@@ -1092,13 +1108,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._VideoDelayString2))
-                    this._VideoDelayString2 = "";
+                if (string.IsNullOrWhiteSpace(_VideoDelayString2))
+                    _VideoDelayString2 = "";
                 return _VideoDelayString2;
             }
             set
             {
-                this._VideoDelayString2 = value;
+                _VideoDelayString2 = value;
             }
         }
 
@@ -1107,13 +1123,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._VideoDelayString3))
-                    this._VideoDelayString3 = "";
+                if (string.IsNullOrWhiteSpace(_VideoDelayString3))
+                    _VideoDelayString3 = "";
                 return _VideoDelayString3;
             }
             set
             {
-                this._VideoDelayString3 = value;
+                _VideoDelayString3 = value;
             }
         }
 
@@ -1122,13 +1138,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Duration))
-                    this._Duration="";
+                if (string.IsNullOrWhiteSpace(_Duration))
+                    _Duration="";
                 return _Duration;
             }
             set
             {
-                this._Duration = value;
+                _Duration = value;
             }
         }
 
@@ -1137,13 +1153,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DurationString))
-                    this._DurationString="";
+                if (string.IsNullOrWhiteSpace(_DurationString))
+                    _DurationString="";
                 return _DurationString;
             }
             set
             {
-                this._DurationString=value;
+                _DurationString=value;
             }
         }
 
@@ -1152,13 +1168,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DurationString1))
-                    this._DurationString1="";
+                if (string.IsNullOrWhiteSpace(_DurationString1))
+                    _DurationString1="";
                 return _DurationString1;
             }
             set
             {
-                this._DurationString1 = value;
+                _DurationString1 = value;
             }
         }
 
@@ -1167,13 +1183,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DurationString2))
-                    this._DurationString2="";
+                if (string.IsNullOrWhiteSpace(_DurationString2))
+                    _DurationString2="";
                 return _DurationString2;
             }
             set
             {
-                this._DurationString2=value;
+                _DurationString2=value;
             }
         }
 
@@ -1182,13 +1198,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DurationString3))
-                    this._DurationString3="";
+                if (string.IsNullOrWhiteSpace(_DurationString3))
+                    _DurationString3="";
                 return _DurationString3;
             }
             set
             {
-                this._DurationString3=value;
+                _DurationString3=value;
             }
         }
 
@@ -1197,13 +1213,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ReplayGainGain))
-                    this._ReplayGainGain = "";
+                if (string.IsNullOrWhiteSpace(_ReplayGainGain))
+                    _ReplayGainGain = "";
                 return _ReplayGainGain;
             }
             set
             {
-                this._ReplayGainGain = value;
+                _ReplayGainGain = value;
             }
         }
 
@@ -1212,13 +1228,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ReplayGainGainString))
-                    this._ReplayGainGainString = "";
+                if (string.IsNullOrWhiteSpace(_ReplayGainGainString))
+                    _ReplayGainGainString = "";
                 return _ReplayGainGainString;
             }
             set
             {
-                this._ReplayGainGainString = value;
+                _ReplayGainGainString = value;
             }
         }
 
@@ -1227,13 +1243,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ReplayGainPeak))
-                    this._ReplayGainPeak = "";
+                if (string.IsNullOrWhiteSpace(_ReplayGainPeak))
+                    _ReplayGainPeak = "";
                 return _ReplayGainPeak;
             }
             set
             {
-                this._ReplayGainPeak = value;
+                _ReplayGainPeak = value;
             }
         }
 
@@ -1242,13 +1258,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSize))
-                    this._StreamSize = "";
+                if (string.IsNullOrWhiteSpace(_StreamSize))
+                    _StreamSize = "";
                 return _StreamSize;
             }
             set
             {
-                this._StreamSize = value;
+                _StreamSize = value;
             }
         }
 
@@ -1257,13 +1273,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSizeString))
-                    this._StreamSizeString = "";
+                if (string.IsNullOrWhiteSpace(_StreamSizeString))
+                    _StreamSizeString = "";
                 return _StreamSizeString;
             }
             set
             {
-                this._StreamSizeString = value;
+                _StreamSizeString = value;
             }
         }
 
@@ -1272,13 +1288,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSizeString1))
-                    this._StreamSizeString1 = "";
+                if (string.IsNullOrWhiteSpace(_StreamSizeString1))
+                    _StreamSizeString1 = "";
                 return _StreamSizeString1;
             }
             set
             {
-                this._StreamSizeString1 = value;
+                _StreamSizeString1 = value;
             }
         }
 
@@ -1287,13 +1303,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSizeString2))
-                    this._StreamSizeString2 = "";
+                if (string.IsNullOrWhiteSpace(_StreamSizeString2))
+                    _StreamSizeString2 = "";
                 return _StreamSizeString2;
             }
             set
             {
-                this._StreamSizeString2 = value;
+                _StreamSizeString2 = value;
             }
         }
 
@@ -1302,13 +1318,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSizeString3))
-                    this._StreamSizeString3 = "";
+                if (string.IsNullOrWhiteSpace(_StreamSizeString3))
+                    _StreamSizeString3 = "";
                 return _StreamSizeString3;
             }
             set
             {
-                this._StreamSizeString3 = value;
+                _StreamSizeString3 = value;
             }
         }
 
@@ -1317,13 +1333,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSizeString4))
-                    this._StreamSizeString4 = "";
+                if (string.IsNullOrWhiteSpace(_StreamSizeString4))
+                    _StreamSizeString4 = "";
                 return _StreamSizeString4;
             }
             set
             {
-                this._StreamSizeString4 = value;
+                _StreamSizeString4 = value;
             }
         }
 
@@ -1332,13 +1348,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSizeString5))
-                    this._StreamSizeString5 = "";
+                if (string.IsNullOrWhiteSpace(_StreamSizeString5))
+                    _StreamSizeString5 = "";
                 return _StreamSizeString5;
             }
             set
             {
-                this._StreamSizeString5 = value;
+                _StreamSizeString5 = value;
             }
         }
 
@@ -1347,13 +1363,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._StreamSizeProportion))
-                    this._StreamSizeProportion = "";
+                if (string.IsNullOrWhiteSpace(_StreamSizeProportion))
+                    _StreamSizeProportion = "";
                 return _StreamSizeProportion;
             }
             set
             {
-                this._StreamSizeProportion = value;
+                _StreamSizeProportion = value;
             }
         }
 
@@ -1362,13 +1378,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Alignment))
-                    this._Alignment = "";
+                if (string.IsNullOrWhiteSpace(_Alignment))
+                    _Alignment = "";
                 return _Alignment;
             }
             set
             {
-                this._Alignment = value;
+                _Alignment = value;
             }
         }
 
@@ -1377,13 +1393,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._AlignmentString))
-                    this._AlignmentString = "";
+                if (string.IsNullOrWhiteSpace(_AlignmentString))
+                    _AlignmentString = "";
                 return _AlignmentString;
             }
             set
             {
-                this._AlignmentString = value;
+                _AlignmentString = value;
             }
         }
 
@@ -1392,13 +1408,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._InterleaveVideoFrames))
-                    this._InterleaveVideoFrames = "";
+                if (string.IsNullOrWhiteSpace(_InterleaveVideoFrames))
+                    _InterleaveVideoFrames = "";
                 return _InterleaveVideoFrames;
             }
             set
             {
-                this._InterleaveVideoFrames = value;
+                _InterleaveVideoFrames = value;
             }
         }
 
@@ -1407,13 +1423,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._InterleaveDuration))
-                    this._InterleaveDuration = "";
+                if (string.IsNullOrWhiteSpace(_InterleaveDuration))
+                    _InterleaveDuration = "";
                 return _InterleaveDuration;
             }
             set
             {
-                this._InterleaveDuration = value;
+                _InterleaveDuration = value;
             }
         }
 
@@ -1422,13 +1438,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._InterleaveDurationString))
-                    this._InterleaveDurationString = "";
+                if (string.IsNullOrWhiteSpace(_InterleaveDurationString))
+                    _InterleaveDurationString = "";
                 return _InterleaveDurationString;
             }
             set
             {
-                this._InterleaveDurationString = value;
+                _InterleaveDurationString = value;
             }
         }
 
@@ -1437,13 +1453,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._InterleavePreload))
-                    this._InterleavePreload = "";
+                if (string.IsNullOrWhiteSpace(_InterleavePreload))
+                    _InterleavePreload = "";
                 return _InterleavePreload;
             }
             set
             {
-                this._InterleavePreload = value;
+                _InterleavePreload = value;
             }
         }
 
@@ -1452,13 +1468,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._InterleavePreloadString))
-                    this._InterleavePreloadString = "";
+                if (string.IsNullOrWhiteSpace(_InterleavePreloadString))
+                    _InterleavePreloadString = "";
                 return _InterleavePreloadString;
             }
             set
             {
-                this._InterleavePreloadString = value;
+                _InterleavePreloadString = value;
             }
         }
 
@@ -1467,13 +1483,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._EncodedLibrary))
-                    this._EncodedLibrary = "";
+                if (string.IsNullOrWhiteSpace(_EncodedLibrary))
+                    _EncodedLibrary = "";
                 return _EncodedLibrary;
             }
             set
             {
-                this._EncodedLibrary = value;
+                _EncodedLibrary = value;
             }
         }
 
@@ -1482,13 +1498,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._EncodedLibraryString))
-                    this._EncodedLibraryString = "";
+                if (string.IsNullOrWhiteSpace(_EncodedLibraryString))
+                    _EncodedLibraryString = "";
                 return _EncodedLibraryString;
             }
             set
             {
-                this._EncodedLibraryString = value;
+                _EncodedLibraryString = value;
             }
         }
 
@@ -1497,13 +1513,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._EncodedLibraryName))
-                    this._EncodedLibraryName = "";
+                if (string.IsNullOrWhiteSpace(_EncodedLibraryName))
+                    _EncodedLibraryName = "";
                 return _EncodedLibraryName;
             }
             set
             {
-                this._EncodedLibraryName = value;
+                _EncodedLibraryName = value;
             }
         }
 
@@ -1513,13 +1529,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._EncodedLibraryVersion))
-                    this._EncodedLibraryVersion = "";
+                if (string.IsNullOrWhiteSpace(_EncodedLibraryVersion))
+                    _EncodedLibraryVersion = "";
                 return _EncodedLibraryVersion;
             }
             set
             {
-                this._EncodedLibraryVersion = value;
+                _EncodedLibraryVersion = value;
             }
         }
 
@@ -1528,13 +1544,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._EncodedLibraryDate))
-                    this._EncodedLibraryDate = "";
+                if (string.IsNullOrWhiteSpace(_EncodedLibraryDate))
+                    _EncodedLibraryDate = "";
                 return _EncodedLibraryDate;
             }
             set
             {
-                this._EncodedLibraryDate = value;
+                _EncodedLibraryDate = value;
             }
         }
 
@@ -1543,13 +1559,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._EncodedLibrarySettings))
-                    this._EncodedLibrarySettings = "";
+                if (string.IsNullOrWhiteSpace(_EncodedLibrarySettings))
+                    _EncodedLibrarySettings = "";
                 return _EncodedLibrarySettings;
             }
             set
             {
-                this._EncodedLibrarySettings = value;
+                _EncodedLibrarySettings = value;
             }
         }
 
@@ -1558,13 +1574,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Language))
-                    this._Language="";
+                if (string.IsNullOrWhiteSpace(_Language))
+                    _Language="";
                 return _Language;
             }
             set
             {
-                this._Language=value;
+                _Language=value;
             }
         }
 
@@ -1573,13 +1589,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._LanguageString))
-                    this._LanguageString="";
+                if (string.IsNullOrWhiteSpace(_LanguageString))
+                    _LanguageString="";
                 return _LanguageString;
             }
             set
             {
-                this._LanguageString=value;
+                _LanguageString=value;
             }
         }
 
@@ -1588,13 +1604,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._LanguageMore))
-                    this._LanguageMore="";
+                if (string.IsNullOrWhiteSpace(_LanguageMore))
+                    _LanguageMore="";
                 return _LanguageMore;
             }
             set
             {
-                this._LanguageMore=value;
+                _LanguageMore=value;
             }
         }
 
@@ -1603,13 +1619,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._EncodedDate))
-                    this._EncodedDate = "";
+                if (string.IsNullOrWhiteSpace(_EncodedDate))
+                    _EncodedDate = "";
                 return _EncodedDate;
             }
             set
             {
-                this._EncodedDate = value;
+                _EncodedDate = value;
             }
         }
 
@@ -1618,13 +1634,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._TaggedDate))
-                    this._TaggedDate = "";
+                if (string.IsNullOrWhiteSpace(_TaggedDate))
+                    _TaggedDate = "";
                 return _TaggedDate;
             }
             set
             {
-                this._TaggedDate = value;
+                _TaggedDate = value;
             }
         }
 
@@ -1633,13 +1649,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Encryption))
-                    this._Encryption = "";
+                if (string.IsNullOrWhiteSpace(_Encryption))
+                    _Encryption = "";
                 return _Encryption;
             }
             set
             {
-                this._Encryption = value;
+                _Encryption = value;
             }
         }
 
@@ -1648,13 +1664,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Default))
-                    this._Default = "";
+                if (string.IsNullOrWhiteSpace(_Default))
+                    _Default = "";
                 return _Default;
             }
             set
             {
-                this._Default = value;
+                _Default = value;
             }
         }
 
@@ -1663,13 +1679,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._DefaultString))
-                    this._DefaultString = "";
+                if (string.IsNullOrWhiteSpace(_DefaultString))
+                    _DefaultString = "";
                 return _DefaultString;
             }
             set
             {
-                this._DefaultString = value;
+                _DefaultString = value;
             }
         }
 
@@ -1678,13 +1694,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._Forced))
-                    this._Forced = "";
+                if (string.IsNullOrWhiteSpace(_Forced))
+                    _Forced = "";
                 return _Forced;
             }
             set
             {
-                this._Forced = value;
+                _Forced = value;
             }
         }
 
@@ -1693,13 +1709,13 @@ namespace gMediaTools.MediaInfo
         {
             get
             {
-                if (String.IsNullOrEmpty(this._ForcedString))
-                    this._ForcedString = "";
+                if (string.IsNullOrWhiteSpace(_ForcedString))
+                    _ForcedString = "";
                 return _ForcedString;
             }
             set
             {
-                this._ForcedString = value;
+                _ForcedString = value;
             }
         }
     }

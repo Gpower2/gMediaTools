@@ -95,6 +95,7 @@
     </Compile>
     <Compile Include="MediaAnalyzeActions.cs" />
     <Compile Include="MediaAnalyzeFileRequest.cs" />
+    <Compile Include="MediaAnalyzeInfo.cs" />
     <Compile Include="MediaAnalyzePathRequest.cs" />
     <Compile Include="MediaInfo\gMediaInfo.cs" />
     <Compile Include="MediaInfo\AudioTrack.cs" />

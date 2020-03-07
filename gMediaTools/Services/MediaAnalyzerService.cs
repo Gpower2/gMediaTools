@@ -118,39 +118,97 @@ namespace gMediaTools.Services
 
             using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(request.MediaFile))
             {
+                if (mi == null)
+                {
+                    actions.LogLineAction($"ERROR! {request.MediaFile}");
+                    return;
+                }
+
+                MediaAnalyzeInfo result = new MediaAnalyzeInfo
+                {
+                    Filename = request.MediaFile,
+                    Size = new FileInfo(request.MediaFile).Length,
+                    NeedsVideoReencode = false,
+                    NeedsAudioReencode = false
+                };
+
+                // Get first video track
                 var videoTrack = mi?.VideoTracks?.FirstOrDefault();
                 if (videoTrack == null)
                 {
                     actions.LogLineAction($"ERROR! {request.MediaFile}");
+                    return;
                 }
 
+                // Check if we have valid video track info
                 if (int.TryParse(videoTrack.Width, out int width)
                    && int.TryParse(videoTrack.Height, out int height)
                    && int.TryParse(videoTrack.BitRate, out int bitrate))
                 {
-                    if (NeedsReencode(width, height, bitrate, request.BitratePercentageThreshold, targetFunction, out int targetBitrate))
-                    {
-                        if (targetBitrate < bitrate)
-                        {
-                            // Check if the gain percentage is worth the reencode
-                            double gainPercentage = Math.Abs(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0);
-                            if (gainPercentage >= request.GainPercentageThreshold)
-                            {
-                                _reEncodeFiles++;
-                                actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
-                                actions.LogLineAction($"{width}x{height} : {videoTrack.CodecID} : {Math.Round(((double)bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0, 2)}%) {request.MediaFile}");
-                            }
-                        }
-                    }
+                    MediaAnalyzeVideoInfo videoResult = new MediaAnalyzeVideoInfo();
+                    videoResult.Width = width;
+                    videoResult.Height = height;
+                    videoResult.Bitrate = bitrate;
+                    videoResult.CodecID = videoTrack.CodecID;
+                    videoResult.Size = long.TryParse(videoTrack.StreamSize, out long streamSize) ? streamSize : default;
+                    // Get the video FrameRate Mode
+                    videoResult.FrameRateMode = videoTrack.FrameRateMode.ToLower().Equals("vfr") ? VideoFrameRateMode.VFR : VideoFrameRateMode.CFR;
+
+                    result.VideoInfo = videoResult;
                 }
                 else
                 {
                     actions.LogLineAction($"ERROR! {width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {request.MediaFile}");
+                    return;
                 }
+
+                // Get first audio track
+                var audioTrack = mi?.AudioTracks?.FirstOrDefault();
+                if (audioTrack != null)
+                {
+                    // Check if we have valid audio track info
+                    if (int.TryParse(audioTrack.Channels, out int channels)
+                        && int.TryParse(audioTrack.BitRate, out int audioBitrate))
+                    {
+                        MediaAnalyzeAudioInfo audioResult = new MediaAnalyzeAudioInfo();
+                        audioResult.Channels = channels;
+                        audioResult.Bitrate = audioBitrate;
+                        audioResult.Codec = audioTrack.FormatString;
+                        audioResult.Size = long.TryParse(audioTrack.StreamSize, out long audioSize) ? audioSize : default;
+
+                        result.AudioInfo = audioResult;
+                    }
+                }
+
+                // Check if we need to re encode the video track
+                bool isCandidateForVideoReencode = IsCandidateForVideoReencode(width, height, bitrate, request.BitratePercentageThreshold, targetFunction, out int targetBitrate);
+
+                if (isCandidateForVideoReencode)
+                {
+                    // We only care for lower target bitrate!
+                    if (targetBitrate < bitrate)
+                    {
+                        // Check if the gain percentage is worth the reencode
+                        double gainPercentage = Math.Abs(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0);
+                        if (gainPercentage >= request.GainPercentageThreshold)
+                        {
+                            // Set that Video needs reencode
+                            result.NeedsVideoReencode = true;
+                            result.TargetVideoBitrate = targetBitrate;
+
+                            _reEncodeFiles++;
+                            actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
+                            actions.LogLineAction($"{width}x{height} : {videoTrack.CodecID} : {Math.Round(((double)bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0, 2)}%) {request.MediaFile}");
+                        }
+                    }
+                }
+
+                // Check if we need to re encode the audio track
+                // TODO
             }
         }
 
-        private bool NeedsReencode(int width, int height, int bitrate, double percentageThreshold, Func<double, double> targetFunction, out int targetBitrate)
+        private bool IsCandidateForVideoReencode(int width, int height, int bitrate, double percentageThreshold, Func<double, double> targetFunction, out int targetBitrate)
         {
             long pixels = width * height;
 

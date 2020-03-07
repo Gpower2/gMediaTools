@@ -3,7 +3,7 @@ using System;
 namespace gMediaTools.MediaInfo
 {
     ///<summary>Contains properties for a GeneralTrack </summary>
-    public class GeneralTrack
+    public class GeneralTrack: IMediaInfoTrack
     {
         private string _Count;
         private string _StreamCount;

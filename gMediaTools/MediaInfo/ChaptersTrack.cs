@@ -3,7 +3,7 @@ using System;
 namespace gMediaTools.MediaInfo
 {
     ///<summary>Contains properties for a ChaptersTrack </summary>
-    public class ChaptersTrack
+    public class ChaptersTrack: IMediaInfoTrack
     {
         private string _Count;
         private string _StreamCount;

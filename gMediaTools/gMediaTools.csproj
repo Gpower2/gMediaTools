@@ -100,6 +100,7 @@
     <Compile Include="MediaInfo\AudioTrack.cs" />
     <Compile Include="MediaInfo\ChaptersTrack.cs" />
     <Compile Include="MediaInfo\GeneralTrack.cs" />
+    <Compile Include="MediaInfo\IMediaInfoTrack.cs" />
     <Compile Include="MediaInfo\TextTrack.cs" />
     <Compile Include="MediaInfo\VideoTrack.cs" />
     <Compile Include="Program.cs" />

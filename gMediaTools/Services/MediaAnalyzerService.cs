@@ -120,7 +120,7 @@ namespace gMediaTools.Services
             {
                 if (mi == null)
                 {
-                    actions.LogLineAction($"ERROR! {request.MediaFile}");
+                    actions.LogErrorAction($"ERROR! {request.MediaFile}");
                     return;
                 }
 
@@ -136,7 +136,7 @@ namespace gMediaTools.Services
                 var videoTrack = mi?.VideoTracks?.FirstOrDefault();
                 if (videoTrack == null)
                 {
-                    actions.LogLineAction($"ERROR! {request.MediaFile}");
+                    actions.LogErrorAction($"ERROR! {request.MediaFile}");
                     return;
                 }
 
@@ -158,7 +158,7 @@ namespace gMediaTools.Services
                 }
                 else
                 {
-                    actions.LogLineAction($"ERROR! {width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {request.MediaFile}");
+                    actions.LogErrorAction($"ERROR! {width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {request.MediaFile}");
                     return;
                 }
 
@@ -198,7 +198,7 @@ namespace gMediaTools.Services
 
                             _reEncodeFiles++;
                             actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
-                            actions.LogLineAction($"{width}x{height} : {videoTrack.CodecID} : {Math.Round(((double)bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)targetBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0, 2)}%) {request.MediaFile}");
+                            actions.HandleMediaForReencodeAction(result);
                         }
                     }
                 }

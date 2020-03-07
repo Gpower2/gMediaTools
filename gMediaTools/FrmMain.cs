@@ -64,7 +64,7 @@ namespace gMediaTools
                                this.Invoke((MethodInvoker)(() => { this.txtCurrentFile.Text = currentFile; }));
                                Application.DoEvents();
                            },
-                        LogLineAction = (string logText) =>
+                        LogErrorAction = (string logText) =>
                              {
                                  this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
                                  Application.DoEvents();
@@ -73,7 +73,13 @@ namespace gMediaTools
                              {
                                  this.Invoke((MethodInvoker)(() => { this.txtFilesProgress.Text = $"{reencodeFiles}/{totalFiles} ({Math.Round((double)reencodeFiles / (double)totalFiles * 100.0, 2)}%)"; }));
                                  Application.DoEvents();
-                             }
+                             },
+                        HandleMediaForReencodeAction = (MediaAnalyzeInfo info) =>
+                        {
+                            string logText = $"{info.VideoInfo.Width}x{info.VideoInfo.Height} : {info.VideoInfo.CodecID} : {Math.Round(((double)info.VideoInfo.Bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)info.TargetVideoBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(info.TargetVideoBitrate - info.VideoInfo.Bitrate) / (double)info.VideoInfo.Bitrate) * 100.0, 2)}%) {info.Filename}";
+                            this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
+                            Application.DoEvents();
+                        }
                     }
                 );
             }

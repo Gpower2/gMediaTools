@@ -49,12 +49,16 @@ namespace gMediaTools
                 // Get the CurveFittingSettings for calculating the CurveFittingFunction
                 var curveSettings = _curveFittingRepo.GetCurveFittingSettings();
 
+                List<MediaAnalyzeInfo> mediaToReencode = new List<MediaAnalyzeInfo>();
+
                 _mediaAnalyzerService.AnalyzePath(
                     new MediaAnalyzePathRequest
                     {
                         MediaDirectoryName = rootPath,
                         BitratePercentageThreshold = 10,
-                        GainPercentageThreshold = 20
+                        GainPercentageThreshold = 20,
+                        MaxAllowedWidth = 1280,
+                        MaxAllowedHeight = 720
                     },
                     curveSettings,
                     new MediaAnalyzeActions
@@ -76,8 +80,9 @@ namespace gMediaTools
                              },
                         HandleMediaForReencodeAction = (MediaAnalyzeInfo info) =>
                         {
-                            string logText = $"{info.VideoInfo.Width}x{info.VideoInfo.Height} : {info.VideoInfo.CodecID} : {Math.Round(((double)info.VideoInfo.Bitrate) / 1000.0, 3):#####0.000} => {Math.Round(((double)info.TargetVideoBitrate) / 1000.0, 3):#####0.000} ({Math.Round(((double)(info.TargetVideoBitrate - info.VideoInfo.Bitrate) / (double)info.VideoInfo.Bitrate) * 100.0, 2)}%) {info.Filename}";
-                            this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
+                            mediaToReencode.Add(info);
+
+                            this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(info.PreviewText + Environment.NewLine); }));
                             Application.DoEvents();
                         }
                     }

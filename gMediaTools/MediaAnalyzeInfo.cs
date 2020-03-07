@@ -54,12 +54,20 @@ namespace gMediaTools
     {
         public string Filename { get; set; }
 
+        public string FileExtension { get; set; }
+
+        public string FileContainerFormat { get; set; }
+
         /// <summary>
         /// In bytes
         /// </summary>
         public long Size { get; set; }
 
         public bool NeedsVideoReencode { get; set; }
+
+        public int TargetVideoWidth { get; set; }
+
+        public int TargetVideoHeight { get; set; }
 
         /// <summary>
         /// In bytes
@@ -108,6 +116,45 @@ namespace gMediaTools
                 long containerOverhead = Size - (VideoInfo?.Size ?? 0) - (AudioInfo?.Size ?? 0);
 
                 return targetVideoSize + targetAudioSize + containerOverhead;
+            }
+        }
+
+        public double BitrateInKbps
+        {
+            get 
+            {
+                return Math.Round(((double)(VideoInfo?.Bitrate ?? 0)) / 1000.0, 3);
+            } 
+        }
+
+        public double TargetBitrateInKbps
+        {
+            get
+            {
+                return Math.Round(((double)TargetVideoBitrate) / 1000.0, 3);
+            }
+        }
+
+        public double BitrateGainPercentage
+        {
+            get
+            {
+                if ((VideoInfo?.Bitrate ?? 0) == 0)
+                {
+                    return 0;
+                }
+
+                return Math.Round(((double)(TargetVideoBitrate - (VideoInfo?.Bitrate ?? 0)) / (double)(VideoInfo?.Bitrate ?? 0)) * 100.0, 2);
+            }
+        }
+
+        public string PreviewText
+        {
+            get
+            {
+                string logText = $"{VideoInfo?.Width}x{VideoInfo?.Height} => {TargetVideoWidth}x{TargetVideoHeight} : {VideoInfo?.CodecID} : {BitrateInKbps:#####0.000} kbps => {TargetBitrateInKbps:#####0.000} kbps ({BitrateGainPercentage}%) {Filename}";
+
+                return logText;
             }
         }
 

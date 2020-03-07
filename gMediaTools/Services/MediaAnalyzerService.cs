@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,12 @@ namespace gMediaTools.Services
             MediaAnalyzeActions actions
         )
         {
+            // Sanity checks
+            if (request.MaxAllowedHeight > request.MaxAllowedWidth)
+            {
+                throw new ArgumentException(nameof(request), $"{nameof(request.MaxAllowedWidth)} must be always greater than {nameof(request.MaxAllowedHeight)}!");
+            }
+            
             // Reset counters
             _reEncodeFiles = 0;
             _totalFiles = 0;
@@ -45,6 +52,12 @@ namespace gMediaTools.Services
             MediaAnalyzeActions actions
         )
         {
+            // Sanity checks
+            if (request.MaxAllowedHeight > request.MaxAllowedWidth)
+            {
+                throw new ArgumentException(nameof(request), $"{nameof(request.MaxAllowedWidth)} must be always greater than {nameof(request.MaxAllowedHeight)}!");
+            }
+
             var files = Directory.GetFiles(request.MediaDirectoryName);
 
             var mediaFiles = files.Where(f => _mediaExtensions.Any(m => m.Equals(Path.GetExtension(f).Substring(1).ToLower()))).ToList();
@@ -59,7 +72,9 @@ namespace gMediaTools.Services
                         { 
                              MediaFile = mediaFile,
                              BitratePercentageThreshold = request.BitratePercentageThreshold,
-                             GainPercentageThreshold = request.GainPercentageThreshold
+                             GainPercentageThreshold = request.GainPercentageThreshold,
+                             MaxAllowedWidth = request.MaxAllowedWidth,
+                             MaxAllowedHeight = request.MaxAllowedHeight
                         },
                         targetFunction, 
                         actions
@@ -78,7 +93,9 @@ namespace gMediaTools.Services
                         { 
                             MediaDirectoryName = subDir,
                             BitratePercentageThreshold = request.BitratePercentageThreshold,
-                            GainPercentageThreshold = request.GainPercentageThreshold
+                            GainPercentageThreshold = request.GainPercentageThreshold,
+                            MaxAllowedWidth = request.MaxAllowedWidth,
+                            MaxAllowedHeight = request.MaxAllowedHeight
                         },
                         targetFunction, 
                         actions
@@ -93,6 +110,12 @@ namespace gMediaTools.Services
             MediaAnalyzeActions actions
         )
         {
+            // Sanity checks
+            if (request.MaxAllowedHeight > request.MaxAllowedWidth)
+            {
+                throw new ArgumentException(nameof(request), $"{nameof(request.MaxAllowedWidth)} must be always greater than {nameof(request.MaxAllowedHeight)}!");
+            }
+
             // Get the Data for calculating the CurveFittingFunction
             var data = curveFittingSettings.Data.ToDictionary(
                 k => (double)k.Width * k.Height,
@@ -114,6 +137,12 @@ namespace gMediaTools.Services
             MediaAnalyzeActions actions
         )
         {
+            // Sanity checks
+            if (request.MaxAllowedHeight > request.MaxAllowedWidth)
+            {
+                throw new ArgumentException(nameof(request), $"{nameof(request.MaxAllowedWidth)} must be always greater than {nameof(request.MaxAllowedHeight)}!");
+            }
+
             actions.SetCurrentFileAction(request.MediaFile);
 
             using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(request.MediaFile))
@@ -131,6 +160,18 @@ namespace gMediaTools.Services
                     NeedsVideoReencode = false,
                     NeedsAudioReencode = false
                 };
+
+                // Get first General track
+                var generalTrack = mi?.GeneralTracks?.FirstOrDefault();
+                if (generalTrack == null)
+                {
+                    actions.LogErrorAction($"ERROR! {request.MediaFile}");
+                    return;
+                }
+
+                // Get more info
+                result.FileExtension = generalTrack.FileExtension;
+                result.FileContainerFormat = generalTrack.Format;
 
                 // Get first video track
                 var videoTrack = mi?.VideoTracks?.FirstOrDefault();
@@ -181,7 +222,7 @@ namespace gMediaTools.Services
                 }
 
                 // Check if we need to re encode the video track
-                bool isCandidateForVideoReencode = IsCandidateForVideoReencode(width, height, bitrate, request.BitratePercentageThreshold, targetFunction, out int targetBitrate);
+                bool isCandidateForVideoReencode = IsCandidateForVideoReencode(width, height, bitrate, request.MaxAllowedWidth, request.MaxAllowedHeight, request.BitratePercentageThreshold, targetFunction, out int targetBitrate, out int targetWidth, out int targetHeight);
 
                 if (isCandidateForVideoReencode)
                 {
@@ -195,6 +236,8 @@ namespace gMediaTools.Services
                             // Set that Video needs reencode
                             result.NeedsVideoReencode = true;
                             result.TargetVideoBitrate = targetBitrate;
+                            result.TargetVideoWidth = targetWidth;
+                            result.TargetVideoHeight = targetHeight;
 
                             _reEncodeFiles++;
                             actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
@@ -208,9 +251,71 @@ namespace gMediaTools.Services
             }
         }
 
-        private bool IsCandidateForVideoReencode(int width, int height, int bitrate, double percentageThreshold, Func<double, double> targetFunction, out int targetBitrate)
+        private bool IsCandidateForVideoReencode(int width, int height, int bitrate, int maxWidth, int maxHeight, double percentageThreshold, Func<double, double> targetFunction, out int targetBitrate, out int targetWidth, out int targetHeight)
         {
+            bool needResize = false;
+
             long pixels = width * height;
+
+            // Initialize out variables
+            targetWidth = width;
+            targetHeight = height;
+
+            // First check if we need to resize it
+            long maxPixels = maxWidth * maxHeight;
+            if (pixels > maxPixels)
+            {
+                // We need to resize
+                needResize = true;
+
+                // a * b > a' * b'
+                // a > a' * b' / b => b > b'
+                // b > b' * a' / a => a > a'
+
+                // Find the long dimension (width or height)
+                if (height > width)
+                {
+                    // probably rotated video, use maxWidth as maxHeight
+                    if (height > maxWidth)
+                    {
+                        // Height exeeds allowed value
+                        targetHeight = maxWidth;
+                        targetWidth = Convert.ToInt32(targetHeight * (double)width / height);
+                    }
+                    else
+                    {
+                        // Width exceeds allowed value
+                        targetWidth = maxHeight;
+                        targetHeight = Convert.ToInt32(targetWidth * (double)height / width);
+                    }
+                }
+                else
+                {
+                    // normal video
+                    // probably rotated video, use maxWidth as maxHeight
+                    if (height > maxHeight)
+                    {
+                        // Height exeeds allowed value
+                        targetHeight = maxHeight;
+                        targetWidth = Convert.ToInt32(targetHeight * (double)width / height);
+                    }
+                    else
+                    {
+                        // Width exceeds allowed value
+                        targetWidth = maxWidth;
+                        targetHeight = Convert.ToInt32(targetWidth * (double)height / width);
+                    }
+                }
+
+                // Recalculate pixels
+                pixels = targetWidth * targetHeight;
+            }
+
+            // Sanity Check!
+            if (pixels > maxPixels)
+            {
+                Debug.WriteLine("WTF???");
+            }
 
             var targetRatio = targetFunction(pixels);
 
@@ -219,7 +324,7 @@ namespace gMediaTools.Services
             double minPercentage = 1.0 - (percentageThreshold / 100.0);
             double maxPercentage = 1.0 + (percentageThreshold / 100.0);
 
-            return (bitrate < minPercentage * targetBitrate || bitrate > maxPercentage * targetBitrate);
+            return needResize || (bitrate < minPercentage * targetBitrate || bitrate > maxPercentage * targetBitrate);
         }
     }
 }

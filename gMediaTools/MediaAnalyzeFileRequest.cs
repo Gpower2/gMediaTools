@@ -14,5 +14,8 @@ namespace gMediaTools
 
         public double GainPercentageThreshold { get; set; }
 
+        public int MaxAllowedWidth { get; set; }
+
+        public int MaxAllowedHeight { get; set; }
     }
 }

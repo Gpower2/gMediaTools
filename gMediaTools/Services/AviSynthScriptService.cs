@@ -36,14 +36,27 @@ namespace gMediaTools.Services
             StringBuilder avsScriptBuilder = new StringBuilder();
 
             // Decide on the Source filter
+            string fileContainerFormat = mediaInfo.FileContainerFormat.Trim().ToLower();
+            string fileExtension = mediaInfo.FileExtension.Trim().ToLower();
 
 
             // Decide if we need resize
-
+            if (mediaInfo.TargetVideoWidth != mediaInfo.VideoInfo.Width
+                || mediaInfo.TargetVideoHeight != mediaInfo.VideoInfo.Height)
+            {
+                avsScriptBuilder.AppendLine($"Lanczos4resize({mediaInfo.TargetVideoWidth}, {mediaInfo.TargetVideoHeight})");
+            }
 
             // Decide if we need colorspace conversion
+            if (!mediaInfo.VideoInfo.ColorSpace.Trim().ToLower().Equals("yv12"))
+            {
+                avsScriptBuilder.AppendLine("ConvertToYV12()");
+            }
 
-
+            using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.ASCII))
+            {
+                sw.Write(avsScriptBuilder.ToString());
+            }
 
             return avsScriptFilename;
         } 

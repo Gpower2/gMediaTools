@@ -627,6 +627,8 @@ namespace gMediaTools.MediaInfo
                 tmpVideoTrack.DefaultString = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "Default/String");
                 tmpVideoTrack.Forced = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "Forced");
                 tmpVideoTrack.ForcedString = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "Forced/String");
+                tmpVideoTrack.ColorSpace = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "ColorSpace");
+                tmpVideoTrack.ChromaSubsampling = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "ChromaSubsampling");
 
                 _VideoTracks.Add(tmpVideoTrack);
             }

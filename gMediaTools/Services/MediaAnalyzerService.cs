@@ -195,6 +195,9 @@ namespace gMediaTools.Services
                     // Get the video FrameRate Mode
                     videoResult.FrameRateMode = videoTrack.FrameRateMode.ToLower().Equals("vfr") ? VideoFrameRateMode.VFR : VideoFrameRateMode.CFR;
 
+                    videoResult.ChromaSubsampling = videoTrack.ChromaSubsampling;
+                    videoResult.ColorSpace = videoTrack.ColorSpace;
+
                     result.VideoInfo = videoResult;
                 }
                 else
@@ -314,7 +317,7 @@ namespace gMediaTools.Services
             // Sanity Check!
             if (pixels > maxPixels)
             {
-                Debug.WriteLine("WTF???");
+                throw new Exception($"Something went wrong calculating new video resolution! original resolution : {width}x{height} new resolution : {targetWidth}x{targetHeight} max allowed resolution : {maxWidth}x{maxHeight}");
             }
 
             var targetRatio = targetFunction(pixels);

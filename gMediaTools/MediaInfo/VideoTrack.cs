@@ -78,6 +78,8 @@ namespace gMediaTools.MediaInfo
         private string _DefaultString;
         private string _Forced;
         private string _ForcedString;
+        private string _ColorSpace;
+        private string _ChromaSubsampling;
 
         ///<summary> Count of objects available in this stream </summary>
         public string Count
@@ -1143,6 +1145,34 @@ namespace gMediaTools.MediaInfo
             set
             {
                 _ForcedString = value;
+            }
+        }
+
+        public string ColorSpace
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_ColorSpace))
+                    _ColorSpace = "";
+                return _ColorSpace;
+            }
+            set
+            {
+                _ColorSpace = value;
+            }
+        }
+
+        public string ChromaSubsampling
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_ChromaSubsampling))
+                    _ChromaSubsampling = "";
+                return _ChromaSubsampling;
+            }
+            set
+            {
+                _ChromaSubsampling = value;
             }
         }
 

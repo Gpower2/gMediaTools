@@ -31,6 +31,10 @@ namespace gMediaTools
         public string CodecID { get; set; }
 
         public VideoFrameRateMode FrameRateMode { get; set; }
+
+        public string ColorSpace { get; set; }
+
+        public string ChromaSubsampling { get; set; }
     }
 
     public class MediaAnalyzeAudioInfo

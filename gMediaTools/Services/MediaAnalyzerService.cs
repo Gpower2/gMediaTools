@@ -10,7 +10,7 @@ namespace gMediaTools.Services
 {
     public class MediaAnalyzerService
     {
-        private static readonly string[] _mediaExtensions = new string[] { "mkv", "mp4", "mov", "avi", "mpg", "mpeg", "flv", "wmv" };
+        private static readonly string[] _mediaExtensions = new string[] { "mkv", "mp4", "mov", "avi", "mpg", "mpeg", "flv", "wmv", "asf" };
 
         private int _reEncodeFiles = 0;
         private int _totalFiles = 0;

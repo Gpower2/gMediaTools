@@ -9,6 +9,8 @@ namespace gMediaTools.Services
 {
     public class AviSynthScriptService
     {
+        private readonly AviSynthSourceFactory _aviSynthSourceFactory = new AviSynthSourceFactory();
+
         public string CreateAviSynthScript(MediaAnalyzeInfo mediaInfo)
         {
             if (mediaInfo == null)
@@ -36,11 +38,23 @@ namespace gMediaTools.Services
             StringBuilder avsScriptBuilder = new StringBuilder();
 
             // Decide on the Source filter
+            //=============================
             string fileContainerFormat = mediaInfo.FileContainerFormat.Trim().ToLower();
-            string fileExtension = mediaInfo.FileExtension.Trim().ToLower();
+            // Get the Source Service
+            IAviSynthSourceService sourceService = _aviSynthSourceFactory.GetAviSynthSourceService(fileContainerFormat);
 
+            avsScriptBuilder.AppendLine(sourceService.GetAviSynthSource(mediaInfo.Filename));
+
+            // Decide what to do with VFR
+            //=============================
+            if (mediaInfo.VideoInfo.FrameRateMode == VideoFrameRateMode.VFR)
+            {
+                // Special handling for VFR
+                // TODO
+            }
 
             // Decide if we need resize
+            //=============================
             if (mediaInfo.TargetVideoWidth != mediaInfo.VideoInfo.Width
                 || mediaInfo.TargetVideoHeight != mediaInfo.VideoInfo.Height)
             {
@@ -48,12 +62,14 @@ namespace gMediaTools.Services
             }
 
             // Decide if we need colorspace conversion
+            //=============================
             if (!mediaInfo.VideoInfo.ColorSpace.Trim().ToLower().Equals("yv12"))
             {
                 avsScriptBuilder.AppendLine("ConvertToYV12()");
             }
 
-            using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.ASCII))
+            // Write the file
+            using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding("el-GR")))
             {
                 sw.Write(avsScriptBuilder.ToString());
             }

@@ -107,9 +107,14 @@
     <Compile Include="MediaInfo\VideoTrack.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\AviSynthAviSourceService.cs" />
+    <Compile Include="Services\AviSynthDirectShowSourceService.cs" />
+    <Compile Include="Services\AviSynthFfms2SourceService.cs" />
     <Compile Include="Services\AviSynthScriptService.cs" />
+    <Compile Include="Services\AviSynthSourceFactory.cs" />
     <Compile Include="Services\CurveFittingFactory.cs" />
     <Compile Include="Services\CurveFittingRepository.cs" />
+    <Compile Include="Services\IAviSynthSourceService.cs" />
     <Compile Include="Services\ICurveFittingService.cs" />
     <Compile Include="Services\LogarithmicCurveFittingService.cs" />
     <Compile Include="Services\MediaAnalyzerService.cs" />

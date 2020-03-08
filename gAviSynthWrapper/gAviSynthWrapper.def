@@ -1,8 +1,8 @@
 LIBRARY gAviSynthWrapper
 EXPORTS
-	dimzon_avs_init_2
-	dimzon_avs_destroy
-	dimzon_avs_getlasterror
-	dimzon_avs_getvframe
-	dimzon_avs_getaframe
-	dimzon_avs_getintvariable	
+	g_avs_init
+	g_avs_destroy
+	g_avs_get_last_error
+	g_avs_get_video_frame
+	g_avs_get_audio_frame
+	g_avs_get_int_variable	

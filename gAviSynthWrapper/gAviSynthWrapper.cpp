@@ -25,7 +25,7 @@
 const AVS_Linkage* AVS_linkage = NULL;
 
 //Structure that contains Information about the video file
-typedef struct AcAvsWrapperVideoFileInfo {
+typedef struct gAvsWrapperVideoFileInfo {
 	// Video
 	int width;
 	int height;
@@ -44,27 +44,27 @@ typedef struct AcAvsWrapperVideoFileInfo {
 	int number_channels;
 	int number_audio_frames;
 	INT64 number_audio_samples;
-} AcAvsWrapperVideoFileInfo;
+} gAvsWrapperVideoFileInfo;
 
-typedef struct AcAvsWrapperVideoPlane {
+typedef struct gAvsWrapperVideoPlane {
 	int width;
 	int height;
 	int pitch;
 	BYTE* data;
-} AcAvsWrapperVideoPlane;
+} gAvsWrapperVideoPlane;
 
 typedef struct FRAME {
 	int* data;
 } FRAME;
 
-typedef struct AcAvsWrapperVideoFrame {
-	AcAvsWrapperVideoPlane plane[3];
-} AcAvsWrapperVideoFrame;
+typedef struct gAvsWrapperVideoFrame {
+	gAvsWrapperVideoPlane plane[3];
+} gAvsWrapperVideoFrame;
 
-typedef struct AcAvsWrapperAudioPosition {
+typedef struct gAvsWrapperAudioPosition {
 	INT64 start;
 	INT64 count;
-} AcAvsWrapperAudioPosition;
+} gAvsWrapperAudioPosition;
 
 typedef struct tagSafeStruct
 {
@@ -76,18 +76,18 @@ typedef struct tagSafeStruct
 }SafeStruct;
 
 extern "C" {
-	__declspec(dllexport) int __stdcall dimzon_avs_init_2(SafeStruct** ppstr, char* func, char* arg, AcAvsWrapperVideoFileInfo* vi, int* originalPixelType, int* originalSampleType, char* cs);
-	__declspec(dllexport) int __stdcall dimzon_avs_destroy(SafeStruct** ppstr);
-	__declspec(dllexport) int __stdcall dimzon_avs_getlasterror(SafeStruct* pstr, char* str, int len);
-	__declspec(dllexport) int __stdcall dimzon_avs_getvframe(SafeStruct* pstr, void* buf, int stride, int frm);
-	__declspec(dllexport) int __stdcall dimzon_avs_getaframe(SafeStruct* pstr, void* buf, INT64 start, INT64 count);
-	__declspec(dllexport) int __stdcall dimzon_avs_getintvariable(SafeStruct* pstr, const char* name, int* result);
+	__declspec(dllexport) int __stdcall g_avs_init(SafeStruct** ppstr, char* func, char* arg, gAvsWrapperVideoFileInfo* vi, int* originalPixelType, int* originalSampleType, char* cs);
+	__declspec(dllexport) int __stdcall g_avs_destroy(SafeStruct** ppstr);
+	__declspec(dllexport) int __stdcall g_avs_get_last_error(SafeStruct* pstr, char* str, int len);
+	__declspec(dllexport) int __stdcall g_avs_get_video_frame(SafeStruct* pstr, void* buf, int stride, int frm);
+	__declspec(dllexport) int __stdcall g_avs_get_audio_frame(SafeStruct* pstr, void* buf, INT64 start, INT64 count);
+	__declspec(dllexport) int __stdcall g_avs_get_int_variable(SafeStruct* pstr, const char* name, int* result);
 }
 
 /*new implementation*/
 
-// same as old dimzon_avs_init() but without the fix audio output at 16 bit. Requires AviSynth >= v2.5.7
-int __stdcall dimzon_avs_init_2(SafeStruct** ppstr, char* func, char* arg, AcAvsWrapperVideoFileInfo* vi, int* originalPixelType, int* originalSampleType, char* cs)
+// Requires AviSynth+ >= v2.6
+int __stdcall g_avs_init(SafeStruct** ppstr, char* func, char* arg, gAvsWrapperVideoFileInfo* vi, int* originalPixelType, int* originalSampleType, char* cs)
 {
 	SafeStruct* pstr = ((SafeStruct*)malloc(sizeof(SafeStruct)));
 	*ppstr = pstr;
@@ -143,7 +143,7 @@ int __stdcall dimzon_avs_init_2(SafeStruct** ppstr, char* func, char* arg, AcAvs
 					//Add by Gpower2
 					//Shouldn't we clear memory here?
 					free(&inf);
-					dimzon_avs_destroy(ppstr);
+					g_avs_destroy(ppstr);
 					strncpy_s(pstr->error_msg, ERRMSG_LEN, "Cannot convert video to RGB24", _TRUNCATE);
 					return	5;
 				}
@@ -160,7 +160,7 @@ int __stdcall dimzon_avs_init_2(SafeStruct** ppstr, char* func, char* arg, AcAvs
 					//Add by Gpower2
 					//Shouldn't we clear memory here?
 					free(&inf);
-					dimzon_avs_destroy(ppstr);
+					g_avs_destroy(ppstr);
 					strncpy_s(pstr->error_msg, ERRMSG_LEN, "Cannot convert video to RGB32!", _TRUNCATE);
 					return 5;
 				}
@@ -178,7 +178,7 @@ int __stdcall dimzon_avs_init_2(SafeStruct** ppstr, char* func, char* arg, AcAvs
 					//Add by Gpower2
 					//Shouldn't we clear memory here?
 					free(&inf);
-					dimzon_avs_destroy(ppstr);
+					g_avs_destroy(ppstr);
 					strncpy_s(pstr->error_msg, ERRMSG_LEN, "Cannot convert video to YUY2!", _TRUNCATE);
 					return 5;
 				}
@@ -196,7 +196,7 @@ int __stdcall dimzon_avs_init_2(SafeStruct** ppstr, char* func, char* arg, AcAvs
 					//Add by Gpower2
 					//Shouldn't we clear memory here?
 					free(&inf);
-					dimzon_avs_destroy(ppstr);
+					g_avs_destroy(ppstr);
 					strncpy_s(pstr->error_msg, ERRMSG_LEN, "Cannot convert video to YV12!", _TRUNCATE);
 					return 5;
 				}
@@ -234,7 +234,7 @@ int __stdcall dimzon_avs_init_2(SafeStruct** ppstr, char* func, char* arg, AcAvs
 	}
 }
 
-int __stdcall dimzon_avs_getintvariable(SafeStruct* pstr, const char* name, int* result)
+int __stdcall g_avs_get_int_variable(SafeStruct* pstr, const char* name, int* result)
 {
 	try
 	{
@@ -269,7 +269,7 @@ int __stdcall dimzon_avs_getintvariable(SafeStruct* pstr, const char* name, int*
 	}
 }
 
-int __stdcall dimzon_avs_getaframe(SafeStruct* pstr, void* buf, INT64 start, INT64 count)
+int __stdcall g_avs_get_audio_frame(SafeStruct* pstr, void* buf, INT64 start, INT64 count)
 {
 	try
 	{
@@ -284,7 +284,7 @@ int __stdcall dimzon_avs_getaframe(SafeStruct* pstr, void* buf, INT64 start, INT
 	}
 }
 
-int __stdcall dimzon_avs_getvframe(SafeStruct* pstr, void* buf, int stride, int frame_number)
+int __stdcall g_avs_get_video_frame(SafeStruct* pstr, void* buf, int stride, int frame_number)
 {
 	try
 	{
@@ -305,13 +305,13 @@ int __stdcall dimzon_avs_getvframe(SafeStruct* pstr, void* buf, int stride, int 
 	return 0;
 }
 
-int __stdcall dimzon_avs_getlasterror(SafeStruct* pstr, char* str, int len)
+int __stdcall g_avs_get_last_error(SafeStruct* pstr, char* str, int len)
 {
 	strncpy_s(str, len, pstr->error_msg, len - 1);
 	return (int)strlen(str);
 }
 
-int __stdcall dimzon_avs_destroy(SafeStruct** ppstr)
+int __stdcall g_avs_destroy(SafeStruct** ppstr)
 {
 	if (!ppstr)
 	{

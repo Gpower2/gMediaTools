@@ -67,7 +67,7 @@ namespace gMediaTools.Services
             }
 
             // Write the file
-            using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding("el-GR")))
+            using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding(1253)))
             {
                 sw.Write(avsScriptBuilder.ToString());
             }

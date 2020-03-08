@@ -94,6 +94,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AviSynth\AviSynthClip.cs" />
+    <Compile Include="AviSynth\AviSynthException.cs" />
+    <Compile Include="AviSynth\AviSynthFile.cs" />
     <Compile Include="BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -133,6 +136,7 @@
     <Compile Include="Services\AviSynthAviSourceService.cs" />
     <Compile Include="Services\AviSynthDirectShowSourceService.cs" />
     <Compile Include="Services\AviSynthFfms2SourceService.cs" />
+    <Compile Include="Services\AviSynthFileService.cs" />
     <Compile Include="Services\AviSynthScriptService.cs" />
     <Compile Include="Services\AviSynthSourceFactory.cs" />
     <Compile Include="Services\CurveFittingFactory.cs" />

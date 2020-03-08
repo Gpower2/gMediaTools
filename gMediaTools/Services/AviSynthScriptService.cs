@@ -22,8 +22,6 @@ namespace gMediaTools.Services
                 throw new ArgumentException("No filename was provided!", nameof(mediaInfo.Filename));
             }
 
-            string path = Path.GetDirectoryName(mediaInfo.Filename);
-
             // Set the initial AVS script filename
             string avsScriptFilename = $"{mediaInfo.Filename}.avs";
 

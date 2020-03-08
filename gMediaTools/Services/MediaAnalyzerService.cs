@@ -68,15 +68,8 @@ namespace gMediaTools.Services
                     _totalFiles++;
                     actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
                     AnalyzeVideoFileInternal(
-                        new MediaAnalyzeFileRequest 
-                        { 
-                             MediaFile = mediaFile,
-                             BitratePercentageThreshold = request.BitratePercentageThreshold,
-                             GainPercentageThreshold = request.GainPercentageThreshold,
-                             MaxAllowedWidth = request.MaxAllowedWidth,
-                             MaxAllowedHeight = request.MaxAllowedHeight
-                        },
-                        targetFunction, 
+                        new MediaAnalyzeFileRequest(mediaFile, request),
+                        targetFunction,
                         actions
                     );
                 }
@@ -89,15 +82,8 @@ namespace gMediaTools.Services
                 foreach (var subDir in subDirs)
                 {
                     AnalyzePathInternal(
-                        new MediaAnalyzePathRequest 
-                        { 
-                            MediaDirectoryName = subDir,
-                            BitratePercentageThreshold = request.BitratePercentageThreshold,
-                            GainPercentageThreshold = request.GainPercentageThreshold,
-                            MaxAllowedWidth = request.MaxAllowedWidth,
-                            MaxAllowedHeight = request.MaxAllowedHeight
-                        },
-                        targetFunction, 
+                        new MediaAnalyzePathRequest(subDir, request),
+                        targetFunction,
                         actions
                     );
                 }
@@ -229,8 +215,9 @@ namespace gMediaTools.Services
 
                 if (isCandidateForVideoReencode)
                 {
-                    // We only care for lower target bitrate!
-                    if (targetBitrate < bitrate)
+                    // We only care for lower target bitrate and bitrate greater than the min allowed bitrate!
+                    if (targetBitrate < bitrate
+                        && targetBitrate > request.MinAllowedBitrate)
                     {
                         // Check if the gain percentage is worth the reencode
                         double gainPercentage = Math.Abs(((double)(targetBitrate - bitrate) / (double)bitrate) * 100.0);

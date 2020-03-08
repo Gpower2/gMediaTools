@@ -58,7 +58,8 @@ namespace gMediaTools
                         BitratePercentageThreshold = 10,
                         GainPercentageThreshold = 20,
                         MaxAllowedWidth = 1280,
-                        MaxAllowedHeight = 720
+                        MaxAllowedHeight = 720,
+                        MinAllowedBitrate = 700 * 1000
                     },
                     curveSettings,
                     new MediaAnalyzeActions

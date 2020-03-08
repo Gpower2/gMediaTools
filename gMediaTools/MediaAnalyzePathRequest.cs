@@ -6,16 +6,28 @@ using System.Threading.Tasks;
 
 namespace gMediaTools
 {
-    public class MediaAnalyzePathRequest
+    public class MediaAnalyzePathRequest: MediaAnalyzeRequest
     {
         public string MediaDirectoryName { get; set; }
 
-        public double BitratePercentageThreshold { get; set; }
+        public MediaAnalyzePathRequest()
+        {
 
-        public double GainPercentageThreshold { get; set; }
+        }
 
-        public int MaxAllowedWidth { get; set; }
+        public MediaAnalyzePathRequest(string mediaDirectoryName, MediaAnalyzeRequest baseRequest)
+        {
+            MediaDirectoryName = mediaDirectoryName;
 
-        public int MaxAllowedHeight { get; set; }
+            BitratePercentageThreshold = baseRequest.BitratePercentageThreshold;
+
+            GainPercentageThreshold = baseRequest.GainPercentageThreshold;
+
+            MaxAllowedWidth = baseRequest.MaxAllowedWidth;
+
+            MaxAllowedHeight = baseRequest.MaxAllowedHeight;
+
+            MinAllowedBitrate = baseRequest.MinAllowedBitrate;
+        }
     }
 }

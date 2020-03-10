@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using System.Diagnostics;
+using System.Collections.Concurrent;
 
 namespace gMediaTools.MediaInfo
 {
@@ -188,16 +189,31 @@ namespace gMediaTools.MediaInfo
             }
         }
 
+        private readonly ConcurrentDictionary<Type, Delegate> _FunctionDelegatesCache = new ConcurrentDictionary<Type, Delegate>();
+
         private T GetFunctionDelegate<T>() where T : Delegate
         {
+            // Check if delegate was found in Cache
+            if (_FunctionDelegatesCache.TryGetValue(typeof(T), out Delegate cachedMethod))
+            {
+                // Found in Cache!
+                return (T)cachedMethod;
+            }
+
             IntPtr pAddressOfFunctionToCall = GetProcAddress(_MediaInfoDLL, typeof(T).Name);
 
             if (pAddressOfFunctionToCall == IntPtr.Zero)
             {
-                throw new Exception(String.Format("Could not load function {0} from {1}!", typeof(T).Name, _MediaInfoDLLPath));
+                throw new Exception($"Could not load function {typeof(T).Name} from {_MediaInfoDLLPath}!");
             }
 
             Delegate method = Marshal.GetDelegateForFunctionPointer(pAddressOfFunctionToCall, typeof(T));
+
+            // Try to add the Delegate to Cache
+            if (!_FunctionDelegatesCache.TryAdd(typeof(T), method))
+            {
+                throw new Exception($"Could not add function {typeof(T).Name} from {_MediaInfoDLLPath}!");
+            }
 
             return (T)method;
         }

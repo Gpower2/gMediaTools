@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -84,7 +85,6 @@ namespace gMediaTools.AviSynth
         private IntPtr _gAviSynthWrapperDLL = IntPtr.Zero;
         private string _gAviSynthWrapperDLLPath = null;
 
-
         private void SetAviSynthDLL()
         {
             if (_gAviSynthWrapperDLL == IntPtr.Zero)
@@ -109,16 +109,31 @@ namespace gMediaTools.AviSynth
             }
         }
 
+        private readonly ConcurrentDictionary<Type, Delegate> _FunctionDelegatesCache = new ConcurrentDictionary<Type, Delegate>();
+
         private T GetFunctionDelegate<T>() where T : Delegate
         {
+            // Check if delegate was found in Cache
+            if (_FunctionDelegatesCache.TryGetValue(typeof(T), out Delegate cachedMethod))
+            {
+                // Found in Cache!
+                return (T)cachedMethod;
+            }
+            
             IntPtr pAddressOfFunctionToCall = GetProcAddress(_gAviSynthWrapperDLL, typeof(T).Name);
 
             if (pAddressOfFunctionToCall == IntPtr.Zero)
             {
-                throw new Exception(String.Format("Could not load function {0} from {1}!", typeof(T).Name, _gAviSynthWrapperDLLPath));
+                throw new Exception($"Could not load function {typeof(T).Name} from {_gAviSynthWrapperDLL}!");
             }
 
             Delegate method = Marshal.GetDelegateForFunctionPointer(pAddressOfFunctionToCall, typeof(T));
+
+            // Try to add the Delegate to Cache
+            if (!_FunctionDelegatesCache.TryAdd(typeof(T), method))
+            {
+                throw new Exception($"Could not add function {typeof(T).Name} from {_gAviSynthWrapperDLL}!");
+            }
 
             return (T)method;
         }

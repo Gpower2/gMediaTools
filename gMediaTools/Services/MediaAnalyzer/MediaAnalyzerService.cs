@@ -238,14 +238,6 @@ namespace gMediaTools.Services.MediaAnalyzer
                             _reEncodeFiles++;
                             actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
                             actions.HandleMediaForReencodeAction(result);
-
-                            var m = new AviSynthScriptService().CreateAviSynthScript(result);
-
-                            var a = new AviSynthFileService().OpenAviSynthScriptFile(m, AvsVideoColorspace.RGB24);
-
-                            var b = a.GetVideoFrameBitmap(1);
-
-                            b.Save(@"c:\temp\test.png", System.Drawing.Imaging.ImageFormat.Png);
                         }
                     }
                 }

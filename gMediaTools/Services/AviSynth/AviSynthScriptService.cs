@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
+using gMediaTools.Extensions;
 using gMediaTools.Factories;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services.AviSynth.VideoSource;
@@ -25,16 +26,8 @@ namespace gMediaTools.Services.AviSynth
                 throw new ArgumentException("No filename was provided!", nameof(mediaInfo.Filename));
             }
 
-            // Set the initial AVS script filename
-            string avsScriptFilename = $"{mediaInfo.Filename}.avs";
-
-            // Check if this script already exists and create a new one
-            int alreadyExistingFilecounter = 0;
-            while (File.Exists(avsScriptFilename))
-            {
-                alreadyExistingFilecounter++;
-                avsScriptFilename = $"{mediaInfo.Filename}.{alreadyExistingFilecounter}.avs";
-            }
+            // Get the AVS script filename
+            string avsScriptFilename = $"{mediaInfo.Filename}.avs".GetNewFileName();
 
             StringBuilder avsScriptBuilder = new StringBuilder();
 
@@ -50,8 +43,7 @@ namespace gMediaTools.Services.AviSynth
             //=============================
             if (mediaInfo.VideoInfo.FrameRateMode == VideoFrameRateMode.VFR)
             {
-                // Special handling for VFR
-                // TODO
+                // TODO: Special handling for VFR
             }
 
             // Decide if we need resize

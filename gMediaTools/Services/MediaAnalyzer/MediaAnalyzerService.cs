@@ -242,8 +242,7 @@ namespace gMediaTools.Services.MediaAnalyzer
                     }
                 }
 
-                // Check if we need to re encode the audio track
-                // TODO
+                // TODO: Check if we need to re encode the audio track
             }
         }
 

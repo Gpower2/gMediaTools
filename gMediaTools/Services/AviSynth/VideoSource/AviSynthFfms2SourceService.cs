@@ -4,42 +4,41 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gMediaTools.Extensions;
 
 namespace gMediaTools.Services.AviSynth.VideoSource
 {
     public class AviSynthFfms2SourceService : IAviSynthVideoSourceService
     {
-        public string GetAviSynthVideoSource(string filename)
+        public string GetAviSynthVideoSource(string fileName)
+        {
+            // Find cache file
+            string cacheFilename = $"{fileName}.ffindex".GetNewFileName();
+
+            // Find timecodes file
+            string timeCodesFilename = $"{fileName}.tcodes.txt".GetNewFileName();
+
+            return GetScript(fileName, cacheFilename, timeCodesFilename);
+        }
+
+        public string GetAviSynthVideoSourceForTimeCodes(string fileName, string timeCodesFileName)
+        {
+            // Find cache file
+            string cacheFilename = $"{fileName}.ffindex".GetNewFileName();
+
+            return GetScript(fileName, cacheFilename, timeCodesFileName);
+        }
+
+        private string GetScript(string fileName, string cacheFileName, string timeCodesFileName)
         {
             StringBuilder sb = new StringBuilder();
 
-            // Find cache file
-            string cacheFilename = GetFilename(filename, "ffindex");
-
-            // Find timecodes file
-            string timeCodesFilename = GetFilename(filename, "tcodes.txt");
-
-            sb.Append($"FFVideoSource(source = \"{filename}\", ");
-            sb.Append($"track = -1, cache = true, cachefile = \"{cacheFilename}\", ");
-            sb.Append($"fpsnum = -1, fpsden = 1, threads = -1, timecodes = \"{timeCodesFilename}\", seekmode = 1)");
+            sb.Append($"FFVideoSource(source = \"{fileName}\", ");
+            sb.Append($"track = -1, cache = true, cachefile = \"{cacheFileName}\", ");
+            sb.Append($"fpsnum = -1, fpsden = 1, threads = -1, timecodes = \"{timeCodesFileName}\", seekmode = 1)");
 
             return sb.ToString();
         }
 
-        private string GetFilename(string baseFilename, string extension)
-        {
-            // Set the initial filename with the new extension
-            string newFilename = $"{baseFilename}.{extension}";
-
-            // Check if this file already exists and create a new one
-            int alreadyExistingFilecounter = 0;
-            while (File.Exists(newFilename))
-            {
-                alreadyExistingFilecounter++;
-                newFilename = $"{baseFilename}.{alreadyExistingFilecounter}.{extension}";
-            }
-
-            return newFilename;
-        }
     }
 }

@@ -19,7 +19,7 @@ namespace gMediaTools.Services.TimeCodes
 
     public class TimeCodesParserService
     {
-        public List<VideoFrameInfo> ParseTimecodes(string timeCodesFilename, bool writeDump = false)
+        public List<VideoFrameInfo> ParseTimeCodes(string timeCodesFilename, bool writeDump = false)
         {
             // Create the Video Frame List to return
             List<VideoFrameInfo> videoFrameList = new List<VideoFrameInfo>();

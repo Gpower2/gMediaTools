@@ -94,63 +94,63 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AviSynth\AviSynthClip.cs" />
-    <Compile Include="AviSynth\AviSynthException.cs" />
-    <Compile Include="AviSynth\AviSynthFile.cs" />
-    <Compile Include="BaseForm.cs">
+    <Compile Include="Models\AviSynth\AviSynthClip.cs" />
+    <Compile Include="Models\AviSynth\AviSynthException.cs" />
+    <Compile Include="Models\AviSynth\AviSynthFile.cs" />
+    <Compile Include="Forms\BaseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="CurveFittingModel.cs" />
-    <Compile Include="CurveFittingPreviewService.cs" />
-    <Compile Include="CurveFittingSettings.cs" />
-    <Compile Include="DictionaryExtensions.cs" />
-    <Compile Include="FrmMain.cs">
+    <Compile Include="Models\CurveFitting\CurveFittingModel.cs" />
+    <Compile Include="Services\CurveFitting\CurveFittingPreviewService.cs" />
+    <Compile Include="Models\CurveFitting\CurveFittingSettings.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
+    <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmMain.Designer.cs">
+    <Compile Include="Forms\FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmResolutionBitrateEditor.cs">
+    <Compile Include="Forms\FrmResolutionBitrateEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmResolutionBitrateEditor.Designer.cs">
+    <Compile Include="Forms\FrmResolutionBitrateEditor.Designer.cs">
       <DependentUpon>FrmResolutionBitrateEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="GTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="MediaAnalyzeActions.cs" />
-    <Compile Include="MediaAnalyzeFileRequest.cs" />
-    <Compile Include="MediaAnalyzeInfo.cs" />
-    <Compile Include="MediaAnalyzePathRequest.cs" />
-    <Compile Include="MediaAnalyzeRequest.cs" />
-    <Compile Include="MediaInfo\gMediaInfo.cs" />
-    <Compile Include="MediaInfo\AudioTrack.cs" />
-    <Compile Include="MediaInfo\ChaptersTrack.cs" />
-    <Compile Include="MediaInfo\GeneralTrack.cs" />
-    <Compile Include="MediaInfo\IMediaInfoTrack.cs" />
-    <Compile Include="MediaInfo\TextTrack.cs" />
-    <Compile Include="MediaInfo\VideoTrack.cs" />
+    <Compile Include="Models\MediaAnalyze\MediaAnalyzeActions.cs" />
+    <Compile Include="Models\MediaAnalyze\MediaAnalyzeFileRequest.cs" />
+    <Compile Include="Models\MediaAnalyze\MediaAnalyzeInfo.cs" />
+    <Compile Include="Models\MediaAnalyze\MediaAnalyzePathRequest.cs" />
+    <Compile Include="Models\MediaAnalyze\MediaAnalyzeRequest.cs" />
+    <Compile Include="Models\MediaInfo\gMediaInfo.cs" />
+    <Compile Include="Models\MediaInfo\AudioTrack.cs" />
+    <Compile Include="Models\MediaInfo\ChaptersTrack.cs" />
+    <Compile Include="Models\MediaInfo\GeneralTrack.cs" />
+    <Compile Include="Models\MediaInfo\IMediaInfoTrack.cs" />
+    <Compile Include="Models\MediaInfo\TextTrack.cs" />
+    <Compile Include="Models\MediaInfo\VideoTrack.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\AviSynthAviSourceService.cs" />
-    <Compile Include="Services\AviSynthDirectShowSourceService.cs" />
-    <Compile Include="Services\AviSynthFfms2SourceService.cs" />
-    <Compile Include="Services\AviSynthFileService.cs" />
-    <Compile Include="Services\AviSynthScriptService.cs" />
-    <Compile Include="Services\AviSynthSourceFactory.cs" />
-    <Compile Include="Services\CurveFittingFactory.cs" />
-    <Compile Include="Services\CurveFittingRepository.cs" />
-    <Compile Include="Services\IAviSynthSourceService.cs" />
-    <Compile Include="Services\ICurveFittingService.cs" />
-    <Compile Include="Services\LogarithmicCurveFittingService.cs" />
-    <Compile Include="Services\MediaAnalyzerService.cs" />
-    <Compile Include="Services\PowerLawCurveFittingService.cs" />
-    <Compile Include="StringExtensions.cs" />
-    <EmbeddedResource Include="FrmMain.resx">
+    <Compile Include="Services\AviSynth\VideoSource\AviSynthAviSourceService.cs" />
+    <Compile Include="Services\AviSynth\VideoSource\AviSynthDirectShowSourceService.cs" />
+    <Compile Include="Services\AviSynth\VideoSource\AviSynthFfms2SourceService.cs" />
+    <Compile Include="Services\AviSynth\AviSynthFileService.cs" />
+    <Compile Include="Services\AviSynth\AviSynthScriptService.cs" />
+    <Compile Include="Factories\AviSynthSourceFactory.cs" />
+    <Compile Include="Factories\CurveFittingFactory.cs" />
+    <Compile Include="Services\CurveFitting\CurveFittingRepository.cs" />
+    <Compile Include="Services\AviSynth\VideoSource\IAviSynthVideoSourceService.cs" />
+    <Compile Include="Services\CurveFitting\ICurveFittingService.cs" />
+    <Compile Include="Services\CurveFitting\LogarithmicCurveFittingService.cs" />
+    <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
+    <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <EmbeddedResource Include="Forms\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmResolutionBitrateEditor.resx">
+    <EmbeddedResource Include="Forms\FrmResolutionBitrateEditor.resx">
       <DependentUpon>FrmResolutionBitrateEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

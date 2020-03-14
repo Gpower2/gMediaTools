@@ -7,12 +7,15 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using gMediaTools.Factories;
+using gMediaTools.Models.CurveFitting;
 using gMediaTools.Services;
+using gMediaTools.Services.CurveFitting;
 using Newtonsoft.Json;
 
 namespace gMediaTools.Forms
 {
-    public partial class FrmResolutionBitrateEditor : gMediaTools.BaseForm
+    public partial class FrmResolutionBitrateEditor : BaseForm
     {
         private readonly CurveFittingRepository _curveFittingRepo = new CurveFittingRepository();
 

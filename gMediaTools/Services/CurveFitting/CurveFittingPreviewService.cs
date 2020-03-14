@@ -4,6 +4,9 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gMediaTools.Extensions;
+using gMediaTools.Factories;
+using gMediaTools.Models.CurveFitting;
 using gMediaTools.Services;
 
 namespace gMediaTools.Services.CurveFitting

@@ -5,6 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gMediaTools.Factories;
+using gMediaTools.Models.AviSynth;
+using gMediaTools.Models.CurveFitting;
+using gMediaTools.Models.MediaAnalyze;
+using gMediaTools.Models.MediaInfo;
+using gMediaTools.Services.AviSynth;
 
 namespace gMediaTools.Services.MediaAnalyzer
 {
@@ -131,7 +137,7 @@ namespace gMediaTools.Services.MediaAnalyzer
 
             actions.SetCurrentFileAction(request.MediaFile);
 
-            using (MediaInfo.gMediaInfo mi = new MediaInfo.gMediaInfo(request.MediaFile))
+            using (gMediaInfo mi = new gMediaInfo(request.MediaFile))
             {
                 if (mi == null)
                 {
@@ -235,7 +241,7 @@ namespace gMediaTools.Services.MediaAnalyzer
 
                             var m = new AviSynthScriptService().CreateAviSynthScript(result);
 
-                            var a = new AviSynthFileService().OpenAviSynthScriptFile(m, AviSynth.AvsVideoColorspace.RGB24);
+                            var a = new AviSynthFileService().OpenAviSynthScriptFile(m, AvsVideoColorspace.RGB24);
 
                             var b = a.GetVideoFrameBitmap(1);
 

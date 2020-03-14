@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gMediaTools.Factories;
+using gMediaTools.Models.CurveFitting;
 using Newtonsoft.Json;
 
 namespace gMediaTools.Services.CurveFitting

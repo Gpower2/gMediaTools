@@ -22,6 +22,8 @@
 #define INT64 long long
 #endif
 
+// This is needed in order for the AviSynth library to initialize the function table with the entry points for an alternate server
+// More here: http://avisynth.nl/index.php/Filter_SDK/AVS_Linkage
 const AVS_Linkage* AVS_linkage = NULL;
 
 //Structure that contains Information about the video file
@@ -71,6 +73,8 @@ typedef struct tagSafeStruct
 	char error_msg[ERRMSG_LEN];
 	IScriptEnvironment* environment;
 	AVSValue* result;
+	// Save the function table with the entry points for each IScriptEnvironment
+	const AVS_Linkage* AVS_linkage;
 	PClip clp;
 	HMODULE dll;	
 }SafeStruct;
@@ -114,7 +118,10 @@ int __stdcall g_avs_init(SafeStruct** ppstr, char* func, char* arg, gAvsWrapperV
 		return 3;
 	}
 
+	// Set the function table with the entry points
 	AVS_linkage = pstr->environment->GetAVSLinkage();
+	// Save the function table with the entry points for the specific IScriptEnvironment
+	pstr->AVS_linkage = AVS_linkage;
 
 	try
 	{
@@ -241,6 +248,8 @@ int __stdcall g_avs_get_int_variable(SafeStruct* pstr, const char* name, int* re
 		pstr->error_msg[0] = 0;
 		try
 		{
+			// Set the function table with the entry points for the specific IScriptEnvironment stored in SafeStruct pointer
+			AVS_linkage = pstr->AVS_linkage;
 			AVSValue var = pstr->environment->GetVar(name);
 			if (var.Defined())
 			{
@@ -273,6 +282,8 @@ int __stdcall g_avs_get_audio_frame(SafeStruct* pstr, void* buf, INT64 start, IN
 {
 	try
 	{
+		// Set the function table with the entry points for the specific IScriptEnvironment stored in SafeStruct pointer
+		AVS_linkage = pstr->AVS_linkage;
 		pstr->clp->GetAudio(buf, start, count, pstr->environment);
 		pstr->error_msg[0] = 0;
 		return 0;
@@ -288,6 +299,8 @@ int __stdcall g_avs_get_video_frame(SafeStruct* pstr, void* buf, int stride, int
 {
 	try
 	{
+		// Set the function table with the entry points for the specific IScriptEnvironment stored in SafeStruct pointer
+		AVS_linkage = pstr->AVS_linkage;
 		//Get video frame pointer
 		PVideoFrame frame_pointer = pstr->clp->GetFrame(frame_number, pstr->environment);
 		if (buf && stride)
@@ -307,6 +320,8 @@ int __stdcall g_avs_get_video_frame(SafeStruct* pstr, void* buf, int stride, int
 
 int __stdcall g_avs_get_last_error(SafeStruct* pstr, char* str, int len)
 {
+	// Set the function table with the entry points for the specific IScriptEnvironment stored in SafeStruct pointer
+	AVS_linkage = pstr->AVS_linkage;
 	strncpy_s(str, len, pstr->error_msg, len - 1);
 	return (int)strlen(str);
 }
@@ -340,6 +355,7 @@ int __stdcall g_avs_destroy(SafeStruct** ppstr)
 		pstr->environment->DeleteScriptEnvironment();
 		pstr->environment = NULL;
 		AVS_linkage = NULL;
+		pstr->AVS_linkage = NULL;
 
 		/* For AviSynth v2.5
 		pstr->environment->~IScriptEnvironment();

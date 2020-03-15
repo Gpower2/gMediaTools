@@ -33,10 +33,11 @@ namespace gMediaTools.Services.AviSynth
                 );
             }
 
+            int sectionCounter = 0;
             decimal frameGlitch = 0.0m;
             decimal frameSectionGlitch = 0.0m;
 
-            //Loop for every section
+            // Loop for every section
             foreach (VideoFrameSection section in videoFrameSections)
             {
                 // Reset data just to be sure
@@ -49,7 +50,6 @@ namespace gMediaTools.Services.AviSynth
                 int gatherStartFrame = section.StartFrameNumber;
                 int gatherEndFrame = section.EndFrameNumber;
 
-                int sectionCounter = 0;
                 decimal currentCheckTime = 0.0m;
                 decimal currentShouldBeTime = 0.0m;
                 decimal currentTimeDiff = 0.0m;
@@ -57,7 +57,7 @@ namespace gMediaTools.Services.AviSynth
                 // Check Section Name
                 if (string.IsNullOrWhiteSpace(section.Name))
                 {
-                    //If no name, set a default
+                    // If no section name, set a default
                     section.Name = $"Section{sectionCounter + 1}";
                 }
 

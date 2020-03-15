@@ -8,12 +8,17 @@ using gMediaTools.Extensions;
 using gMediaTools.Factories;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services.AviSynth.VideoSource;
+using gMediaTools.Services.TimeCodes;
+using gMediaTools.Models;
 
 namespace gMediaTools.Services.AviSynth
 {
     public class AviSynthScriptService
     {
         private readonly AviSynthSourceFactory _aviSynthSourceFactory = new AviSynthSourceFactory();
+        private readonly TimeCodesProviderService _timeCodesProviderService = new TimeCodesProviderService();
+        private readonly TimeCodesParserService _timeCodesParserService = new TimeCodesParserService();
+        private readonly AviSynthVfrToCfrConversionService _aviSynthVfrToCfrConversionService = new AviSynthVfrToCfrConversionService();
 
         public string CreateAviSynthScript(MediaAnalyzeInfo mediaInfo)
         {
@@ -43,7 +48,17 @@ namespace gMediaTools.Services.AviSynth
             //=============================
             if (mediaInfo.VideoInfo.FrameRateMode == VideoFrameRateMode.VFR)
             {
-                // TODO: Special handling for VFR
+                // Create timecodes file
+                var timecodesFileName = _timeCodesProviderService.GetTimecodesFileName(mediaInfo.Filename);
+
+                // Read timecodes file
+                var videoFrameList = _timeCodesParserService.ParseTimeCodes(timecodesFileName);
+
+                // Create the VFR to CFR AviSynth script
+                var timeCodesAviSynthScript = _aviSynthVfrToCfrConversionService.GetConvertVfrToCfrScript(videoFrameList, new List<VideoFrameSection>());
+
+                // Append it to the main script
+                avsScriptBuilder.AppendLine(timeCodesAviSynthScript);
             }
 
             // Decide if we need resize

@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="Extensions\DecimalExtensions.cs" />
     <Compile Include="Extensions\FileNameExtensions.cs" />
+    <Compile Include="Extensions\ListVideoFrameInfoExtensions.cs" />
     <Compile Include="Models\AviSynth\AviSynthClip.cs" />
     <Compile Include="Models\AviSynth\AviSynthException.cs" />
     <Compile Include="Models\AviSynth\AviSynthFile.cs" />
@@ -104,6 +105,8 @@
     </Compile>
     <Compile Include="Models\CurveFitting\CurveFittingModel.cs" />
     <Compile Include="Models\VideoFrameInfo.cs" />
+    <Compile Include="Models\VideoFrameSection.cs" />
+    <Compile Include="Services\AviSynth\AviSynthVfrToCfrConversionService.cs" />
     <Compile Include="Services\CurveFitting\CurveFittingPreviewService.cs" />
     <Compile Include="Models\CurveFitting\CurveFittingSettings.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />

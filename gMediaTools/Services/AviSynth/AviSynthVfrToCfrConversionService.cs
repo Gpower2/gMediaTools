@@ -11,10 +11,18 @@ namespace gMediaTools.Services.AviSynth
 {
     public class AviSynthVfrToCfrConversionService
     {
-        public string GetConvertVfrToCfrScript(List<VideoFrameInfo> videoFrameList, List<VideoFrameSection> videoFrameSections, decimal targetVideoFrameRate)
+
+        public string GetConvertVfrToCfrScript(List<VideoFrameInfo> videoFrameList, List<VideoFrameSection> videoFrameSections, decimal? targetVideoFrameRate = null)
         {
+            // Check if we have been provided with a target frame rate
+            if (!targetVideoFrameRate.HasValue)
+            {
+                // Find the most appropriate CFR frame rate
+                targetVideoFrameRate = videoFrameList.GetNearestCfrFrameRate();
+            }
+
             // Calculate target duration
-            decimal targetDuration = 1000.0m / targetVideoFrameRate;
+            decimal targetDuration = 1000.0m / targetVideoFrameRate.Value;
 
             // Define maximum frame range 
             int maxFrameRound = 5;
@@ -159,7 +167,7 @@ namespace gMediaTools.Services.AviSynth
             StringBuilder sb = new StringBuilder();
 
             // Assume framerate
-            sb.AppendFormat("AssumeFPS({0}, false)", targetVideoFrameRate.ToString("##0.000###", CultureInfo.InvariantCulture));
+            sb.AppendFormat("AssumeFPS({0}, false)", targetVideoFrameRate.Value.ToString("##0.000###", CultureInfo.InvariantCulture));
             sb.AppendLine();
 
             // Write the delete and duplicate frame for each section

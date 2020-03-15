@@ -25,8 +25,8 @@ namespace gMediaTools.Extensions
         public static string GetNewFileName(this string fileName, int counterPaddingDigits = 1)
         {
             // Get filename without extension
-            string filenameExtensionless = Path.GetFileNameWithoutExtension(fileName);
-
+            string filenameExtensionless = Path.Combine(Path.GetDirectoryName(fileName), Path.GetFileNameWithoutExtension(fileName));
+            
             // Get filename extension
             string filenameExtension = fileName.GetFileExtension();
 

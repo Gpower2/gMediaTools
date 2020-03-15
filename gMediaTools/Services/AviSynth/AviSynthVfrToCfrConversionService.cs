@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -157,12 +158,20 @@ namespace gMediaTools.Services.AviSynth
 
             StringBuilder sb = new StringBuilder();
 
+            // Assume framerate
+            sb.AppendFormat("AssumeFPS({0}, false)", targetVideoFrameRate.ToString("##0.000###", CultureInfo.InvariantCulture));
+            sb.AppendLine();
+
             // Write the delete and duplicate frame for each section
             foreach (VideoFrameSection section in videoFrameSections)
             {
                 sb.AppendLine(KienzanString(section));
             }
-            
+
+            // Write the last line to concat the sections
+            sb.AppendFormat("last = {0}", string.Join(" + ", videoFrameSections.Select(s => s.Name)));
+            sb.AppendLine();
+
             return sb.ToString();
         }
 
@@ -410,9 +419,9 @@ namespace gMediaTools.Services.AviSynth
             List<VideoFrameInfoWithProcessType> mergeList =
                 videoFrameSection.FramesToDuplicate.Select(
                     f => new VideoFrameInfoWithProcessType
-                    { 
-                         VideoFrameInfo=f,
-                          VideoFrameProcessType = VideoFrameProcessType.Duplicate
+                    {
+                        VideoFrameInfo = f,
+                        VideoFrameProcessType = VideoFrameProcessType.Duplicate
                     }
                 ).ToList()
                 .Concat(

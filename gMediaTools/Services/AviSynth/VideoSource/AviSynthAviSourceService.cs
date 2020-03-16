@@ -8,7 +8,7 @@ namespace gMediaTools.Services.AviSynth.VideoSource
 {
     public class AviSynthAviSourceService : IAviSynthVideoSourceService
     {
-        public string GetAviSynthVideoSource(string filename)
+        public string GetAviSynthVideoSource(string filename, bool overWriteScriptFile)
         {
             return $"AviSource(\"{filename}\"){Environment.NewLine}";
         }

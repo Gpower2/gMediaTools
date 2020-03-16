@@ -10,13 +10,21 @@ namespace gMediaTools.Services.AviSynth.VideoSource
 {
     public class AviSynthFfms2SourceService : IAviSynthVideoSourceService
     {
-        public string GetAviSynthVideoSource(string fileName)
+        public string GetAviSynthVideoSource(string fileName, bool overWriteScriptFile)
         {
             // Find cache file
-            string cacheFilename = $"{fileName}.ffindex".GetNewFileName();
+            string cacheFilename = $"{fileName}.ffindex";
+            if (!overWriteScriptFile)
+            {
+                cacheFilename = cacheFilename.GetNewFileName();
+            }
 
             // Find timecodes file
-            string timeCodesFilename = $"{fileName}.tcodes.txt".GetNewFileName();
+            string timeCodesFilename = $"{fileName}.tcodes.txt";
+            if (!overWriteScriptFile) 
+            {
+                timeCodesFilename = timeCodesFilename.GetNewFileName();
+            }
 
             return GetScript(fileName, cacheFilename, timeCodesFilename);
         }

@@ -23,7 +23,7 @@ namespace gMediaTools.Services.AviSynth
         
         private readonly AviSynthVfrToCfrConversionService _aviSynthVfrToCfrConversionService = ServiceFactory.GetService<AviSynthVfrToCfrConversionService>();
 
-        public string CreateAviSynthScript(MediaAnalyzeInfo mediaInfo)
+        public string CreateAviSynthScript(MediaAnalyzeInfo mediaInfo, bool overWriteScriptFile = true)
         {
             if (mediaInfo == null)
             {
@@ -35,7 +35,12 @@ namespace gMediaTools.Services.AviSynth
             }
 
             // Get the AVS script filename
-            string avsScriptFilename = $"{mediaInfo.Filename}.avs".GetNewFileName();
+            string avsScriptFilename = $"{mediaInfo.Filename}.avs";
+            // Check if we need to create a new script file
+            if (!overWriteScriptFile) 
+            {
+                avsScriptFilename = avsScriptFilename.GetNewFileName();
+            }
 
             StringBuilder avsScriptBuilder = new StringBuilder();
 
@@ -45,7 +50,7 @@ namespace gMediaTools.Services.AviSynth
             // Get the Source Service
             IAviSynthVideoSourceService sourceService = _aviSynthSourceFactory.GetAviSynthSourceService(fileContainerFormat);
 
-            avsScriptBuilder.AppendLine(sourceService.GetAviSynthVideoSource(mediaInfo.Filename));
+            avsScriptBuilder.AppendLine(sourceService.GetAviSynthVideoSource(mediaInfo.Filename, false));
 
             // Decide what to do with VFR
             //=============================

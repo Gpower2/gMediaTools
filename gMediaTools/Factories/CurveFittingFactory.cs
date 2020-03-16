@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gMediaTools.Services;
 using gMediaTools.Services.CurveFitting;
 
 namespace gMediaTools.Factories
@@ -21,11 +22,11 @@ namespace gMediaTools.Factories
             switch (curveFittingType)
             {
                 case CurveFittingType.Logarithmic:
-                    return new LogarithmicCurveFittingService();
+                    return ServiceFactory.GetService<LogarithmicCurveFittingService>();
                 case CurveFittingType.Linear:
                     break;
                 case CurveFittingType.PowerLaw:
-                    return new PowerLawCurveFittingService();
+                    return ServiceFactory.GetService<PowerLawCurveFittingService>();
                 default:
                     break;
             }

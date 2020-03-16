@@ -25,6 +25,13 @@ namespace gMediaTools.Forms
         public FrmMain()
         {
             InitializeComponent();
+
+            // Default values
+            txtBitratePercentageThreshold.Int32Value = 10;
+            txtGainPercentageThreshold.Int32Value = 20;
+            txtMaxAllowedWidth.Int32Value = 1280;
+            txtMaxAllowedHeight.Int32Value = 720;
+            txtMinAllowedBitrate.Int32Value = 700;
         }
 
         private void BtnScanMediaFiles_Click(object sender, EventArgs e)
@@ -58,11 +65,11 @@ namespace gMediaTools.Forms
                     new MediaAnalyzePathRequest
                     {
                         MediaDirectoryName = rootPath,
-                        BitratePercentageThreshold = 10,
-                        GainPercentageThreshold = 20,
-                        MaxAllowedWidth = 1280,
-                        MaxAllowedHeight = 720,
-                        MinAllowedBitrate = 700 * 1000
+                        BitratePercentageThreshold = txtBitratePercentageThreshold.Int32Value,
+                        GainPercentageThreshold = txtGainPercentageThreshold.Int32Value,
+                        MaxAllowedWidth = txtMaxAllowedWidth.Int32Value,
+                        MaxAllowedHeight = txtMaxAllowedHeight.Int32Value,
+                        MinAllowedBitrate = txtMinAllowedBitrate.Int32Value * 1000
                     },
                     curveSettings,
                     new MediaAnalyzeActions

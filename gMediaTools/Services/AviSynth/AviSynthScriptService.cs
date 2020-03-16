@@ -15,10 +15,13 @@ namespace gMediaTools.Services.AviSynth
 {
     public class AviSynthScriptService
     {
-        private readonly AviSynthSourceFactory _aviSynthSourceFactory = new AviSynthSourceFactory();
-        private readonly TimeCodesProviderService _timeCodesProviderService = new TimeCodesProviderService();
-        private readonly TimeCodesParserService _timeCodesParserService = new TimeCodesParserService();
-        private readonly AviSynthVfrToCfrConversionService _aviSynthVfrToCfrConversionService = new AviSynthVfrToCfrConversionService();
+        private readonly AviSynthSourceFactory _aviSynthSourceFactory = ServiceFactory.GetService<AviSynthSourceFactory>();
+        
+        private readonly TimeCodesProviderService _timeCodesProviderService = ServiceFactory.GetService<TimeCodesProviderService>();
+        
+        private readonly TimeCodesParserService _timeCodesParserService = ServiceFactory.GetService<TimeCodesParserService>();
+        
+        private readonly AviSynthVfrToCfrConversionService _aviSynthVfrToCfrConversionService = ServiceFactory.GetService<AviSynthVfrToCfrConversionService>();
 
         public string CreateAviSynthScript(MediaAnalyzeInfo mediaInfo)
         {
@@ -75,34 +78,6 @@ namespace gMediaTools.Services.AviSynth
             {
                 avsScriptBuilder.AppendLine("ConvertToYV12()");
             }
-
-            // Write the file
-            using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding(1253)))
-            {
-                sw.Write(avsScriptBuilder.ToString());
-            }
-
-            return avsScriptFilename;
-        }
-
-        public string CreateAviSynthTimecodesScript(string mediaFileName, string timecodesFileName)
-        {
-            if (string.IsNullOrWhiteSpace(mediaFileName))
-            {
-                throw new ArgumentException("No filename was provided!", nameof(mediaFileName));
-            }
-
-            // Get the AVS script filename
-            string avsScriptFilename = $"{mediaFileName}.tc.avs".GetNewFileName();
-
-            StringBuilder avsScriptBuilder = new StringBuilder();
-
-            // Use FFMS2 Source filter to get the timecodes
-            //=============================
-            // Get the Source Service
-            AviSynthFfms2SourceService sourceService = new AviSynthFfms2SourceService();
-
-            avsScriptBuilder.AppendLine(sourceService.GetAviSynthVideoSourceForTimeCodes(mediaFileName, timecodesFileName));
 
             // Write the file
             using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding(1253)))

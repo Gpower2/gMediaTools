@@ -153,6 +153,7 @@
     <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
     <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\ServiceFactory.cs" />
     <Compile Include="Services\TimeCodes\TimeCodesParserService.cs" />
     <Compile Include="Services\TimeCodes\TimeCodesProviderService.cs" />
     <EmbeddedResource Include="Forms\FrmMain.resx">

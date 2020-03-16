@@ -21,12 +21,9 @@ namespace gMediaTools.Services.AviSynth.VideoSource
             return GetScript(fileName, cacheFilename, timeCodesFilename);
         }
 
-        public string GetAviSynthVideoSourceForTimeCodes(string fileName, string timeCodesFileName)
+        public string GetAviSynthVideoSource(string fileName, string cacheFileName, string timeCodesFileName)
         {
-            // Find cache file
-            string cacheFilename = $"{fileName}.ffindex".GetNewFileName();
-
-            return GetScript(fileName, cacheFilename, timeCodesFileName);
+            return GetScript(fileName, cacheFileName, timeCodesFileName);
         }
 
         private string GetScript(string fileName, string cacheFileName, string timeCodesFileName)

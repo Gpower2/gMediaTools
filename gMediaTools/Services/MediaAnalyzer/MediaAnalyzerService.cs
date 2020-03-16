@@ -238,6 +238,9 @@ namespace gMediaTools.Services.MediaAnalyzer
                             _reEncodeFiles++;
                             actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
                             actions.HandleMediaForReencodeAction(result);
+
+                            AviSynthScriptService a = new AviSynthScriptService();
+                            a.CreateAviSynthScript(result);
                         }
                     }
                 }

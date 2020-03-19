@@ -58,7 +58,7 @@ namespace gMediaTools.Services.TimeCodes
             // Use FFMS2 Source filter to get the timecodes
             //=============================
             // Get the Source Service
-            AviSynthFfms2SourceService sourceService = ServiceFactory.GetService<AviSynthFfms2SourceService>();
+            AviSynthFfms2VideoSourceService sourceService = ServiceFactory.GetService<AviSynthFfms2VideoSourceService>();
 
             avsScriptBuilder.AppendLine(sourceService.GetAviSynthVideoSource(mediaFileName, cacheFileName, timecodesFileName));
 

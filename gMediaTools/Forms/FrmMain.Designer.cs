@@ -148,7 +148,7 @@
             this.txtGainPercentageThreshold.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtGainPercentageThreshold.Int32Value = 0;
             this.txtGainPercentageThreshold.Int64Value = ((long)(0));
-            this.txtGainPercentageThreshold.Location = new System.Drawing.Point(201, 76);
+            this.txtGainPercentageThreshold.Location = new System.Drawing.Point(197, 76);
             this.txtGainPercentageThreshold.MaxLength = 3;
             this.txtGainPercentageThreshold.Name = "txtGainPercentageThreshold";
             this.txtGainPercentageThreshold.Size = new System.Drawing.Size(163, 23);
@@ -168,7 +168,7 @@
             this.txtMaxAllowedWidth.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtMaxAllowedWidth.Int32Value = 0;
             this.txtMaxAllowedWidth.Int64Value = ((long)(0));
-            this.txtMaxAllowedWidth.Location = new System.Drawing.Point(393, 76);
+            this.txtMaxAllowedWidth.Location = new System.Drawing.Point(389, 76);
             this.txtMaxAllowedWidth.MaxLength = 4;
             this.txtMaxAllowedWidth.Name = "txtMaxAllowedWidth";
             this.txtMaxAllowedWidth.Size = new System.Drawing.Size(105, 23);
@@ -188,7 +188,7 @@
             this.txtMaxAllowedHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtMaxAllowedHeight.Int32Value = 0;
             this.txtMaxAllowedHeight.Int64Value = ((long)(0));
-            this.txtMaxAllowedHeight.Location = new System.Drawing.Point(512, 76);
+            this.txtMaxAllowedHeight.Location = new System.Drawing.Point(508, 76);
             this.txtMaxAllowedHeight.MaxLength = 4;
             this.txtMaxAllowedHeight.Name = "txtMaxAllowedHeight";
             this.txtMaxAllowedHeight.Size = new System.Drawing.Size(109, 23);
@@ -208,7 +208,7 @@
             this.txtMinAllowedBitrate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtMinAllowedBitrate.Int32Value = 0;
             this.txtMinAllowedBitrate.Int64Value = ((long)(0));
-            this.txtMinAllowedBitrate.Location = new System.Drawing.Point(647, 76);
+            this.txtMinAllowedBitrate.Location = new System.Drawing.Point(643, 76);
             this.txtMinAllowedBitrate.MaxLength = 6;
             this.txtMinAllowedBitrate.Name = "txtMinAllowedBitrate";
             this.txtMinAllowedBitrate.Size = new System.Drawing.Size(102, 23);
@@ -228,7 +228,7 @@
             // lblGainPercentageThreshold
             // 
             this.lblGainPercentageThreshold.AutoSize = true;
-            this.lblGainPercentageThreshold.Location = new System.Drawing.Point(201, 57);
+            this.lblGainPercentageThreshold.Location = new System.Drawing.Point(197, 57);
             this.lblGainPercentageThreshold.Name = "lblGainPercentageThreshold";
             this.lblGainPercentageThreshold.Size = new System.Drawing.Size(163, 15);
             this.lblGainPercentageThreshold.TabIndex = 12;
@@ -237,7 +237,7 @@
             // lblMaxAllowedWidth
             // 
             this.lblMaxAllowedWidth.AutoSize = true;
-            this.lblMaxAllowedWidth.Location = new System.Drawing.Point(393, 57);
+            this.lblMaxAllowedWidth.Location = new System.Drawing.Point(389, 57);
             this.lblMaxAllowedWidth.Name = "lblMaxAllowedWidth";
             this.lblMaxAllowedWidth.Size = new System.Drawing.Size(105, 15);
             this.lblMaxAllowedWidth.TabIndex = 13;
@@ -246,7 +246,7 @@
             // lblMaxAllowedHeight
             // 
             this.lblMaxAllowedHeight.AutoSize = true;
-            this.lblMaxAllowedHeight.Location = new System.Drawing.Point(512, 57);
+            this.lblMaxAllowedHeight.Location = new System.Drawing.Point(508, 57);
             this.lblMaxAllowedHeight.Name = "lblMaxAllowedHeight";
             this.lblMaxAllowedHeight.Size = new System.Drawing.Size(109, 15);
             this.lblMaxAllowedHeight.TabIndex = 14;
@@ -255,7 +255,7 @@
             // lblMinAllowedBitrate
             // 
             this.lblMinAllowedBitrate.AutoSize = true;
-            this.lblMinAllowedBitrate.Location = new System.Drawing.Point(647, 57);
+            this.lblMinAllowedBitrate.Location = new System.Drawing.Point(643, 57);
             this.lblMinAllowedBitrate.Name = "lblMinAllowedBitrate";
             this.lblMinAllowedBitrate.Size = new System.Drawing.Size(105, 15);
             this.lblMinAllowedBitrate.TabIndex = 15;

@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace gMediaTools.Services.AviSynth.VideoSource
 {
-    public class AviSynthDirectShowSourceService : IAviSynthVideoSourceService
+    public class AviSynthDirectShowVideoSourceService : IAviSynthVideoSourceService
     {
         public string GetAviSynthVideoSource(string filename, bool overWriteScriptFile)
         {
-            return $"DirectShowSource(\"{filename}\"){Environment.NewLine}";
+            return $"DirectShowSource(\"{filename}\", seek = true, video = true, audio = false, convertfps = false)";
         }
     }
 }

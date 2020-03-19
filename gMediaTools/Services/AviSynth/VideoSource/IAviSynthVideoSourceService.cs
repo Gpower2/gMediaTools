@@ -8,6 +8,6 @@ namespace gMediaTools.Services.AviSynth.VideoSource
 {
     public interface IAviSynthVideoSourceService
     {
-        string GetAviSynthVideoSource(string filename, bool overWriteScriptFile);
+        string GetAviSynthVideoSource(string fileName, bool overWriteScriptFile);
     }
 }

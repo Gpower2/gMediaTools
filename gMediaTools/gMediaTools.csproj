@@ -106,7 +106,14 @@
     <Compile Include="Models\CurveFitting\CurveFittingModel.cs" />
     <Compile Include="Models\VideoFrameInfo.cs" />
     <Compile Include="Models\VideoFrameSection.cs" />
+    <Compile Include="Services\AviSynth\AudioSource\AviSynthDirectShowAudioSourceService.cs" />
+    <Compile Include="Services\AviSynth\AudioSource\AviSynthFfms2AudioSourceService.cs" />
+    <Compile Include="Services\AviSynth\AudioSource\AviSynthLSMASHAudioSourceService.cs" />
+    <Compile Include="Services\AviSynth\AudioSource\AviSynthLWLibavAudioSourceService.cs" />
+    <Compile Include="Services\AviSynth\AudioSource\IAviSynthAudioSourceService.cs" />
     <Compile Include="Services\AviSynth\AviSynthVfrToCfrConversionService.cs" />
+    <Compile Include="Services\AviSynth\VideoSource\AviSynthLSMASHVideoSourceService.cs" />
+    <Compile Include="Services\AviSynth\VideoSource\AviSynthLWLibavVideoSourceService.cs" />
     <Compile Include="Services\CurveFitting\CurveFittingPreviewService.cs" />
     <Compile Include="Models\CurveFitting\CurveFittingSettings.cs" />
     <Compile Include="Extensions\DictionaryExtensions.cs" />
@@ -140,8 +147,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AviSynth\VideoSource\AviSynthAviSourceService.cs" />
-    <Compile Include="Services\AviSynth\VideoSource\AviSynthDirectShowSourceService.cs" />
-    <Compile Include="Services\AviSynth\VideoSource\AviSynthFfms2SourceService.cs" />
+    <Compile Include="Services\AviSynth\VideoSource\AviSynthDirectShowVideoSourceService.cs" />
+    <Compile Include="Services\AviSynth\VideoSource\AviSynthFfms2VideoSourceService.cs" />
     <Compile Include="Services\AviSynth\AviSynthFileService.cs" />
     <Compile Include="Services\AviSynth\AviSynthScriptService.cs" />
     <Compile Include="Factories\AviSynthSourceFactory.cs" />
@@ -193,5 +200,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

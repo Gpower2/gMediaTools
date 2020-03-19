@@ -18,17 +18,17 @@ namespace gMediaTools.Factories
             if (container.Equals("matroska"))
             {
                 // MKV => FFMS2
-                return ServiceFactory.GetService<AviSynthFfms2SourceService>();
+                return ServiceFactory.GetService<AviSynthFfms2VideoSourceService>();
             }
             else if (container.Equals("windows media"))
             {
                 // WMV => FFMS2
-                return ServiceFactory.GetService<AviSynthFfms2SourceService>();
+                return ServiceFactory.GetService<AviSynthFfms2VideoSourceService>();
             }
             else if (container.Equals("mpeg-4"))
             {
                 // MP4 or MOV => FFMS2
-                return ServiceFactory.GetService<AviSynthFfms2SourceService>();
+                return ServiceFactory.GetService<AviSynthFfms2VideoSourceService>();
             }
             else if (container.Equals("avi"))
             {
@@ -38,13 +38,13 @@ namespace gMediaTools.Factories
             else if (container.Equals("flash video"))
             {
                 // FLV => FFMS2
-                return ServiceFactory.GetService<AviSynthFfms2SourceService>();
+                return ServiceFactory.GetService<AviSynthFfms2VideoSourceService>();
             }
             else
             {
                 // Could not identify container/format
                 // Let's play it safe and use DirectShowSource
-                return ServiceFactory.GetService<AviSynthDirectShowSourceService>();
+                return ServiceFactory.GetService<AviSynthDirectShowVideoSourceService>();
             }
         }
     }

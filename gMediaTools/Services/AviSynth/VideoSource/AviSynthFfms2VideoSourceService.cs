@@ -8,25 +8,25 @@ using gMediaTools.Extensions;
 
 namespace gMediaTools.Services.AviSynth.VideoSource
 {
-    public class AviSynthFfms2SourceService : IAviSynthVideoSourceService
+    public class AviSynthFfms2VideoSourceService : IAviSynthVideoSourceService
     {
         public string GetAviSynthVideoSource(string fileName, bool overWriteScriptFile)
         {
             // Find cache file
-            string cacheFilename = $"{fileName}.ffindex";
+            string cacheFileName = $"{fileName}.ffindex";
             if (!overWriteScriptFile)
             {
-                cacheFilename = cacheFilename.GetNewFileName();
+                cacheFileName = cacheFileName.GetNewFileName();
             }
 
             // Find timecodes file
-            string timeCodesFilename = $"{fileName}.tcodes.txt";
+            string timeCodesFileName = $"{fileName}.tcodes.txt";
             if (!overWriteScriptFile) 
             {
-                timeCodesFilename = timeCodesFilename.GetNewFileName();
+                timeCodesFileName = timeCodesFileName.GetNewFileName();
             }
 
-            return GetScript(fileName, cacheFilename, timeCodesFilename);
+            return GetScript(fileName, cacheFileName, timeCodesFileName);
         }
 
         public string GetAviSynthVideoSource(string fileName, string cacheFileName, string timeCodesFileName)

@@ -74,14 +74,14 @@ namespace gMediaTools.Models.MediaAnalyze
         public int TargetVideoHeight { get; set; }
 
         /// <summary>
-        /// In bytes
+        /// In bps
         /// </summary>
         public int TargetVideoBitrate { get; set; }
 
         public bool NeedsAudioReencode { get; set; }
 
         /// <summary>
-        /// In bytes
+        /// In bps
         /// </summary>
         public int TargetAudioBitrate { get; set; }
 

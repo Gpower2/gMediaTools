@@ -198,22 +198,23 @@ namespace gMediaTools.Services.MediaAnalyzer
                     return;
                 }
 
-                // Get first audio track
-                var audioTrack = mi?.AudioTracks?.FirstOrDefault();
-                if (audioTrack != null)
-                {
-                    // Check if we have valid audio track info
-                    if (int.TryParse(audioTrack.Channels, out int channels)
-                        && int.TryParse(audioTrack.BitRate, out int audioBitrate))
-                    {
-                        MediaAnalyzeAudioInfo audioResult = new MediaAnalyzeAudioInfo();
-                        audioResult.Channels = channels;
-                        audioResult.Bitrate = audioBitrate;
-                        audioResult.Codec = audioTrack.FormatString;
-                        audioResult.Size = long.TryParse(audioTrack.StreamSize, out long audioSize) ? audioSize : default;
+                // Get audio tracks
+                var audioTracks = mi?.AudioTracks;
 
-                        result.AudioInfo = audioResult;
-                    }
+                // Get audio track
+                var audioTrack = audioTracks.First();
+
+                // Check if we have valid audio track info
+                if (int.TryParse(audioTrack.Channels, out int audioChannels)
+                    && int.TryParse(audioTrack.BitRate, out int audioBitrate))
+                {
+                    MediaAnalyzeAudioInfo audioResult = new MediaAnalyzeAudioInfo();
+                    audioResult.Channels = audioChannels;
+                    audioResult.Bitrate = audioBitrate;
+                    audioResult.Codec = audioTrack.FormatString;
+                    audioResult.Size = long.TryParse(audioTrack.StreamSize, out long audioSize) ? audioSize : default;
+
+                    result.AudioInfo = audioResult;
                 }
 
                 // Check if we need to re encode the video track
@@ -236,15 +237,39 @@ namespace gMediaTools.Services.MediaAnalyzer
                             result.TargetVideoHeight = targetHeight;
 
                             _reEncodeFiles++;
+
                             actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
                             actions.HandleMediaForReencodeAction(result);
 
-                            ServiceFactory.GetService<AviSynthScriptService>().CreateAviSynthScript(result);
+                            ServiceFactory.GetService<AviSynthScriptService>().CreateAviSynthVideoScript(result);
+
+                            // Check for no audio, or more than one audio
+                            if (audioTracks == null || !audioTracks.Any() || audioTracks.Count() > 1)
+                            {
+                                // No audio tracks, nothing to do here
+                                return;
+                            }
+
+                            // Sanity check, we should have an AudioInfo
+                            if (result?.AudioInfo == null)
+                            {
+                                // No audio info found, nothing to do here
+                                return;
+                            }
+
+                            // Check if we need to re encode the audio track
+                            bool isCandidateForAudioReencode = IsCandidateForAudioReencode(result.AudioInfo.Channels, result.AudioInfo.Bitrate, out int targetAudioBitrate);
+
+                            if (isCandidateForAudioReencode)
+                            {
+                                result.NeedsAudioReencode = true;
+                                result.TargetAudioBitrate = targetAudioBitrate;
+
+                                ServiceFactory.GetService<AviSynthScriptService>().CreateAviSynthAudioScript(result);
+                            }
                         }
                     }
                 }
-
-                // TODO: Check if we need to re encode the audio track
             }
         }
 
@@ -322,6 +347,31 @@ namespace gMediaTools.Services.MediaAnalyzer
             double maxPercentage = 1.0 + (percentageThreshold / 100.0);
 
             return needResize || (bitrate < minPercentage * targetBitrate || bitrate > maxPercentage * targetBitrate);
+        }
+
+        private bool IsCandidateForAudioReencode(int audioChannels, int audioBitrate, out int targetAudioBitrate)
+        {
+            if (audioChannels == 1)
+            {
+                targetAudioBitrate = 64000;
+                return audioBitrate > targetAudioBitrate * 1.1;
+            }
+            else if (audioChannels == 2)
+            {
+                targetAudioBitrate = 128000;
+                return audioBitrate > targetAudioBitrate * 1.1;
+            }
+            else if(audioChannels > 2)
+            {
+                targetAudioBitrate = 384000;
+                return audioBitrate > targetAudioBitrate * 1.1;
+            }
+            else
+            {
+                // 0 channels, nothing to do
+                targetAudioBitrate = 0;
+                return false;
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services.AviSynth.VideoSource;
 using gMediaTools.Services.TimeCodes;
 using gMediaTools.Models;
+using gMediaTools.Services.AviSynth.AudioSource;
 
 namespace gMediaTools.Services.AviSynth
 {
@@ -23,7 +24,7 @@ namespace gMediaTools.Services.AviSynth
         
         private readonly AviSynthVfrToCfrConversionService _aviSynthVfrToCfrConversionService = ServiceFactory.GetService<AviSynthVfrToCfrConversionService>();
 
-        public string CreateAviSynthScript(MediaAnalyzeInfo mediaInfo, bool overWriteScriptFile = true)
+        public string CreateAviSynthVideoScript(MediaAnalyzeInfo mediaInfo, bool overWriteScriptFile = true)
         {
             if (mediaInfo == null)
             {
@@ -35,7 +36,7 @@ namespace gMediaTools.Services.AviSynth
             }
 
             // Get the AVS script filename
-            string avsScriptFilename = $"{mediaInfo.Filename}.avs";
+            string avsScriptFilename = $"{mediaInfo.Filename}.video.avs";
             // Check if we need to create a new script file
             if (!overWriteScriptFile) 
             {
@@ -83,6 +84,47 @@ namespace gMediaTools.Services.AviSynth
             {
                 avsScriptBuilder.AppendLine("ConvertToYV12()");
             }
+
+            // Write the file
+            using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding(1253)))
+            {
+                sw.Write(avsScriptBuilder.ToString());
+            }
+
+            return avsScriptFilename;
+        }
+
+        public string CreateAviSynthAudioScript(MediaAnalyzeInfo mediaInfo, bool overWriteScriptFile = true)
+        {
+            if (mediaInfo == null)
+            {
+                throw new ArgumentNullException(nameof(mediaInfo));
+            }
+            if (string.IsNullOrWhiteSpace(mediaInfo.Filename))
+            {
+                throw new ArgumentException("No filename was provided!", nameof(mediaInfo.Filename));
+            }
+
+            // Get the AVS script filename
+            string avsScriptFilename = $"{mediaInfo.Filename}.audio.avs";
+            // Check if we need to create a new script file
+            if (!overWriteScriptFile)
+            {
+                avsScriptFilename = avsScriptFilename.GetNewFileName();
+            }
+
+            StringBuilder avsScriptBuilder = new StringBuilder();
+
+            // Use AviSynthLWLibavAudioSourceService Source filter to get the audio
+            //=============================
+            // TODO: Check if we can switch to AviSynthLWLibavAudioSourceService
+            // Currently it has a bug in the latest versions that do not produce clips with correct audio length
+            // Last good working version: r920-20161216
+            // Use FFMS2 till then which seems to produce correct results
+            //AviSynthLWLibavAudioSourceService sourceService = ServiceFactory.GetService<AviSynthLWLibavAudioSourceService>();
+            AviSynthFfms2AudioSourceService sourceService = ServiceFactory.GetService<AviSynthFfms2AudioSourceService>();
+
+            avsScriptBuilder.AppendLine(sourceService.GetAviSynthAudioSource(mediaInfo.Filename, -1, false));
 
             // Write the file
             using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding(1253)))

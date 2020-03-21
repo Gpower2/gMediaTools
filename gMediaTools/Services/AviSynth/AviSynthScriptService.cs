@@ -54,8 +54,9 @@ namespace gMediaTools.Services.AviSynth
             avsScriptBuilder.AppendLine(sourceService.GetAviSynthVideoSource(mediaInfo.Filename, false));
 
             // Decide what to do with VFR
+            // Note: Windows Media files may report CFR frame rate mode, but in reality they are VFR inside
             //=============================
-            if (mediaInfo.VideoInfo.FrameRateMode == VideoFrameRateMode.VFR)
+            if (fileContainerFormat.Equals("windows media") || mediaInfo.VideoInfo.FrameRateMode == VideoFrameRateMode.VFR)
             {
                 // Create timecodes file
                 var timecodesFileName = _timeCodesProviderService.GetTimecodesFileName(mediaInfo.Filename);

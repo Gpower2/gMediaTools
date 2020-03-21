@@ -391,6 +391,10 @@ namespace gMediaTools.Services.ProcessRunner.x264
             // Input/Output
             // ============
             optionsGroup.Parameters.Append(
+                new NonEmptyValueProcessRunnerParameter("muxer", "--", " ", false)
+            );
+
+            optionsGroup.Parameters.Append(
                 new NonEmptyValueProcessRunnerParameter("level", "--", " ", false)
             );
             

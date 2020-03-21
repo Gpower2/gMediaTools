@@ -15,10 +15,10 @@ namespace gMediaTools.Extensions
         /// </summary>
         /// <param name="process"></param>
         /// <param name="lineAction"></param>
-        public static void ReadStreamPerCharacter(this Process process, Action<Process, string> lineAction)
+        public static void ReadStreamPerCharacter(this Process process, bool useOutputStream, Action<Process, string> lineAction)
         {
-            // Store the process StandardOuput in a user friendly variable
-            StreamReader outputReader = process.StandardOutput;
+            // Check whether to read StandardOuput or StandardError
+            StreamReader outputReader = useOutputStream ? process.StandardOutput : process.StandardError;
 
             // Define a line builder to store the line data
             StringBuilder lineBuilder = new StringBuilder();

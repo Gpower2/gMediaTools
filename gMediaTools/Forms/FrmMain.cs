@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services;
 using gMediaTools.Services.CurveFitting;
+using gMediaTools.Services.Encoder;
 using gMediaTools.Services.MediaAnalyzer;
 
 namespace gMediaTools.Forms
@@ -201,6 +202,34 @@ namespace gMediaTools.Forms
                 sb.AppendLine($"{nameof(mediaInfo.TargetSize)}: {mediaInfo.TargetSize}");
 
                 txtMediaInfo.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private async void btnEncode_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    txtMediaInfo.Clear();
+                    return;
+                }
+
+                var mediaInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
+
+                if (mediaInfo == null)
+                {
+                    txtMediaInfo.Clear();
+                    return;
+                }
+
+                VideoEncoderService videoEncoderService = ServiceFactory.GetService<VideoEncoderService>();
+
+                await Task.Run(() => videoEncoderService.Encode(mediaInfo, @"E:\Programs\MeGUI\tools\x264\x264.exe"));
             }
             catch (Exception ex)
             {

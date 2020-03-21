@@ -14,6 +14,6 @@ namespace gMediaTools.Models.ProcessRunner
 
         string ParameterSeparator { get; }
 
-        IEnumerable<IProcessRunnerParameter> Parameters { get; }
+        IList<IProcessRunnerParameter> Parameters { get; }
     }
 }

@@ -113,6 +113,7 @@
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameterGroup.cs" />
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameters.cs" />
+    <Compile Include="Models\ProcessRunner\NoNameProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\NonEmptyValueProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\QuotedValueProcessRunnerParameter.cs" />
     <Compile Include="Models\VideoFrameInfo.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Services\AviSynth\VideoSource\IAviSynthVideoSourceService.cs" />
     <Compile Include="Services\CurveFitting\ICurveFittingService.cs" />
     <Compile Include="Services\CurveFitting\LogarithmicCurveFittingService.cs" />
+    <Compile Include="Services\Encoder\VideoEncoderService.cs" />
     <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
     <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

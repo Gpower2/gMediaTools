@@ -47,6 +47,7 @@
             this.lblInputFolder = new System.Windows.Forms.Label();
             this.lstMediaInfoItems = new System.Windows.Forms.ListBox();
             this.txtMediaInfo = new System.Windows.Forms.RichTextBox();
+            this.btnEncode = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
@@ -291,15 +292,27 @@
             this.txtMediaInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtMediaInfo.Location = new System.Drawing.Point(15, 480);
             this.txtMediaInfo.Name = "txtMediaInfo";
-            this.txtMediaInfo.Size = new System.Drawing.Size(957, 102);
+            this.txtMediaInfo.Size = new System.Drawing.Size(871, 102);
             this.txtMediaInfo.TabIndex = 18;
             this.txtMediaInfo.Text = "";
+            // 
+            // btnEncode
+            // 
+            this.btnEncode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEncode.Location = new System.Drawing.Point(892, 480);
+            this.btnEncode.Name = "btnEncode";
+            this.btnEncode.Size = new System.Drawing.Size(80, 45);
+            this.btnEncode.TabIndex = 19;
+            this.btnEncode.Text = "Encode";
+            this.btnEncode.UseVisualStyleBackColor = true;
+            this.btnEncode.Click += new System.EventHandler(this.btnEncode_Click);
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 594);
+            this.Controls.Add(this.btnEncode);
             this.Controls.Add(this.txtMediaInfo);
             this.Controls.Add(this.lstMediaInfoItems);
             this.Controls.Add(this.lblInputFolder);
@@ -348,6 +361,7 @@
         private System.Windows.Forms.Label lblInputFolder;
         private System.Windows.Forms.ListBox lstMediaInfoItems;
         private System.Windows.Forms.RichTextBox txtMediaInfo;
+        private System.Windows.Forms.Button btnEncode;
     }
 }
 

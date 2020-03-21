@@ -14,6 +14,7 @@ namespace gMediaTools.Models.ProcessRunner
         public string NameValueSeparator { get; }
         public bool ValueNeedsToBeQuoted { get; } = true;
         public bool AllowsEmptyValues { get; } = false;
+        public bool ValueOnlyOutput { get; } = false;
         public bool Include { get; set; } = false;
 
         public Func<string, string> ProcessValue { get; set; }

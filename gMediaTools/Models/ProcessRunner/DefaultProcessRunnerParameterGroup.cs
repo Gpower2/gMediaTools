@@ -11,7 +11,7 @@ namespace gMediaTools.Models.ProcessRunner
         public string Name { get; }
         public int Order { get; set; }
         public string ParameterSeparator { get; }
-        public IEnumerable<IProcessRunnerParameter> Parameters { get; } = new List<IProcessRunnerParameter>();
+        public IList<IProcessRunnerParameter> Parameters { get; } = new List<IProcessRunnerParameter>();
 
         public DefaultProcessRunnerParameterGroup(string name, int order, string parameterSeparator)
         {

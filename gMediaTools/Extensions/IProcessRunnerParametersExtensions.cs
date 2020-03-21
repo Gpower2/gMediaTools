@@ -35,8 +35,13 @@ namespace gMediaTools.Extensions
 
                     StringBuilder sb = new StringBuilder();
 
-                    sb.Append(parameter.NamePrefix);
-                    sb.Append(parameter.Name);
+                    // Check if we have a Value only parameter
+                    if (!parameter.ValueOnlyOutput)
+                    {
+                        // Name should be in output
+                        sb.Append(parameter.NamePrefix);
+                        sb.Append(parameter.Name);
+                    }
 
                     // Process the value
                     string processedValue = parameter.ProcessValue(parameter.Value);
@@ -58,7 +63,13 @@ namespace gMediaTools.Extensions
                     else
                     {
                         // No empty value found
-                        sb.Append(parameter.NameValueSeparator);
+
+                        // Check if we have a Value only parameter
+                        if (!parameter.ValueOnlyOutput)
+                        {
+                            // Name should be in output, so add the name-value separator
+                            sb.Append(parameter.NameValueSeparator);
+                        }
 
                         // Check if the parameter needs to be quoted
                         if (parameter.ValueNeedsToBeQuoted)

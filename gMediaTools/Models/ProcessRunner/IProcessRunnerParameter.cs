@@ -8,17 +8,17 @@ namespace gMediaTools.Models.ProcessRunner
 {
     public interface IProcessRunnerParameter
     {
-        string Name { get; set; }
+        string Name { get; }
 
         string Value { get; set; }
 
-        string NamePrefix { get; set; }
+        string NamePrefix { get; }
 
-        string NameValueSeparator { get; set; }
+        string NameValueSeparator { get; }
 
-        bool ValueNeedsToBeQuoted { get; set; }
+        bool ValueNeedsToBeQuoted { get; }
 
-        bool AllowsEmptyValues { get; set; }
+        bool AllowsEmptyValues { get; }
 
         Func<string, string> ProcessValue { get; set; }
     }

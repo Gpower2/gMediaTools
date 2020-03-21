@@ -106,9 +106,14 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Models\CurveFitting\CurveFittingModel.cs" />
+    <Compile Include="Models\ProcessRunner\AllowsEmptyValueProcessRunnerParameter.cs" />
+    <Compile Include="Models\ProcessRunner\DefaultProcessRunnerParameter.cs" />
+    <Compile Include="Models\ProcessRunner\DefaultProcessRunnerParameterGroup.cs" />
+    <Compile Include="Models\ProcessRunner\DefaultProcessRunnerParameters.cs" />
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameterGroup.cs" />
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameters.cs" />
+    <Compile Include="Models\ProcessRunner\QuotedValueProcessRunnerParameter.cs" />
     <Compile Include="Models\VideoFrameInfo.cs" />
     <Compile Include="Models\VideoFrameSection.cs" />
     <Compile Include="Services\AviSynth\AudioSource\AviSynthDirectShowAudioSourceService.cs" />

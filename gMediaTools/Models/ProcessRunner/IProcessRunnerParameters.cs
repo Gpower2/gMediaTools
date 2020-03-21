@@ -8,8 +8,8 @@ namespace gMediaTools.Models.ProcessRunner
 {
     public interface IProcessRunnerParameters
     {
-        IEnumerable<IProcessRunnerParameterGroup> ParameterGroups { get; set; }
+        IEnumerable<IProcessRunnerParameterGroup> ParameterGroups { get; }
 
-        string ParameterGroupSeparator { get; set; }
+        string ParameterGroupSeparator { get; }
     }
 }

@@ -165,5 +165,10 @@ namespace gMediaTools.Models.MediaAnalyze
         public MediaAnalyzeVideoInfo VideoInfo { get; set; }
 
         public MediaAnalyzeAudioInfo AudioInfo { get; set; }
+
+        public override string ToString()
+        {
+            return Filename;
+        }
     }
 }

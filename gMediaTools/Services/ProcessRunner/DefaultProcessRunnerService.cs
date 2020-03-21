@@ -9,16 +9,14 @@ using System.Threading.Tasks;
 
 namespace gMediaTools.Services.ProcessRunner
 {
-    public abstract class BaseProcessRunnerService : IProcessRunnerService
+    public class DefaultProcessRunnerService : IProcessRunnerService
     {
-        protected const string ProcessFileName = "";
-
         public int RunProcess(IProcessRunnerParameters parameters, Action<Process, string> lineAction)
         {
             // Create the ProcessStartInfo object
             ProcessStartInfo myProcessInfo = new ProcessStartInfo
             {
-                FileName = ProcessFileName,
+                FileName = parameters.ProcessFileName,
                 Arguments = parameters.GetProcessParametersString(),
 
                 // ====================================================

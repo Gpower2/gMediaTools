@@ -45,12 +45,14 @@
             this.lblMaxAllowedHeight = new System.Windows.Forms.Label();
             this.lblMinAllowedBitrate = new System.Windows.Forms.Label();
             this.lblInputFolder = new System.Windows.Forms.Label();
+            this.lstMediaInfoItems = new System.Windows.Forms.ListBox();
+            this.txtMediaInfo = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
             // 
             this.BtnScanMediaFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnScanMediaFiles.Location = new System.Drawing.Point(841, 54);
+            this.BtnScanMediaFiles.Location = new System.Drawing.Point(892, 54);
             this.BtnScanMediaFiles.Name = "BtnScanMediaFiles";
             this.BtnScanMediaFiles.Size = new System.Drawing.Size(80, 45);
             this.BtnScanMediaFiles.TabIndex = 0;
@@ -65,15 +67,14 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtInputFolder.Location = new System.Drawing.Point(16, 26);
             this.txtInputFolder.Name = "txtInputFolder";
-            this.txtInputFolder.Size = new System.Drawing.Size(905, 23);
+            this.txtInputFolder.Size = new System.Drawing.Size(956, 23);
             this.txtInputFolder.TabIndex = 1;
             this.txtInputFolder.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtInputFolder_DragDrop);
             this.txtInputFolder.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtInputFolder_DragEnter);
             // 
             // txtLog
             // 
-            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtLog.Font = new System.Drawing.Font("Consolas", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtLog.Location = new System.Drawing.Point(15, 167);
@@ -81,7 +82,7 @@
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(906, 415);
+            this.txtLog.Size = new System.Drawing.Size(957, 132);
             this.txtLog.TabIndex = 2;
             this.txtLog.WordWrap = false;
             // 
@@ -92,7 +93,7 @@
             this.txtCurrentFile.Location = new System.Drawing.Point(15, 138);
             this.txtCurrentFile.Name = "txtCurrentFile";
             this.txtCurrentFile.ReadOnly = true;
-            this.txtCurrentFile.Size = new System.Drawing.Size(906, 23);
+            this.txtCurrentFile.Size = new System.Drawing.Size(957, 23);
             this.txtCurrentFile.TabIndex = 3;
             // 
             // txtFilesProgress
@@ -102,13 +103,13 @@
             this.txtFilesProgress.Location = new System.Drawing.Point(15, 108);
             this.txtFilesProgress.Name = "txtFilesProgress";
             this.txtFilesProgress.ReadOnly = true;
-            this.txtFilesProgress.Size = new System.Drawing.Size(906, 23);
+            this.txtFilesProgress.Size = new System.Drawing.Size(957, 23);
             this.txtFilesProgress.TabIndex = 4;
             // 
             // btnResolutionBitrate
             // 
             this.btnResolutionBitrate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnResolutionBitrate.Location = new System.Drawing.Point(755, 54);
+            this.btnResolutionBitrate.Location = new System.Drawing.Point(806, 54);
             this.btnResolutionBitrate.Name = "btnResolutionBitrate";
             this.btnResolutionBitrate.Size = new System.Drawing.Size(80, 45);
             this.btnResolutionBitrate.TabIndex = 5;
@@ -270,11 +271,37 @@
             this.lblInputFolder.TabIndex = 16;
             this.lblInputFolder.Text = "Directory";
             // 
+            // lstMediaInfoItems
+            // 
+            this.lstMediaInfoItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstMediaInfoItems.FormattingEnabled = true;
+            this.lstMediaInfoItems.ItemHeight = 15;
+            this.lstMediaInfoItems.Location = new System.Drawing.Point(15, 305);
+            this.lstMediaInfoItems.Name = "lstMediaInfoItems";
+            this.lstMediaInfoItems.Size = new System.Drawing.Size(957, 169);
+            this.lstMediaInfoItems.TabIndex = 17;
+            this.lstMediaInfoItems.SelectedIndexChanged += new System.EventHandler(this.lstMediaInfoItems_SelectedIndexChanged);
+            // 
+            // txtMediaInfo
+            // 
+            this.txtMediaInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMediaInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.txtMediaInfo.Location = new System.Drawing.Point(15, 480);
+            this.txtMediaInfo.Name = "txtMediaInfo";
+            this.txtMediaInfo.Size = new System.Drawing.Size(957, 102);
+            this.txtMediaInfo.TabIndex = 18;
+            this.txtMediaInfo.Text = "";
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(933, 594);
+            this.ClientSize = new System.Drawing.Size(984, 594);
+            this.Controls.Add(this.txtMediaInfo);
+            this.Controls.Add(this.lstMediaInfoItems);
             this.Controls.Add(this.lblInputFolder);
             this.Controls.Add(this.lblMinAllowedBitrate);
             this.Controls.Add(this.lblMaxAllowedHeight);
@@ -319,6 +346,8 @@
         private System.Windows.Forms.Label lblMaxAllowedHeight;
         private System.Windows.Forms.Label lblMinAllowedBitrate;
         private System.Windows.Forms.Label lblInputFolder;
+        private System.Windows.Forms.ListBox lstMediaInfoItems;
+        private System.Windows.Forms.RichTextBox txtMediaInfo;
     }
 }
 

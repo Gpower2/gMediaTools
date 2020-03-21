@@ -20,6 +20,8 @@ namespace gMediaTools.Models.ProcessRunner
 
         bool AllowsEmptyValues { get; }
 
+        bool Include { get; set; }
+
         Func<string, string> ProcessValue { get; set; }
     }
 }

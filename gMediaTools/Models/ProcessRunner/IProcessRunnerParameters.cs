@@ -11,5 +11,7 @@ namespace gMediaTools.Models.ProcessRunner
         IEnumerable<IProcessRunnerParameterGroup> ParameterGroups { get; }
 
         string ParameterGroupSeparator { get; }
+
+        string ProcessFileName { get; }
     }
 }

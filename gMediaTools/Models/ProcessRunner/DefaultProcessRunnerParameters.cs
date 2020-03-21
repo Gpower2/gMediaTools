@@ -11,8 +11,11 @@ namespace gMediaTools.Models.ProcessRunner
         public IEnumerable<IProcessRunnerParameterGroup> ParameterGroups { get; } = new List<IProcessRunnerParameterGroup>();
         public string ParameterGroupSeparator { get; }
 
-        public DefaultProcessRunnerParameters(string parameterGroupSeparator)
+        public string ProcessFileName { get; }
+
+        public DefaultProcessRunnerParameters(string processFileName, string parameterGroupSeparator)
         {
+            ProcessFileName = processFileName ?? throw new ArgumentNullException(nameof(processFileName));
             ParameterGroupSeparator = parameterGroupSeparator ?? throw new ArgumentNullException(nameof(parameterGroupSeparator));
         }
     }

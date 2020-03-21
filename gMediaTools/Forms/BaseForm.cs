@@ -17,17 +17,17 @@ namespace gMediaTools.Forms
         /// <summary>
         /// Gets the form's border width in pixels
         /// </summary>
-        public Int32 BorderWidth
+        public int BorderWidth
         {
-            get { return Convert.ToInt32(Convert.ToDouble((this.Width - this.ClientSize.Width)) / 2.0); }
+            get { return Convert.ToInt32(Convert.ToDouble((Width - ClientSize.Width)) / 2.0); }
         }
 
         /// <summary>
         /// Gets the form's Title Bar Height in pixels
         /// </summary>
-        public Int32 TitlebarHeight
+        public int TitlebarHeight
         {
-            get { return this.Height - this.ClientSize.Height - 2 * BorderWidth; }
+            get { return Height - ClientSize.Height - 2 * BorderWidth; }
         }
 
         public BaseForm() : base()
@@ -55,7 +55,7 @@ namespace gMediaTools.Forms
         /// Returns the full path and filename of the executing assembly
         /// </summary>
         /// <returns></returns>
-        protected String GetExecutingAssemblyLocation()
+        protected string GetExecutingAssemblyLocation()
         {
             return Assembly.GetExecutingAssembly().Location;
         }
@@ -64,7 +64,7 @@ namespace gMediaTools.Forms
         /// Returns the current directory of the executing assembly
         /// </summary>
         /// <returns></returns>
-        protected String GetCurrentDirectory()
+        protected string GetCurrentDirectory()
         {
             return Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         }
@@ -84,27 +84,27 @@ namespace gMediaTools.Forms
             ShowErrorMessage(errorException.Message);
         }
 
-        protected void ShowErrorMessage(String argMessage, String argTitle = "Error!")
+        protected void ShowErrorMessage(string argMessage, string argTitle = "Error!")
         {
-            MessageBox.Show(this, String.Format("An error has occured!{0}{0}{1}", Environment.NewLine, argMessage), argTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(this, string.Format("An error has occured!{0}{0}{1}", Environment.NewLine, argMessage), argTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
-        protected void ShowSuccessMessage(String argMessage, String argTitle = "Success!")
-        {
-            MessageBox.Show(this, argMessage, argTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        protected void ShowInformationMessage(String argMessage, String argTitle = "Information")
+        protected void ShowSuccessMessage(string argMessage, string argTitle = "Success!")
         {
             MessageBox.Show(this, argMessage, argTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        protected void ShowWarningMessage(String warningMessage, String warningTitle = "Warning!")
+        protected void ShowInformationMessage(string argMessage, string argTitle = "Information")
         {
-            MessageBox.Show(this, String.Format("Warning!{0}{0}{1}", Environment.NewLine, warningMessage), warningTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(this, argMessage, argTitle, MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
-        protected DialogResult ShowQuestion(String argQuestion, String argTitle, bool argShowCancel = true)
+        protected void ShowWarningMessage(string warningMessage, string warningTitle = "Warning!")
+        {
+            MessageBox.Show(this, string.Format("Warning!{0}{0}{1}", Environment.NewLine, warningMessage), warningTitle, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+        }
+
+        protected DialogResult ShowQuestion(string argQuestion, string argTitle, bool argShowCancel = true)
         {
             MessageBoxButtons msgBoxBtns = MessageBoxButtons.YesNoCancel;
             if (!argShowCancel)

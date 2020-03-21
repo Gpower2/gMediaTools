@@ -241,8 +241,6 @@ namespace gMediaTools.Services.MediaAnalyzer
                             actions.UpdateProgressAction(_reEncodeFiles, _totalFiles);
                             actions.HandleMediaForReencodeAction(result);
 
-                            ServiceFactory.GetService<AviSynthScriptService>().CreateAviSynthVideoScript(result);
-
                             // Check for no audio, or more than one audio
                             if (audioTracks == null || !audioTracks.Any() || audioTracks.Count() > 1)
                             {
@@ -264,8 +262,6 @@ namespace gMediaTools.Services.MediaAnalyzer
                             {
                                 result.NeedsAudioReencode = true;
                                 result.TargetAudioBitrate = targetAudioBitrate;
-
-                                ServiceFactory.GetService<AviSynthScriptService>().CreateAviSynthAudioScript(result);
                             }
                         }
                     }

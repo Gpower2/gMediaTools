@@ -98,6 +98,8 @@ namespace gMediaTools.Forms
                         }
                     }
                 );
+
+                lstMediaInfoItems.Items.AddRange(mediaToReencode.ToArray());
             }
             catch (Exception ex)
             {
@@ -123,7 +125,6 @@ namespace gMediaTools.Forms
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
                 ShowExceptionMessage(ex);
             }
         }
@@ -150,7 +151,6 @@ namespace gMediaTools.Forms
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex);
                 ShowExceptionMessage(ex);
             }
         }
@@ -159,6 +159,53 @@ namespace gMediaTools.Forms
         {
             FrmResolutionBitrateEditor frm = new FrmResolutionBitrateEditor();
             frm.ShowDialog(this);
+        }
+
+        private void lstMediaInfoItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    txtMediaInfo.Clear();
+                    return;
+                }
+
+                var mediaInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
+
+                if (mediaInfo == null)
+                {
+                    txtMediaInfo.Clear();
+                    return;
+                }
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendLine($"{nameof(mediaInfo.Filename)}: {mediaInfo.Filename}");                
+                sb.AppendLine("######################");
+                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.Width)}: {mediaInfo.VideoInfo.Width}");
+                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.Height)}: {mediaInfo.VideoInfo.Height}");
+                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.CodecID)}: {mediaInfo.VideoInfo.CodecID}");
+                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.Bitrate)}: {mediaInfo.VideoInfo.Bitrate}");
+                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.FrameRateMode)}: {mediaInfo.VideoInfo.FrameRateMode}");
+                sb.AppendLine("######################");
+                sb.AppendLine($"{nameof(mediaInfo.NeedsVideoReencode)}: {mediaInfo.NeedsVideoReencode}");
+                sb.AppendLine($"{nameof(mediaInfo.TargetVideoBitrate)}: {mediaInfo.TargetVideoBitrate}");
+                sb.AppendLine($"{nameof(mediaInfo.TargetVideoWidth)}: {mediaInfo.TargetVideoWidth}");
+                sb.AppendLine($"{nameof(mediaInfo.TargetVideoHeight)}: {mediaInfo.TargetVideoHeight}");
+                sb.AppendLine("######################");
+                sb.AppendLine($"{nameof(mediaInfo.NeedsAudioReencode)}: {mediaInfo.NeedsAudioReencode}");
+                sb.AppendLine($"{nameof(mediaInfo.TargetAudioBitrate)}: {mediaInfo.TargetAudioBitrate}");
+                sb.AppendLine("######################");
+                sb.AppendLine($"{nameof(mediaInfo.Size)}: {mediaInfo.Size}");
+                sb.AppendLine($"{nameof(mediaInfo.TargetSize)}: {mediaInfo.TargetSize}");
+
+                txtMediaInfo.Text = sb.ToString();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
         }
     }
 }

@@ -113,6 +113,7 @@
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameterGroup.cs" />
     <Compile Include="Models\ProcessRunner\IProcessRunnerParameters.cs" />
+    <Compile Include="Models\ProcessRunner\NonEmptyValueProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\QuotedValueProcessRunnerParameter.cs" />
     <Compile Include="Models\VideoFrameInfo.cs" />
     <Compile Include="Models\VideoFrameSection.cs" />
@@ -170,8 +171,9 @@
     <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
     <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
-    <Compile Include="Services\ProcessRunner\BaseProcessRunnerService.cs" />
+    <Compile Include="Services\ProcessRunner\DefaultProcessRunnerService.cs" />
     <Compile Include="Services\ProcessRunner\IProcessRunnerService.cs" />
+    <Compile Include="Services\ProcessRunner\x264\X264ProcessRunnerService.cs" />
     <Compile Include="Services\ServiceFactory.cs" />
     <Compile Include="Services\TimeCodes\TimeCodesParserService.cs" />
     <Compile Include="Services\TimeCodes\TimeCodesProviderService.cs" />

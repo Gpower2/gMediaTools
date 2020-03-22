@@ -169,7 +169,7 @@
     <Compile Include="Services\AviSynth\VideoSource\IAviSynthVideoSourceService.cs" />
     <Compile Include="Services\CurveFitting\ICurveFittingService.cs" />
     <Compile Include="Services\CurveFitting\LogarithmicCurveFittingService.cs" />
-    <Compile Include="Services\Encoder\VideoEncoderService.cs" />
+    <Compile Include="Services\Encoder\X264VideoEncoderService.cs" />
     <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
     <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

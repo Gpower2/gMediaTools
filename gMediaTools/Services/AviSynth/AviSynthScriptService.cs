@@ -118,12 +118,12 @@ namespace gMediaTools.Services.AviSynth
 
             // Use AviSynthLWLibavAudioSourceService Source filter to get the audio
             //=============================
-            // TODO: Check if we can switch to AviSynthLWLibavAudioSourceService
             // Currently it has a bug in the latest versions that do not produce clips with correct audio length
             // Last good working version: r920-20161216
             // Use FFMS2 till then which seems to produce correct results
-            //AviSynthLWLibavAudioSourceService sourceService = ServiceFactory.GetService<AviSynthLWLibavAudioSourceService>();
-            AviSynthFfms2AudioSourceService sourceService = ServiceFactory.GetService<AviSynthFfms2AudioSourceService>();
+            // UPDATE: LSMASH 20200322 fixes the audio issues, switch to AviSynthLWLibavAudioSourceService
+            AviSynthLWLibavAudioSourceService sourceService = ServiceFactory.GetService<AviSynthLWLibavAudioSourceService>();
+            //AviSynthFfms2AudioSourceService sourceService = ServiceFactory.GetService<AviSynthFfms2AudioSourceService>();
 
             avsScriptBuilder.AppendLine(sourceService.GetAviSynthAudioSource(mediaInfo.Filename, -1, false));
 

@@ -131,11 +131,19 @@ namespace gMediaTools.Models.MediaAnalyze
             } 
         }
 
-        public double TargetBitrateInKbps
+        public double TargetVideoBitrateInKbps
         {
             get
             {
                 return Math.Round(((double)TargetVideoBitrate) / 1000.0, 3);
+            }
+        }
+
+        public double TargetAudioBitrateInKbps
+        {
+            get
+            {
+                return Math.Round(((double)TargetAudioBitrate) / 1000.0, 3);
             }
         }
 
@@ -156,7 +164,7 @@ namespace gMediaTools.Models.MediaAnalyze
         {
             get
             {
-                string logText = $"{VideoInfo?.Width}x{VideoInfo?.Height} => {TargetVideoWidth}x{TargetVideoHeight} : {VideoInfo?.CodecID} : {BitrateInKbps:#####0.000} kbps => {TargetBitrateInKbps:#####0.000} kbps ({BitrateGainPercentage}%) {Filename}";
+                string logText = $"{VideoInfo?.Width}x{VideoInfo?.Height} => {TargetVideoWidth}x{TargetVideoHeight} : {VideoInfo?.CodecID} : {BitrateInKbps:#####0.000} kbps => {TargetVideoBitrateInKbps:#####0.000} kbps ({BitrateGainPercentage}%) {Filename}";
 
                 return logText;
             }

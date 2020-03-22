@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace gMediaTools.Services.Encoder
 {
-    public class VideoEncoderService
+    public class X264VideoEncoderService
     {
         public void Encode(MediaAnalyzeInfo mediaAnalyzeInfo, string x264FileName)
         {
@@ -31,11 +31,12 @@ namespace gMediaTools.Services.Encoder
                 .ResetParameters()
                 .IncludeParameterWithValue("infile", avsScript)
                 .IncludeParameterWithValue("output", outputFile)
+                .IncludeParameterWithValue("bitrate", Math.Ceiling(mediaAnalyzeInfo.TargetVideoBitrateInKbps).ToString("#0"))
                 .IncludeParameterWithValue("muxer", "mkv");
 
             DefaultProcessRunnerService defaultProcessRunnerService = ServiceFactory.GetService<DefaultProcessRunnerService>();
 
-            defaultProcessRunnerService.RunProcess(parameters, new Action<System.Diagnostics.Process, string>((process, line) => Debug.WriteLine(line)));
+            defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => Debug.WriteLine(line)));
         }
     }
 }

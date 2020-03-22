@@ -227,7 +227,7 @@ namespace gMediaTools.Forms
                     return;
                 }
 
-                VideoEncoderService videoEncoderService = ServiceFactory.GetService<VideoEncoderService>();
+                X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
 
                 await Task.Run(() => videoEncoderService.Encode(mediaInfo, @"E:\Programs\MeGUI\tools\x264\x264.exe"));
             }

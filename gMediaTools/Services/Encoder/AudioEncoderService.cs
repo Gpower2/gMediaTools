@@ -44,7 +44,7 @@ namespace gMediaTools.Services.Encoder
                 // Define format type tag
                 // 1 for int, 3 for float
                 int formatTypeTag = 1;            
-                if (avsFile.Clip.OriginalAudioSampleType == AvsAudioSampleType.FLOAT)
+                if (avsFile.Clip.AudioSampleType == AvsAudioSampleType.FLOAT)
                 {
                     formatTypeTag = 3;
                 }

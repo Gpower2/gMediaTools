@@ -19,7 +19,7 @@ namespace gMediaTools.Services.Encoder
     {
         private const int MAX_SAMPLES_PER_ONCE = 4096;
 
-        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, IAudioEncoder audioEncoder, IAudioEncoderSettings settings)
+        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, IAudioEncoder audioEncoder, IAudioEncoderSettings settings, out string outputFileName)
         {
             // Get AviSynth script
             AviSynthScriptService aviSynthScriptService = ServiceFactory.GetService<AviSynthScriptService>();
@@ -28,6 +28,9 @@ namespace gMediaTools.Services.Encoder
 
             // Open the AviSynth script
             AviSynthFileService aviSynthFileService = ServiceFactory.GetService<AviSynthFileService>();
+
+            // Determine the output filename
+            outputFileName = $"{mediaAnalyzeInfo.Filename}.reencode.{settings.FileExtension}".GetNewFileName();
 
             // Open the AviSynth Script to generate the timecodes
             using (var avsFile = aviSynthFileService.OpenAviSynthScriptFile(avsScript))
@@ -49,9 +52,6 @@ namespace gMediaTools.Services.Encoder
                     formatTypeTag = 3;
                 }
 
-                // Determine the output filename
-                string outputFile = $"{mediaAnalyzeInfo.Filename}.reencode.{settings.FileExtension}".GetNewFileName();
-
                 using (var process = new Process())
                 {
                     // Create the ProcessStartInfo object
@@ -65,15 +65,17 @@ namespace gMediaTools.Services.Encoder
                         // {4} means samplecount
                         // {5} means size in bytes
                         // {6} means format (1 int, 3 float)
+                        // {7} means target bitrate
                         Arguments = string.Format(
                             audioEncoder.ExecutableArguments,
-                            outputFile,
+                            outputFileName,
                             avsFile.Clip.AudioSampleRate,
                             avsFile.Clip.AudioBitsPerSample,
                             avsFile.Clip.AudioChannelsCount,
                             avsFile.Clip.AudioSamplesCount,
                             totalSizeInBytes,
-                            formatTypeTag
+                            formatTypeTag,
+                            mediaAnalyzeInfo.TargetAudioBitrate
                         ),
 
                         FileName = audioEncoder.EncoderFileName,

@@ -228,19 +228,46 @@ namespace gMediaTools.Forms
                     return;
                 }
 
-                // Encode video
-                X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
+                // Sanity check
+                if (!mediaInfo.NeedsVideoReencode && !mediaInfo.NeedsAudioReencode)
+                {
+                    return;
+                }
 
-                await Task.Run(() => videoEncoderService.Encode(mediaInfo, @"E:\Programs\MeGUI\tools\x264\x264.exe"));
+                string videoOutputFileName = "";
+
+                // Encode video
+                if (mediaInfo.NeedsVideoReencode)
+                {
+                    X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
+
+                    int res = await Task.Run(() => videoEncoderService.Encode(mediaInfo, @"E:\Programs\MeGUI\tools\x264\x264.exe", out videoOutputFileName));
+                    if (res != 0)
+                    {
+                        throw new Exception($"Video Encoder failed! Exit code : {res}");
+                    }
+                }
+
+                string audioOutputFileName = "";
 
                 // Encode Audio
-                AudioEncoderService audioEncoderService = ServiceFactory.GetService<AudioEncoderService>();
+                if (mediaInfo.NeedsAudioReencode)
+                {
+                    AudioEncoderService audioEncoderService = ServiceFactory.GetService<AudioEncoderService>();
 
-                NeroAacAudioEncoder audioEncoder = new NeroAacAudioEncoder(@"E:\Programs\MeGUI\tools\neroAacEnc.exe");
+                    NeroAacAudioEncoder audioEncoder = new NeroAacAudioEncoder(@"E:\Programs\MeGUI\tools\eac3to\neroAacEnc.exe");
 
-                DefaultAudioEncoderSettings audioEncoderSettings = new DefaultAudioEncoderSettings(-1, "m4a");
+                    DefaultAudioEncoderSettings audioEncoderSettings = new DefaultAudioEncoderSettings(-1, "m4a");
 
-                await Task.Run(() => audioEncoderService.Encode(mediaInfo, audioEncoder, audioEncoderSettings));
+                    int res = await Task.Run(() => audioEncoderService.Encode(mediaInfo, audioEncoder, audioEncoderSettings, out audioOutputFileName));
+                    if (res != 0)
+                    {
+                        throw new Exception($"Audio Encoder failed! Exit code : {res}");
+                    }
+                }
+
+                // Mux final video!
+
             }
             catch (Exception ex)
             {

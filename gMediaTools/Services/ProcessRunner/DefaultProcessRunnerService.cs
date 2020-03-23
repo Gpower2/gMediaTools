@@ -40,7 +40,7 @@ namespace gMediaTools.Services.ProcessRunner
                 myProcess.Start();
 
                 // Read the Standard output character by character
-                myProcess.ReadStreamPerCharacter(parameters.UseOutputStream, lineAction);
+                Task.Run(() => myProcess.ReadStreamPerCharacter(parameters.UseOutputStream, lineAction));
 
                 // Wait for the process to exit
                 myProcess.WaitForExit();

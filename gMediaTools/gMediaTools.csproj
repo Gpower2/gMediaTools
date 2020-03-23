@@ -106,6 +106,10 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Models\CurveFitting\CurveFittingModel.cs" />
+    <Compile Include="Models\Encoder\DefaultAudioEncoderSettings.cs" />
+    <Compile Include="Models\Encoder\IAudioEncoder.cs" />
+    <Compile Include="Models\Encoder\IAudioEncoderSettings.cs" />
+    <Compile Include="Models\Encoder\NeroAacAudioEncoder.cs" />
     <Compile Include="Models\ProcessRunner\AllowsEmptyValueProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\DefaultProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\DefaultProcessRunnerParameterGroup.cs" />
@@ -169,6 +173,7 @@
     <Compile Include="Services\AviSynth\VideoSource\IAviSynthVideoSourceService.cs" />
     <Compile Include="Services\CurveFitting\ICurveFittingService.cs" />
     <Compile Include="Services\CurveFitting\LogarithmicCurveFittingService.cs" />
+    <Compile Include="Services\Encoder\AudioEncoderService.cs" />
     <Compile Include="Services\Encoder\X264VideoEncoderService.cs" />
     <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
     <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />

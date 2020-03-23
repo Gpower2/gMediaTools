@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using gMediaTools.Models.Encoder;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services;
 using gMediaTools.Services.CurveFitting;
@@ -227,9 +228,19 @@ namespace gMediaTools.Forms
                     return;
                 }
 
+                // Encode video
                 X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
 
                 await Task.Run(() => videoEncoderService.Encode(mediaInfo, @"E:\Programs\MeGUI\tools\x264\x264.exe"));
+
+                // Encode Audio
+                AudioEncoderService audioEncoderService = ServiceFactory.GetService<AudioEncoderService>();
+
+                NeroAacAudioEncoder audioEncoder = new NeroAacAudioEncoder(@"E:\Programs\MeGUI\tools\neroAacEnc.exe");
+
+                DefaultAudioEncoderSettings audioEncoderSettings = new DefaultAudioEncoderSettings(-1, "m4a");
+
+                await Task.Run(() => audioEncoderService.Encode(mediaInfo, audioEncoder, audioEncoderSettings));
             }
             catch (Exception ex)
             {

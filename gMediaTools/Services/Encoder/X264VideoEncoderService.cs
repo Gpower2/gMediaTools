@@ -27,14 +27,42 @@ namespace gMediaTools.Services.Encoder
 
             var parameters = service.GetAllParameters(x264FileName);
 
+            // Pass 1
             parameters
                 .ResetParameters()
                 .IncludeParameterWithValue("infile", avsScript)
                 .IncludeParameterWithValue("output", outputFileName)
+
+                .IncludeParameterWithValue("pass", "1")
+
+                .IncludeParameterWithValue("preset", "placebo")               
                 .IncludeParameterWithValue("bitrate", Math.Ceiling(mediaAnalyzeInfo.TargetVideoBitrateInKbps).ToString("#0"))
+                .IncludeParameterWithValue("deblock", "-1:-1")
+
+                .IncludeParameterWithValue("bframes", "3")
+                .IncludeParameterWithValue("ref", "3")
+                .IncludeParameterWithValue("qpmin", "10")
+                .IncludeParameterWithValue("qpmax", "51")
+
+                .IncludeParameterWithValue("vbv-bufsize", "50000")
+                .IncludeParameterWithValue("vbv-maxrate", "50000")
+                .IncludeParameterWithValue("ratetol", "2.0")
+                .IncludeParameterWithValue("rc-lookahead", "40")
+                .IncludeParameterWithValue("merange", "16")
+                .IncludeParameterWithValue("me", "umh")
+                .IncludeParameterWithValue("subme", "6")
+                .IncludeParameterWithValue("trellis", "1")
+
+                .IncludeParameterWithNoValue("no-dct-decimate")
+
                 .IncludeParameterWithValue("muxer", "mkv");
 
             DefaultProcessRunnerService defaultProcessRunnerService = ServiceFactory.GetService<DefaultProcessRunnerService>();
+
+            defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => Debug.WriteLine(line)));
+
+            // Pass 2
+            parameters.IncludeParameterWithValue("pass", "2");
 
             return defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => Debug.WriteLine(line)));
         }

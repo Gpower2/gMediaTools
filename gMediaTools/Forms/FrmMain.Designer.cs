@@ -48,6 +48,9 @@
             this.lstMediaInfoItems = new System.Windows.Forms.ListBox();
             this.txtMediaInfo = new System.Windows.Forms.RichTextBox();
             this.btnEncode = new System.Windows.Forms.Button();
+            this.btnEncodeAll = new System.Windows.Forms.Button();
+            this.txtEncodeLog = new System.Windows.Forms.TextBox();
+            this.txtEncodeProgress = new gMediaTools.GTextBox();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
@@ -280,7 +283,7 @@
             this.lstMediaInfoItems.ItemHeight = 15;
             this.lstMediaInfoItems.Location = new System.Drawing.Point(15, 305);
             this.lstMediaInfoItems.Name = "lstMediaInfoItems";
-            this.lstMediaInfoItems.Size = new System.Drawing.Size(957, 169);
+            this.lstMediaInfoItems.Size = new System.Drawing.Size(957, 109);
             this.lstMediaInfoItems.TabIndex = 17;
             this.lstMediaInfoItems.SelectedIndexChanged += new System.EventHandler(this.lstMediaInfoItems_SelectedIndexChanged);
             // 
@@ -290,16 +293,16 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMediaInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.txtMediaInfo.Location = new System.Drawing.Point(15, 480);
+            this.txtMediaInfo.Location = new System.Drawing.Point(15, 449);
             this.txtMediaInfo.Name = "txtMediaInfo";
-            this.txtMediaInfo.Size = new System.Drawing.Size(871, 102);
+            this.txtMediaInfo.Size = new System.Drawing.Size(871, 100);
             this.txtMediaInfo.TabIndex = 18;
             this.txtMediaInfo.Text = "";
             // 
             // btnEncode
             // 
             this.btnEncode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncode.Location = new System.Drawing.Point(892, 480);
+            this.btnEncode.Location = new System.Drawing.Point(892, 449);
             this.btnEncode.Name = "btnEncode";
             this.btnEncode.Size = new System.Drawing.Size(80, 45);
             this.btnEncode.TabIndex = 19;
@@ -307,11 +310,55 @@
             this.btnEncode.UseVisualStyleBackColor = true;
             this.btnEncode.Click += new System.EventHandler(this.btnEncode_Click);
             // 
+            // btnEncodeAll
+            // 
+            this.btnEncodeAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEncodeAll.Location = new System.Drawing.Point(892, 504);
+            this.btnEncodeAll.Name = "btnEncodeAll";
+            this.btnEncodeAll.Size = new System.Drawing.Size(80, 45);
+            this.btnEncodeAll.TabIndex = 20;
+            this.btnEncodeAll.Text = "Encode All";
+            this.btnEncodeAll.UseVisualStyleBackColor = true;
+            this.btnEncodeAll.Click += new System.EventHandler(this.btnEncodeAll_Click);
+            // 
+            // txtEncodeLog
+            // 
+            this.txtEncodeLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtEncodeLog.Location = new System.Drawing.Point(15, 420);
+            this.txtEncodeLog.Name = "txtEncodeLog";
+            this.txtEncodeLog.ReadOnly = true;
+            this.txtEncodeLog.Size = new System.Drawing.Size(871, 23);
+            this.txtEncodeLog.TabIndex = 21;
+            // 
+            // txtEncodeProgress
+            // 
+            this.txtEncodeProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtEncodeProgress.DataObject = null;
+            this.txtEncodeProgress.Decimals = 2;
+            this.txtEncodeProgress.DecimalValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.txtEncodeProgress.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.txtEncodeProgress.Int32Value = 0;
+            this.txtEncodeProgress.Int64Value = ((long)(0));
+            this.txtEncodeProgress.Location = new System.Drawing.Point(892, 420);
+            this.txtEncodeProgress.Name = "txtEncodeProgress";
+            this.txtEncodeProgress.ReadOnly = true;
+            this.txtEncodeProgress.Size = new System.Drawing.Size(80, 23);
+            this.txtEncodeProgress.TabIndex = 22;
+            this.txtEncodeProgress.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Text;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(984, 594);
+            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.Controls.Add(this.txtEncodeProgress);
+            this.Controls.Add(this.txtEncodeLog);
+            this.Controls.Add(this.btnEncodeAll);
             this.Controls.Add(this.btnEncode);
             this.Controls.Add(this.txtMediaInfo);
             this.Controls.Add(this.lstMediaInfoItems);
@@ -362,6 +409,9 @@
         private System.Windows.Forms.ListBox lstMediaInfoItems;
         private System.Windows.Forms.RichTextBox txtMediaInfo;
         private System.Windows.Forms.Button btnEncode;
+        private System.Windows.Forms.Button btnEncodeAll;
+        private System.Windows.Forms.TextBox txtEncodeLog;
+        private GTextBox txtEncodeProgress;
     }
 }
 

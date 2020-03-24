@@ -202,10 +202,11 @@ namespace gMediaTools.Services.MediaAnalyzer
                 var audioTracks = mi?.AudioTracks;
 
                 // Get audio track
-                var audioTrack = audioTracks.First();
+                var audioTrack = audioTracks?.FirstOrDefault();
 
                 // Check if we have valid audio track info
-                if (int.TryParse(audioTrack.Channels, out int audioChannels)
+                if (audioTrack != null 
+                    && int.TryParse(audioTrack.Channels, out int audioChannels)
                     && int.TryParse(audioTrack.BitRate, out int audioBitrate))
                 {
                     MediaAnalyzeAudioInfo audioResult = new MediaAnalyzeAudioInfo();
@@ -256,7 +257,8 @@ namespace gMediaTools.Services.MediaAnalyzer
                             }
 
                             // Check if we need to re encode the audio track
-                            bool isCandidateForAudioReencode = IsCandidateForAudioReencode(result.AudioInfo.Channels, result.AudioInfo.Bitrate, out int targetAudioBitrate);
+                            bool isWindowsMedia = result.FileContainerFormat.ToLower().Trim().Equals("windows media");
+                            bool isCandidateForAudioReencode = IsCandidateForAudioReencode(isWindowsMedia, result.AudioInfo.Channels, result.AudioInfo.Bitrate, out int targetAudioBitrate);
 
                             if (isCandidateForAudioReencode)
                             {
@@ -345,22 +347,22 @@ namespace gMediaTools.Services.MediaAnalyzer
             return needResize || (bitrate < minPercentage * targetBitrate || bitrate > maxPercentage * targetBitrate);
         }
 
-        private bool IsCandidateForAudioReencode(int audioChannels, int audioBitrate, out int targetAudioBitrate)
-        {
+        private bool IsCandidateForAudioReencode(bool isWindowsMedia, int audioChannels, int audioBitrate, out int targetAudioBitrate)
+        {            
             if (audioChannels == 1)
             {
                 targetAudioBitrate = 64000;
-                return audioBitrate > targetAudioBitrate * 1.1;
+                return isWindowsMedia || audioBitrate > targetAudioBitrate * 1.1;
             }
             else if (audioChannels == 2)
             {
                 targetAudioBitrate = 128000;
-                return audioBitrate > targetAudioBitrate * 1.1;
+                return isWindowsMedia || audioBitrate > targetAudioBitrate * 1.1;
             }
             else if(audioChannels > 2)
             {
                 targetAudioBitrate = 384000;
-                return audioBitrate > targetAudioBitrate * 1.1;
+                return isWindowsMedia || audioBitrate > targetAudioBitrate * 1.1;
             }
             else
             {

@@ -11,10 +11,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using gMediaTools.Models.Encoder;
 using gMediaTools.Models.MediaAnalyze;
+using gMediaTools.Models.Muxer;
 using gMediaTools.Services;
 using gMediaTools.Services.CurveFitting;
 using gMediaTools.Services.Encoder;
 using gMediaTools.Services.MediaAnalyzer;
+using gMediaTools.Services.Muxer;
 
 namespace gMediaTools.Forms
 {
@@ -267,7 +269,17 @@ namespace gMediaTools.Forms
                 }
 
                 // Mux final video!
+                DefaultMuxerSettings muxerSettings = new DefaultMuxerSettings(
+                    videoOutputFileName, 
+                    mediaInfo.NeedsAudioReencode ? audioOutputFileName: videoOutputFileName, 
+                    "mkv"
+                );
 
+                MkvMergeMuxer muxer = new MkvMergeMuxer(@"C:\Program Files\MKVToolNix\mkvmerge.exe");
+
+                MkvMergeMuxerService mkvMergeMuxerService = new MkvMergeMuxerService();
+
+                mkvMergeMuxerService.Mux(muxer, muxerSettings, out string muxedFilename);
             }
             catch (Exception ex)
             {

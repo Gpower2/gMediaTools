@@ -110,6 +110,10 @@
     <Compile Include="Models\Encoder\IAudioEncoder.cs" />
     <Compile Include="Models\Encoder\IAudioEncoderSettings.cs" />
     <Compile Include="Models\Encoder\NeroAacAudioEncoder.cs" />
+    <Compile Include="Models\Muxer\DefaultMuxerSettings.cs" />
+    <Compile Include="Models\Muxer\IMuxer.cs" />
+    <Compile Include="Models\Muxer\IMuxerSettings.cs" />
+    <Compile Include="Models\Muxer\MkvMergeMuxer.cs" />
     <Compile Include="Models\ProcessRunner\AllowsEmptyValueProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\DefaultProcessRunnerParameter.cs" />
     <Compile Include="Models\ProcessRunner\DefaultProcessRunnerParameterGroup.cs" />
@@ -178,8 +182,10 @@
     <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
     <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Services\Muxer\MkvMergeMuxerService.cs" />
     <Compile Include="Services\ProcessRunner\DefaultProcessRunnerService.cs" />
     <Compile Include="Services\ProcessRunner\IProcessRunnerService.cs" />
+    <Compile Include="Services\ProcessRunner\MkvMerge\MkvMergeProcessRunnerService.cs" />
     <Compile Include="Services\ProcessRunner\x264\X264ProcessRunnerService.cs" />
     <Compile Include="Services\ServiceFactory.cs" />
     <Compile Include="Services\TimeCodes\TimeCodesParserService.cs" />

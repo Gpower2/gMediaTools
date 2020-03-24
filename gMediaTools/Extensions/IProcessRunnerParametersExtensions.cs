@@ -94,6 +94,44 @@ namespace gMediaTools.Extensions
         }
 
         /// <summary>
+        /// Search for a parameter by its name in a specific group and set it to Include = true and set the value
+        /// Returns the IProcessRunnerParameters object to enable chaining
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="parameterName"></param>
+        public static IProcessRunnerParameters IncludeParameterWithValue(this IProcessRunnerParameters parameters, string groupName, string parameterName, string parameterValue)
+        {
+            // Search all groups
+            foreach (var group in parameters.ParameterGroups)
+            {
+                // Check for group name
+                if (group.Name == groupName)
+                {
+                    // Group found!
+
+                    // Search all group parameters
+                    foreach (var parameter in group.Parameters)
+                    {
+                        // Check for parameter name
+                        if (parameter.Name == parameterName)
+                        {
+                            // Parameter found!
+
+                            // Set parameter to Include = true and set the Value
+                            parameter.Include = true;
+                            parameter.Value = parameterValue;
+
+                            return parameters;
+                        }
+                    }
+                }
+            }
+
+            // Parameter was not found!
+            throw new Exception($"Parameter {parameterName} was not found!");
+        }
+
+        /// <summary>
         /// Search for a parameter by its name and set it to Include = true and set the value
         /// Returns the IProcessRunnerParameters object to enable chaining
         /// </summary>
@@ -117,6 +155,50 @@ namespace gMediaTools.Extensions
                         parameter.Value = parameterValue;
 
                         return parameters;
+                    }
+                }
+            }
+
+            // Parameter was not found!
+            throw new Exception($"Parameter {parameterName} was not found!");
+        }
+
+        /// <summary>
+        /// Search for a parameter by its name in a specific group and set it to Include = true
+        /// Returns the IProcessRunnerParameters object to enable chaining
+        /// </summary>
+        /// <param name="parameters"></param>
+        /// <param name="parameterName"></param>
+        public static IProcessRunnerParameters IncludeParameterWithNoValue(this IProcessRunnerParameters parameters, string groupName, string parameterName)
+        {
+            // Search all groups
+            foreach (var group in parameters.ParameterGroups)
+            {
+                // Check for group name
+                if (group.Name == groupName)
+                {
+                    // Group found!
+
+                    // Search all group parameters
+                    foreach (var parameter in group.Parameters)
+                    {
+                        // Check for parameter name
+                        if (parameter.Name == parameterName)
+                        {
+                            // Parameter found!
+
+                            // Check if parameter allows for empty values
+                            if (!parameter.AllowsEmptyValues)
+                            {
+                                throw new Exception($"Parameter {parameterName} was found, but it doesn't allow empty values!");
+                            }
+
+                            // Set parameter to Include = true
+                            parameter.Include = true;
+                            parameter.Value = "";
+
+                            return parameters;
+                        }
                     }
                 }
             }

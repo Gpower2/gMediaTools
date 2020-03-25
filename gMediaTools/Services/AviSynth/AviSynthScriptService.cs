@@ -122,8 +122,19 @@ namespace gMediaTools.Services.AviSynth
             // Last good working version: r920-20161216
             // Use FFMS2 till then which seems to produce correct results
             // UPDATE: LSMASH 20200322 fixes the audio issues, switch to AviSynthLWLibavAudioSourceService
-            AviSynthLWLibavAudioSourceService sourceService = ServiceFactory.GetService<AviSynthLWLibavAudioSourceService>();
-            //AviSynthFfms2AudioSourceService sourceService = ServiceFactory.GetService<AviSynthFfms2AudioSourceService>();
+            // UPDATE: LSMASH still seems to have problems with some Windows Meadia Audio, so use FFMS2 for those files
+
+            IAviSynthAudioSourceService sourceService;
+
+            string fileContainerFormat = mediaInfo.FileContainerFormat.Trim().ToLower();
+            if (fileContainerFormat.Equals("windows media"))
+            {
+                sourceService = ServiceFactory.GetService<AviSynthFfms2AudioSourceService>();
+            }
+            else
+            {
+                sourceService = ServiceFactory.GetService<AviSynthLWLibavAudioSourceService>();
+            }
 
             avsScriptBuilder.AppendLine(sourceService.GetAviSynthAudioSource(mediaInfo.Filename, -1, false));
 

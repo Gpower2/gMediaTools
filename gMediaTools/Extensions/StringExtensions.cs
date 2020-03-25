@@ -72,6 +72,11 @@ namespace gMediaTools.Extensions
             return decimal.Parse(stringToParse.PrepareStringForNumericParse(), NumberStyles.Any, INV_CULTURE);
         }
 
+        public static bool TryParseDecimal(this string stringToParse, out decimal decimalValue)
+        {
+            return decimal.TryParse(stringToParse.PrepareStringForNumericParse(), NumberStyles.Any, INV_CULTURE, out decimalValue);
+        }
+
         public static string RemoveSpaces(this string stringToProcess)
         {
             while(stringToProcess.Contains(" "))

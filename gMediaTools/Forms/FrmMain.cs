@@ -179,15 +179,20 @@ namespace gMediaTools.Forms
             sb.AppendLine("######################");
             sb.AppendLine($"Resolution: {mediaInfo.VideoInfo?.Width} x {mediaInfo.VideoInfo?.Height}");
             sb.AppendLine($"{nameof(mediaInfo.VideoInfo.Bitrate)}: {mediaInfo.VideoInfo?.Bitrate}");
+            sb.AppendLine($"{nameof(mediaInfo.VideoInfo.Length)}: {new TimeSpan(0, 0, 0, 0, (int)mediaInfo.VideoInfo?.Length)}");
             sb.AppendLine($"{nameof(mediaInfo.VideoInfo.CodecID)}: {mediaInfo.VideoInfo?.CodecID}");
             sb.AppendLine($"{nameof(mediaInfo.VideoInfo.FrameRateMode)}: {mediaInfo.VideoInfo?.FrameRateMode}");
             sb.AppendLine("######################");
             sb.AppendLine($"{nameof(mediaInfo.NeedsVideoReencode)}: {mediaInfo.NeedsVideoReencode}");
             sb.AppendLine($"TargetResolution: {mediaInfo.TargetVideoWidth} x {mediaInfo.TargetVideoHeight}");
             sb.AppendLine($"{nameof(mediaInfo.TargetVideoBitrate)}: {mediaInfo.TargetVideoBitrate}");
-            sb.AppendLine("######################");
-            sb.AppendLine($"{nameof(mediaInfo.NeedsAudioReencode)}: {mediaInfo.NeedsAudioReencode}");
-            sb.AppendLine($"{nameof(mediaInfo.TargetAudioBitrate)}: {mediaInfo.TargetAudioBitrate}");
+            if (mediaInfo.AudioInfo != null)
+            {
+                sb.AppendLine("######################");
+                sb.AppendLine($"{nameof(mediaInfo.NeedsAudioReencode)}: {mediaInfo.NeedsAudioReencode}");
+                sb.AppendLine($"{nameof(mediaInfo.TargetAudioBitrate)}: {mediaInfo.TargetAudioBitrate}");
+                sb.AppendLine($"{nameof(mediaInfo.AudioInfo.Length)}: {new TimeSpan(0, 0, 0, 0, (int)mediaInfo.AudioInfo?.Length)}");
+            }
             sb.AppendLine("######################");
             sb.AppendLine($"{nameof(mediaInfo.Size)}: {Math.Round((double)mediaInfo.Size / 1024.0 / 1024.0, 2, MidpointRounding.AwayFromZero)} MB");
             sb.AppendLine($"{nameof(mediaInfo.TargetSize)}: {Math.Round((double)mediaInfo.TargetSize / 1024.0 / 1024.0, 2, MidpointRounding.AwayFromZero)} MB");

@@ -30,6 +30,11 @@ namespace gMediaTools.Models.MediaAnalyze
 
         public string CodecID { get; set; }
 
+        /// <summary>
+        /// In seconds
+        /// </summary>
+        public long Length { get; set; }
+
         public VideoFrameRateMode FrameRateMode { get; set; }
 
         public string ColorSpace { get; set; }
@@ -52,6 +57,11 @@ namespace gMediaTools.Models.MediaAnalyze
         public int Bitrate { get; set; }
 
         public int Channels { get; set; }
+
+        /// <summary>
+        /// In seconds
+        /// </summary>
+        public long Length { get; set; }
     }
 
     public class MediaAnalyzeInfo

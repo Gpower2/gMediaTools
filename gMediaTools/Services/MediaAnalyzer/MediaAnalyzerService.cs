@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gMediaTools.Extensions;
 using gMediaTools.Factories;
 using gMediaTools.Models.AviSynth;
 using gMediaTools.Models.CurveFitting;
@@ -16,7 +17,7 @@ namespace gMediaTools.Services.MediaAnalyzer
 {
     public class MediaAnalyzerService
     {
-        private static readonly string[] _mediaExtensions = new string[] { "mkv", "mp4", "mov", "avi", "mpg", "mpeg", "flv", "wmv", "asf" };
+        private static readonly string[] _mediaExtensions = new string[] { "mkv", "mp4", "m4v", "mov", "avi", "mpg", "mpeg", "flv", "wmv", "asf" };
 
         private int _reEncodeFiles = 0;
         private int _totalFiles = 0;
@@ -179,11 +180,23 @@ namespace gMediaTools.Services.MediaAnalyzer
                    && int.TryParse(videoTrack.BitRate, out int bitrate))
                 {
                     MediaAnalyzeVideoInfo videoResult = new MediaAnalyzeVideoInfo();
+                    // Check for pixel aspect ration
+                    if (videoTrack.PixelAspectRatio.TryParseDecimal(out decimal pixelAspectRatio))
+                    {
+                        // Check if pixel aspect ration is not equal to 1
+                        if (pixelAspectRatio > 1.0m)
+                        {
+                            // Recalculate width based on the pixel aspect ration
+                            width = Convert.ToInt32(Math.Ceiling(width * pixelAspectRatio));
+                        }
+                    }
+
                     videoResult.Width = width;
                     videoResult.Height = height;
                     videoResult.Bitrate = bitrate;
                     videoResult.CodecID = videoTrack.CodecID;
                     videoResult.Size = long.TryParse(videoTrack.StreamSize, out long streamSize) ? streamSize : default;
+                    videoResult.Length = long.TryParse(videoTrack.Duration, out long videoDuration) ? videoDuration : default;
                     // Get the video FrameRate Mode
                     videoResult.FrameRateMode = videoTrack.FrameRateMode.ToLower().Equals("vfr") ? VideoFrameRateMode.VFR : VideoFrameRateMode.CFR;
 
@@ -214,6 +227,7 @@ namespace gMediaTools.Services.MediaAnalyzer
                     audioResult.Bitrate = audioBitrate;
                     audioResult.Codec = audioTrack.FormatString;
                     audioResult.Size = long.TryParse(audioTrack.StreamSize, out long audioSize) ? audioSize : default;
+                    audioResult.Length = long.TryParse(audioTrack.Duration, out long audioDuration) ? audioDuration : default;
 
                     result.AudioInfo = audioResult;
                 }
@@ -278,8 +292,9 @@ namespace gMediaTools.Services.MediaAnalyzer
             long pixels = width * height;
 
             // Initialize out variables
-            targetWidth = width;
-            targetHeight = height;
+            // and recaluclate to closest mod 2 value
+            targetWidth = width.ClosestModValue(2);
+            targetHeight = height.ClosestModValue(2);
 
             // First check if we need to resize it
             long maxPixels = maxWidth * maxHeight;
@@ -326,6 +341,10 @@ namespace gMediaTools.Services.MediaAnalyzer
                         targetHeight = Convert.ToInt32(targetWidth * (double)height / width);
                     }
                 }
+
+                // Recaluclate to closest mod 2 value
+                targetWidth = targetWidth.ClosestModValue(2);
+                targetHeight = targetHeight.ClosestModValue(2);
 
                 // Recalculate pixels
                 pixels = targetWidth * targetHeight;

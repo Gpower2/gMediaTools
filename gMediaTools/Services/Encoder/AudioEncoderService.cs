@@ -114,7 +114,7 @@ namespace gMediaTools.Services.Encoder
                                 WriteHeader(audioEncoder.HeaderType, processInputStream, avsFile, totalSizeInBytes, settings.ChannelMask, formatTypeTag);
                             }
 
-                            logAction?.Invoke($"Audio encoding: {mediaAnalyzeInfo.Filename}Writing PCM data to encoder's StdIn...");
+                            logAction?.Invoke($"Audio encoding: {mediaAnalyzeInfo.Filename} Writing PCM data to encoder's StdIn...");
 
                             // Calculate the frame buffer total size
                             int frameBufferTotalSize = MAX_SAMPLES_PER_ONCE * avsFile.Clip.AudioChannelsCount * avsFile.Clip.AudioBitsPerSample / 8;

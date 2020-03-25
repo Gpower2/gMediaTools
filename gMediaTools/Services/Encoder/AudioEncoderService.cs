@@ -19,7 +19,7 @@ namespace gMediaTools.Services.Encoder
     {
         private const int MAX_SAMPLES_PER_ONCE = 4096;
 
-        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, IAudioEncoder audioEncoder, IAudioEncoderSettings settings, out string outputFileName)
+        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, IAudioEncoder audioEncoder, IAudioEncoderSettings settings, Action<string> logAction, Action<string> progressAction, out string outputFileName)
         {
             // Get AviSynth script
             AviSynthScriptService aviSynthScriptService = ServiceFactory.GetService<AviSynthScriptService>();
@@ -110,11 +110,11 @@ namespace gMediaTools.Services.Encoder
                             // Check if we need to write WAV Header
                             if (audioEncoder.WriteHeader)
                             {
-                                Debug.WriteLine("Writing header data to encoder's StdIn...");
+                                logAction?.Invoke($"Audio encoding: {mediaAnalyzeInfo.Filename} Writing header data to encoder's StdIn...");
                                 WriteHeader(audioEncoder.HeaderType, processInputStream, avsFile, totalSizeInBytes, settings.ChannelMask, formatTypeTag);
                             }
 
-                            Debug.WriteLine("Writing PCM data to encoder's StdIn...");
+                            logAction?.Invoke($"Audio encoding: {mediaAnalyzeInfo.Filename}Writing PCM data to encoder's StdIn...");
 
                             // Calculate the frame buffer total size
                             int frameBufferTotalSize = MAX_SAMPLES_PER_ONCE * avsFile.Clip.AudioChannelsCount * avsFile.Clip.AudioBitsPerSample / 8;
@@ -149,7 +149,7 @@ namespace gMediaTools.Services.Encoder
 
                                     // Calculate the current progress
                                     double progress = ((double)currentFrameSample / (double)avsFile.Clip.AudioSamplesCount) * 100.0;
-                                    Debug.WriteLine($"Progress {progress:#0.00}%");
+                                    progressAction?.Invoke($"Progress {progress:#0.00}%");
 
                                     // Write the frame samples to the encoder's standard input stream
                                     processInputStream.Write(frameBuffer, 0, bytesRead);
@@ -171,7 +171,7 @@ namespace gMediaTools.Services.Encoder
 
                         if (process != null)
                         {
-                            Debug.Write("Finalizing encoder");
+                            logAction?.Invoke($"Audio encoding: {mediaAnalyzeInfo.Filename} Finalizing encoder");
 
                             // Wait for the process to exit
                             process.WaitForExit();

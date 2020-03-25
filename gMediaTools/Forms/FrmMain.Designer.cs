@@ -51,6 +51,7 @@
             this.btnEncodeAll = new System.Windows.Forms.Button();
             this.txtEncodeLog = new System.Windows.Forms.TextBox();
             this.txtEncodeProgress = new gMediaTools.GTextBox();
+            this.txtEncodeLogProgress = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
@@ -86,7 +87,7 @@
             this.txtLog.Name = "txtLog";
             this.txtLog.ReadOnly = true;
             this.txtLog.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtLog.Size = new System.Drawing.Size(957, 132);
+            this.txtLog.Size = new System.Drawing.Size(957, 88);
             this.txtLog.TabIndex = 2;
             this.txtLog.WordWrap = false;
             // 
@@ -281,9 +282,9 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lstMediaInfoItems.FormattingEnabled = true;
             this.lstMediaInfoItems.ItemHeight = 15;
-            this.lstMediaInfoItems.Location = new System.Drawing.Point(15, 305);
+            this.lstMediaInfoItems.Location = new System.Drawing.Point(15, 261);
             this.lstMediaInfoItems.Name = "lstMediaInfoItems";
-            this.lstMediaInfoItems.Size = new System.Drawing.Size(957, 109);
+            this.lstMediaInfoItems.Size = new System.Drawing.Size(957, 124);
             this.lstMediaInfoItems.TabIndex = 17;
             this.lstMediaInfoItems.SelectedIndexChanged += new System.EventHandler(this.lstMediaInfoItems_SelectedIndexChanged);
             // 
@@ -325,7 +326,7 @@
             // 
             this.txtEncodeLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtEncodeLog.Location = new System.Drawing.Point(15, 420);
+            this.txtEncodeLog.Location = new System.Drawing.Point(15, 390);
             this.txtEncodeLog.Name = "txtEncodeLog";
             this.txtEncodeLog.ReadOnly = true;
             this.txtEncodeLog.Size = new System.Drawing.Size(871, 23);
@@ -344,18 +345,29 @@
             this.txtEncodeProgress.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtEncodeProgress.Int32Value = 0;
             this.txtEncodeProgress.Int64Value = ((long)(0));
-            this.txtEncodeProgress.Location = new System.Drawing.Point(892, 420);
+            this.txtEncodeProgress.Location = new System.Drawing.Point(892, 390);
             this.txtEncodeProgress.Name = "txtEncodeProgress";
             this.txtEncodeProgress.ReadOnly = true;
             this.txtEncodeProgress.Size = new System.Drawing.Size(80, 23);
             this.txtEncodeProgress.TabIndex = 22;
             this.txtEncodeProgress.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Text;
             // 
+            // txtEncodeLogProgress
+            // 
+            this.txtEncodeLogProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtEncodeLogProgress.Location = new System.Drawing.Point(15, 419);
+            this.txtEncodeLogProgress.Name = "txtEncodeLogProgress";
+            this.txtEncodeLogProgress.ReadOnly = true;
+            this.txtEncodeLogProgress.Size = new System.Drawing.Size(957, 23);
+            this.txtEncodeLogProgress.TabIndex = 23;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 561);
+            this.Controls.Add(this.txtEncodeLogProgress);
             this.Controls.Add(this.txtEncodeProgress);
             this.Controls.Add(this.txtEncodeLog);
             this.Controls.Add(this.btnEncodeAll);
@@ -412,6 +424,7 @@
         private System.Windows.Forms.Button btnEncodeAll;
         private System.Windows.Forms.TextBox txtEncodeLog;
         private GTextBox txtEncodeProgress;
+        private System.Windows.Forms.TextBox txtEncodeLogProgress;
     }
 }
 

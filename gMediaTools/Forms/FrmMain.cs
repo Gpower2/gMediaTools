@@ -166,6 +166,35 @@ namespace gMediaTools.Forms
             frm.ShowDialog(this);
         }
 
+        private string GetMediaInfoAnalysis(MediaAnalyzeInfo mediaInfo)
+        {
+            if(mediaInfo == null)
+            {
+                return "";
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"{nameof(mediaInfo.Filename)}: {mediaInfo.Filename}");
+            sb.AppendLine("######################");
+            sb.AppendLine($"Resolution: {mediaInfo.VideoInfo?.Width} x {mediaInfo.VideoInfo?.Height}");
+            sb.AppendLine($"{nameof(mediaInfo.VideoInfo.Bitrate)}: {mediaInfo.VideoInfo?.Bitrate}");
+            sb.AppendLine($"{nameof(mediaInfo.VideoInfo.CodecID)}: {mediaInfo.VideoInfo?.CodecID}");
+            sb.AppendLine($"{nameof(mediaInfo.VideoInfo.FrameRateMode)}: {mediaInfo.VideoInfo?.FrameRateMode}");
+            sb.AppendLine("######################");
+            sb.AppendLine($"{nameof(mediaInfo.NeedsVideoReencode)}: {mediaInfo.NeedsVideoReencode}");
+            sb.AppendLine($"TargetResolution: {mediaInfo.TargetVideoWidth} x {mediaInfo.TargetVideoHeight}");
+            sb.AppendLine($"{nameof(mediaInfo.TargetVideoBitrate)}: {mediaInfo.TargetVideoBitrate}");
+            sb.AppendLine("######################");
+            sb.AppendLine($"{nameof(mediaInfo.NeedsAudioReencode)}: {mediaInfo.NeedsAudioReencode}");
+            sb.AppendLine($"{nameof(mediaInfo.TargetAudioBitrate)}: {mediaInfo.TargetAudioBitrate}");
+            sb.AppendLine("######################");
+            sb.AppendLine($"{nameof(mediaInfo.Size)}: {Math.Round((double)mediaInfo.Size / 1024.0 / 1024.0, 2, MidpointRounding.AwayFromZero)} MB");
+            sb.AppendLine($"{nameof(mediaInfo.TargetSize)}: {Math.Round((double)mediaInfo.TargetSize / 1024.0 / 1024.0, 2, MidpointRounding.AwayFromZero)} MB");
+
+            return sb.ToString();
+        }
+
         private void lstMediaInfoItems_SelectedIndexChanged(object sender, EventArgs e)
         {
             try
@@ -184,31 +213,121 @@ namespace gMediaTools.Forms
                     return;
                 }
 
-                StringBuilder sb = new StringBuilder();
-
-                sb.AppendLine($"{nameof(mediaInfo.Filename)}: {mediaInfo.Filename}");                
-                sb.AppendLine("######################");
-                sb.AppendLine($"Resolution: {mediaInfo.VideoInfo.Width} x {mediaInfo.VideoInfo.Height}");
-                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.Bitrate)}: {mediaInfo.VideoInfo.Bitrate}");
-                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.CodecID)}: {mediaInfo.VideoInfo.CodecID}");
-                sb.AppendLine($"{nameof(mediaInfo.VideoInfo.FrameRateMode)}: {mediaInfo.VideoInfo.FrameRateMode}");
-                sb.AppendLine("######################");
-                sb.AppendLine($"{nameof(mediaInfo.NeedsVideoReencode)}: {mediaInfo.NeedsVideoReencode}");
-                sb.AppendLine($"TargetResolution: {mediaInfo.TargetVideoWidth} x {mediaInfo.TargetVideoHeight}");
-                sb.AppendLine($"{nameof(mediaInfo.TargetVideoBitrate)}: {mediaInfo.TargetVideoBitrate}");
-                sb.AppendLine("######################");
-                sb.AppendLine($"{nameof(mediaInfo.NeedsAudioReencode)}: {mediaInfo.NeedsAudioReencode}");
-                sb.AppendLine($"{nameof(mediaInfo.TargetAudioBitrate)}: {mediaInfo.TargetAudioBitrate}");
-                sb.AppendLine("######################");
-                sb.AppendLine($"{nameof(mediaInfo.Size)}: {Math.Round((double)mediaInfo.Size / 1024.0 / 1024.0, 2, MidpointRounding.AwayFromZero)} MB");
-                sb.AppendLine($"{nameof(mediaInfo.TargetSize)}: {Math.Round((double)mediaInfo.TargetSize / 1024.0 / 1024.0, 2, MidpointRounding.AwayFromZero)} MB");
-
-                txtMediaInfo.Text = sb.ToString();
+                txtMediaInfo.Text = GetMediaInfoAnalysis(mediaInfo);
             }
             catch (Exception ex)
             {
                 ShowExceptionMessage(ex);
             }
+        }
+
+        private void EncodeLog(string log)
+        {
+            Debug.WriteLine(log);
+            this.Invoke(new Action(() => txtEncodeLog.Text = log));
+        }
+
+        private void EncodeProgress(string progress)
+        {
+            Debug.WriteLine(progress);
+            this.Invoke(new Action(() => txtEncodeLogProgress.Text = progress));
+        }
+
+        private async Task<string> EncodeMediaInfoAsync(MediaAnalyzeInfo mediaInfo)
+        {
+            if (mediaInfo == null)
+            {
+                txtMediaInfo.Clear();
+                return "";
+            }
+
+            // Sanity check
+            if (!mediaInfo.NeedsVideoReencode && !mediaInfo.NeedsAudioReencode)
+            {
+                return "";
+            }
+
+            // Log
+            txtEncodeLog.Text = $"Start Encoding: {mediaInfo.Filename}";
+
+            txtMediaInfo.Text = GetMediaInfoAnalysis(mediaInfo);
+
+            string videoOutputFileName = "";
+
+            // Encode video
+            if (mediaInfo.NeedsVideoReencode)
+            {
+                txtEncodeLog.Text = $"Video Encoding: {mediaInfo.Filename}...";
+
+                X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
+
+                int res = await Task.Run(() => videoEncoderService.Encode(
+                    mediaInfo, 
+                    @"E:\Programs\MeGUI\tools\x264\x264.exe",
+                    new Action<string>((log) => EncodeLog(log)),
+                    new Action<string>((progress) => EncodeProgress(progress)),
+                    out videoOutputFileName)
+                );
+
+                if (res != 0)
+                {
+                    txtEncodeLog.Text = $"Video Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
+                    return "";
+                }
+            }
+
+            string audioOutputFileName = "";
+
+            // Encode Audio
+            if (mediaInfo.NeedsAudioReencode)
+            {
+                txtEncodeLog.Text = $"Audio Encoding: {mediaInfo.Filename}...";
+
+                AudioEncoderService audioEncoderService = ServiceFactory.GetService<AudioEncoderService>();
+
+                NeroAacAudioEncoder audioEncoder = new NeroAacAudioEncoder(@"E:\Programs\MeGUI\tools\eac3to\neroAacEnc.exe");
+
+                DefaultAudioEncoderSettings audioEncoderSettings = new DefaultAudioEncoderSettings(-1, "m4a");
+
+                int res = await Task.Run(() => audioEncoderService.Encode(
+                    mediaInfo, 
+                    audioEncoder, 
+                    audioEncoderSettings,
+                    new Action<string>((log) => EncodeLog(log)),
+                    new Action<string>((progress) => EncodeProgress(progress)),
+                    out audioOutputFileName)
+                );
+
+                if (res != 0)
+                {
+                    txtEncodeLog.Text = $"Audio Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
+                    return "";
+                }
+            }
+
+            // Mux final video!
+            txtEncodeLog.Text = $"Muxing: {mediaInfo.Filename}...";
+
+            DefaultMuxerSettings muxerSettings = new DefaultMuxerSettings(
+                videoOutputFileName,
+                mediaInfo.NeedsAudioReencode ? audioOutputFileName : mediaInfo.Filename,
+                "mkv"
+            );
+
+            MkvMergeMuxer muxer = new MkvMergeMuxer(@"C:\Program Files\MKVToolNix\mkvmerge.exe");
+
+            MkvMergeMuxerService mkvMergeMuxerService = new MkvMergeMuxerService();
+
+            string muxedFilename = "";
+            await Task.Run(() => mkvMergeMuxerService.Mux(
+                muxer, 
+                muxerSettings,
+                new Action<string>((log) => EncodeLog(log)),
+                new Action<string>((progress) => EncodeProgress(progress)),
+                out muxedFilename)
+            );
+
+            return muxedFilename;
         }
 
         private async void btnEncode_Click(object sender, EventArgs e)
@@ -223,73 +342,7 @@ namespace gMediaTools.Forms
 
                 var mediaInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
 
-                if (mediaInfo == null)
-                {
-                    txtMediaInfo.Clear();
-                    return;
-                }
-
-                // Sanity check
-                if (!mediaInfo.NeedsVideoReencode && !mediaInfo.NeedsAudioReencode)
-                {
-                    return;
-                }
-
-                // Log
-                txtEncodeLog.Text = $"Start Encoding: {mediaInfo.Filename}";
-
-                string videoOutputFileName = "";
-
-                // Encode video
-                if (mediaInfo.NeedsVideoReencode)
-                {
-                    txtEncodeLog.Text = $"Video Encoding: {mediaInfo.Filename}...";
-
-                    X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
-
-                    int res = await Task.Run(() => videoEncoderService.Encode(mediaInfo, @"E:\Programs\MeGUI\tools\x264\x264.exe", out videoOutputFileName));
-                    if (res != 0)
-                    {
-                        txtEncodeLog.Text = $"Video Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
-                        throw new Exception($"Video Encoder failed! Exit code : {res}");
-                    }
-                }
-
-                string audioOutputFileName = "";
-
-                // Encode Audio
-                if (mediaInfo.NeedsAudioReencode)
-                {
-                    txtEncodeLog.Text = $"Audio Encoding: {mediaInfo.Filename}...";
-
-                    AudioEncoderService audioEncoderService = ServiceFactory.GetService<AudioEncoderService>();
-
-                    NeroAacAudioEncoder audioEncoder = new NeroAacAudioEncoder(@"E:\Programs\MeGUI\tools\eac3to\neroAacEnc.exe");
-
-                    DefaultAudioEncoderSettings audioEncoderSettings = new DefaultAudioEncoderSettings(-1, "m4a");
-
-                    int res = await Task.Run(() => audioEncoderService.Encode(mediaInfo, audioEncoder, audioEncoderSettings, out audioOutputFileName));
-                    if (res != 0)
-                    {
-                        txtEncodeLog.Text = $"Audio Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
-                        throw new Exception($"Audio Encoder failed! Exit code : {res}");
-                    }
-                }
-
-                // Mux final video!
-                txtEncodeLog.Text = $"Muxing: {mediaInfo.Filename}...";
-
-                DefaultMuxerSettings muxerSettings = new DefaultMuxerSettings(
-                    videoOutputFileName, 
-                    mediaInfo.NeedsAudioReencode ? audioOutputFileName: mediaInfo.Filename, 
-                    "mkv"
-                );
-
-                MkvMergeMuxer muxer = new MkvMergeMuxer(@"C:\Program Files\MKVToolNix\mkvmerge.exe");
-
-                MkvMergeMuxerService mkvMergeMuxerService = new MkvMergeMuxerService();
-
-                mkvMergeMuxerService.Mux(muxer, muxerSettings, out string muxedFilename);
+                string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
 
                 // Log
                 txtEncodeLog.Text = $"Muxed {mediaInfo.Filename} => {muxedFilename}";
@@ -324,74 +377,7 @@ namespace gMediaTools.Forms
 
                     var mediaInfo = item as MediaAnalyzeInfo;
 
-                    if (mediaInfo == null)
-                    {
-                        txtMediaInfo.Clear();
-                        continue;
-                    }
-
-                    // Sanity check
-                    if (!mediaInfo.NeedsVideoReencode && !mediaInfo.NeedsAudioReencode)
-                    {
-                        continue;
-                    }
-
-                    // Log
-                    txtEncodeLog.Text = $"Start Encoding: {mediaInfo.Filename}";
-
-                    string videoOutputFileName = "";
-
-                    // Encode video
-                    if (mediaInfo.NeedsVideoReencode)
-                    {
-                        txtEncodeLog.Text = $"Video Encoding: {mediaInfo.Filename}...";
-
-                        X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
-
-                        int res = await Task.Run(() => videoEncoderService.Encode(mediaInfo, @"E:\Programs\MeGUI\tools\x264\x264.exe", out videoOutputFileName));
-                        if (res != 0)
-                        {
-                            txtEncodeLog.Text = $"Video Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
-                            continue;
-                        }
-                    }
-
-                    string audioOutputFileName = "";
-
-                    // Encode Audio
-                    if (mediaInfo.NeedsAudioReencode)
-                    {
-                        txtEncodeLog.Text = $"Audio Encoding: {mediaInfo.Filename}...";
-
-                        AudioEncoderService audioEncoderService = ServiceFactory.GetService<AudioEncoderService>();
-
-                        NeroAacAudioEncoder audioEncoder = new NeroAacAudioEncoder(@"E:\Programs\MeGUI\tools\eac3to\neroAacEnc.exe");
-
-                        DefaultAudioEncoderSettings audioEncoderSettings = new DefaultAudioEncoderSettings(-1, "m4a");
-
-                        int res = await Task.Run(() => audioEncoderService.Encode(mediaInfo, audioEncoder, audioEncoderSettings, out audioOutputFileName));
-                        if (res != 0)
-                        {
-                            txtEncodeLog.Text = $"Audio Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
-                            continue;
-                        }
-                    }
-
-                    // Mux final video!
-                    txtEncodeLog.Text = $"Muxing: {mediaInfo.Filename}...";
-
-                    DefaultMuxerSettings muxerSettings = new DefaultMuxerSettings(
-                        videoOutputFileName,
-                        mediaInfo.NeedsAudioReencode ? audioOutputFileName : mediaInfo.Filename,
-                        "mkv"
-                    );
-
-                    MkvMergeMuxer muxer = new MkvMergeMuxer(@"C:\Program Files\MKVToolNix\mkvmerge.exe");
-
-                    MkvMergeMuxerService mkvMergeMuxerService = new MkvMergeMuxerService();
-
-                    string muxedFilename = "";
-                    await Task.Run(() => mkvMergeMuxerService.Mux(muxer, muxerSettings, out muxedFilename));
+                    string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
 
                     // Log
                     txtEncodeLog.Text = $"Muxed {mediaInfo.Filename} => {muxedFilename}";

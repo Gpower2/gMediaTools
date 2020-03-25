@@ -14,7 +14,7 @@ namespace gMediaTools.Services.Encoder
 {
     public class X264VideoEncoderService
     {
-        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, string x264FileName, out string outputFileName)
+        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, string x264FileName, Action<string> logAction, Action<string> progressAction, out string outputFileName)
         {
             // Get AviSynth script
             AviSynthScriptService aviSynthScriptService = ServiceFactory.GetService<AviSynthScriptService>();
@@ -57,14 +57,18 @@ namespace gMediaTools.Services.Encoder
 
                 .IncludeParameterWithValue("muxer", "mkv");
 
+            logAction?.Invoke($"Encoding {mediaAnalyzeInfo.Filename} with x264 1st pass...");
+
             DefaultProcessRunnerService defaultProcessRunnerService = ServiceFactory.GetService<DefaultProcessRunnerService>();
 
-            defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => Debug.WriteLine(line)));
+            defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => progressAction?.Invoke(line)));
 
             // Pass 2
             parameters.IncludeParameterWithValue("pass", "2");
 
-            return defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => Debug.WriteLine(line)));
+            logAction?.Invoke($"Encoding {mediaAnalyzeInfo.Filename} with x264 2nd pass...");
+
+            return defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => progressAction?.Invoke(line)));
         }
     }
 }

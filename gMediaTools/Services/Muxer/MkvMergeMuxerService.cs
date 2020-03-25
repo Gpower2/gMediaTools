@@ -13,7 +13,7 @@ namespace gMediaTools.Services.Muxer
 {
     public class MkvMergeMuxerService
     {
-        public int Mux(IMuxer muxer, IMuxerSettings settings, out string outputFileName)
+        public int Mux(IMuxer muxer, IMuxerSettings settings, Action<string> logAction, Action<string> progressAction, out string outputFileName)
         {
             MkvMergeProcessRunnerService service = ServiceFactory.GetService<MkvMergeProcessRunnerService>();
 
@@ -35,9 +35,11 @@ namespace gMediaTools.Services.Muxer
                 .IncludeParameterWithNoValue("options1", "no-global-tags")
                 .IncludeParameterWithValue("file1", "file", settings.AudioSourceFileName);
 
+            logAction?.Invoke($"Muxing video: {settings.VideoSourceFileName} audio: {settings.AudioSourceFileName} ...");
+
             DefaultProcessRunnerService defaultProcessRunnerService = ServiceFactory.GetService<DefaultProcessRunnerService>();
 
-            return defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => Debug.WriteLine(line)));
+            return defaultProcessRunnerService.RunProcess(parameters, new Action<Process, string>((process, line) => progressAction?.Invoke(line)));
         }
     }
 }

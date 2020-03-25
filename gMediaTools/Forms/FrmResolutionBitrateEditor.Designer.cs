@@ -45,6 +45,14 @@
             this.lblCurveFittingType = new System.Windows.Forms.Label();
             this.picPreview = new System.Windows.Forms.PictureBox();
             this.grpPreview = new System.Windows.Forms.GroupBox();
+            this.lblPreviewBitrate = new System.Windows.Forms.Label();
+            this.lblPreviewHeight = new System.Windows.Forms.Label();
+            this.lblPreviewWidth = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.txtPreviewBitRate = new gMediaTools.GTextBox();
+            this.txtPreviewHeight = new gMediaTools.GTextBox();
+            this.txtPreviewWidth = new gMediaTools.GTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.picPreview)).BeginInit();
             this.grpPreview.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +69,7 @@
             this.txtWidth.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtWidth.Int32Value = 0;
             this.txtWidth.Int64Value = ((long)(0));
-            this.txtWidth.Location = new System.Drawing.Point(12, 72);
+            this.txtWidth.Location = new System.Drawing.Point(12, 54);
             this.txtWidth.Name = "txtWidth";
             this.txtWidth.Size = new System.Drawing.Size(100, 23);
             this.txtWidth.TabIndex = 0;
@@ -80,7 +88,7 @@
             this.txtHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtHeight.Int32Value = 0;
             this.txtHeight.Int64Value = ((long)(0));
-            this.txtHeight.Location = new System.Drawing.Point(157, 72);
+            this.txtHeight.Location = new System.Drawing.Point(138, 54);
             this.txtHeight.Name = "txtHeight";
             this.txtHeight.Size = new System.Drawing.Size(100, 23);
             this.txtHeight.TabIndex = 1;
@@ -99,9 +107,9 @@
             this.txtBitrate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtBitrate.Int32Value = 0;
             this.txtBitrate.Int64Value = ((long)(0));
-            this.txtBitrate.Location = new System.Drawing.Point(298, 72);
+            this.txtBitrate.Location = new System.Drawing.Point(273, 54);
             this.txtBitrate.Name = "txtBitrate";
-            this.txtBitrate.Size = new System.Drawing.Size(100, 23);
+            this.txtBitrate.Size = new System.Drawing.Size(106, 23);
             this.txtBitrate.TabIndex = 2;
             this.txtBitrate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtBitrate.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
@@ -110,16 +118,16 @@
             // 
             this.lstCurveData.FormattingEnabled = true;
             this.lstCurveData.ItemHeight = 15;
-            this.lstCurveData.Location = new System.Drawing.Point(12, 125);
+            this.lstCurveData.Location = new System.Drawing.Point(12, 128);
             this.lstCurveData.Name = "lstCurveData";
-            this.lstCurveData.Size = new System.Drawing.Size(348, 169);
+            this.lstCurveData.Size = new System.Drawing.Size(367, 169);
             this.lstCurveData.TabIndex = 3;
             this.lstCurveData.SelectedIndexChanged += new System.EventHandler(this.lstCurveData_SelectedIndexChanged);
             // 
             // lblX
             // 
             this.lblX.AutoSize = true;
-            this.lblX.Location = new System.Drawing.Point(122, 72);
+            this.lblX.Location = new System.Drawing.Point(118, 54);
             this.lblX.Name = "lblX";
             this.lblX.Size = new System.Drawing.Size(14, 15);
             this.lblX.TabIndex = 4;
@@ -128,7 +136,7 @@
             // lblEquals
             // 
             this.lblEquals.AutoSize = true;
-            this.lblEquals.Location = new System.Drawing.Point(263, 75);
+            this.lblEquals.Location = new System.Drawing.Point(244, 57);
             this.lblEquals.Name = "lblEquals";
             this.lblEquals.Size = new System.Drawing.Size(23, 15);
             this.lblEquals.TabIndex = 5;
@@ -136,7 +144,7 @@
             // 
             // btnAdd
             // 
-            this.btnAdd.Location = new System.Drawing.Point(382, 125);
+            this.btnAdd.Location = new System.Drawing.Point(396, 128);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(100, 39);
             this.btnAdd.TabIndex = 6;
@@ -146,7 +154,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(382, 215);
+            this.btnRemove.Location = new System.Drawing.Point(396, 214);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(100, 39);
             this.btnRemove.TabIndex = 7;
@@ -156,7 +164,7 @@
             // 
             // btnUpdate
             // 
-            this.btnUpdate.Location = new System.Drawing.Point(382, 170);
+            this.btnUpdate.Location = new System.Drawing.Point(396, 171);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.Size = new System.Drawing.Size(100, 39);
             this.btnUpdate.TabIndex = 8;
@@ -166,7 +174,7 @@
             // 
             // btnDefaults
             // 
-            this.btnDefaults.Location = new System.Drawing.Point(382, 260);
+            this.btnDefaults.Location = new System.Drawing.Point(396, 258);
             this.btnDefaults.Name = "btnDefaults";
             this.btnDefaults.Size = new System.Drawing.Size(100, 39);
             this.btnDefaults.TabIndex = 9;
@@ -177,7 +185,7 @@
             // lblWidth
             // 
             this.lblWidth.AutoSize = true;
-            this.lblWidth.Location = new System.Drawing.Point(19, 54);
+            this.lblWidth.Location = new System.Drawing.Point(14, 36);
             this.lblWidth.Name = "lblWidth";
             this.lblWidth.Size = new System.Drawing.Size(39, 15);
             this.lblWidth.TabIndex = 10;
@@ -186,7 +194,7 @@
             // lblHeight
             // 
             this.lblHeight.AutoSize = true;
-            this.lblHeight.Location = new System.Drawing.Point(154, 54);
+            this.lblHeight.Location = new System.Drawing.Point(135, 36);
             this.lblHeight.Name = "lblHeight";
             this.lblHeight.Size = new System.Drawing.Size(43, 15);
             this.lblHeight.TabIndex = 11;
@@ -195,7 +203,7 @@
             // lblBitrate
             // 
             this.lblBitrate.AutoSize = true;
-            this.lblBitrate.Location = new System.Drawing.Point(295, 54);
+            this.lblBitrate.Location = new System.Drawing.Point(271, 36);
             this.lblBitrate.Name = "lblBitrate";
             this.lblBitrate.Size = new System.Drawing.Size(77, 15);
             this.lblBitrate.TabIndex = 12;
@@ -207,7 +215,7 @@
             this.cmbCurveFittingType.FormattingEnabled = true;
             this.cmbCurveFittingType.Location = new System.Drawing.Point(148, 7);
             this.cmbCurveFittingType.Name = "cmbCurveFittingType";
-            this.cmbCurveFittingType.Size = new System.Drawing.Size(241, 23);
+            this.cmbCurveFittingType.Size = new System.Drawing.Size(231, 23);
             this.cmbCurveFittingType.TabIndex = 13;
             this.cmbCurveFittingType.SelectedIndexChanged += new System.EventHandler(this.cmbCurveFittingType_SelectedIndexChanged);
             // 
@@ -225,7 +233,7 @@
             this.picPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.picPreview.Location = new System.Drawing.Point(3, 19);
             this.picPreview.Name = "picPreview";
-            this.picPreview.Size = new System.Drawing.Size(387, 269);
+            this.picPreview.Size = new System.Drawing.Size(387, 268);
             this.picPreview.TabIndex = 15;
             this.picPreview.TabStop = false;
             // 
@@ -234,15 +242,128 @@
             this.grpPreview.Controls.Add(this.picPreview);
             this.grpPreview.Location = new System.Drawing.Point(509, 7);
             this.grpPreview.Name = "grpPreview";
-            this.grpPreview.Size = new System.Drawing.Size(393, 291);
+            this.grpPreview.Size = new System.Drawing.Size(393, 290);
             this.grpPreview.TabIndex = 16;
             this.grpPreview.TabStop = false;
             this.grpPreview.Text = "Preview Curve";
+            // 
+            // lblPreviewBitrate
+            // 
+            this.lblPreviewBitrate.AutoSize = true;
+            this.lblPreviewBitrate.Location = new System.Drawing.Point(271, 80);
+            this.lblPreviewBitrate.Name = "lblPreviewBitrate";
+            this.lblPreviewBitrate.Size = new System.Drawing.Size(121, 15);
+            this.lblPreviewBitrate.TabIndex = 24;
+            this.lblPreviewBitrate.Text = "Preview Bitrate (kbps)";
+            // 
+            // lblPreviewHeight
+            // 
+            this.lblPreviewHeight.AutoSize = true;
+            this.lblPreviewHeight.Location = new System.Drawing.Point(135, 80);
+            this.lblPreviewHeight.Name = "lblPreviewHeight";
+            this.lblPreviewHeight.Size = new System.Drawing.Size(87, 15);
+            this.lblPreviewHeight.TabIndex = 23;
+            this.lblPreviewHeight.Text = "Preview Height";
+            // 
+            // lblPreviewWidth
+            // 
+            this.lblPreviewWidth.AutoSize = true;
+            this.lblPreviewWidth.Location = new System.Drawing.Point(15, 80);
+            this.lblPreviewWidth.Name = "lblPreviewWidth";
+            this.lblPreviewWidth.Size = new System.Drawing.Size(83, 15);
+            this.lblPreviewWidth.TabIndex = 22;
+            this.lblPreviewWidth.Text = "Preview Width";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(244, 101);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(23, 15);
+            this.label4.TabIndex = 21;
+            this.label4.Text = "=>";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(118, 98);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(14, 15);
+            this.label5.TabIndex = 20;
+            this.label5.Text = "X";
+            // 
+            // txtPreviewBitRate
+            // 
+            this.txtPreviewBitRate.DataObject = null;
+            this.txtPreviewBitRate.Decimals = 0;
+            this.txtPreviewBitRate.DecimalValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.txtPreviewBitRate.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.txtPreviewBitRate.Int32Value = 0;
+            this.txtPreviewBitRate.Int64Value = ((long)(0));
+            this.txtPreviewBitRate.Location = new System.Drawing.Point(273, 98);
+            this.txtPreviewBitRate.Name = "txtPreviewBitRate";
+            this.txtPreviewBitRate.ReadOnly = true;
+            this.txtPreviewBitRate.Size = new System.Drawing.Size(106, 23);
+            this.txtPreviewBitRate.TabIndex = 19;
+            this.txtPreviewBitRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtPreviewBitRate.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            // 
+            // txtPreviewHeight
+            // 
+            this.txtPreviewHeight.DataObject = null;
+            this.txtPreviewHeight.Decimals = 0;
+            this.txtPreviewHeight.DecimalValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.txtPreviewHeight.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.txtPreviewHeight.Int32Value = 0;
+            this.txtPreviewHeight.Int64Value = ((long)(0));
+            this.txtPreviewHeight.Location = new System.Drawing.Point(138, 98);
+            this.txtPreviewHeight.Name = "txtPreviewHeight";
+            this.txtPreviewHeight.Size = new System.Drawing.Size(100, 23);
+            this.txtPreviewHeight.TabIndex = 18;
+            this.txtPreviewHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtPreviewHeight.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            this.txtPreviewHeight.TextChanged += new System.EventHandler(this.txtPreviewHeight_TextChanged);
+            // 
+            // txtPreviewWidth
+            // 
+            this.txtPreviewWidth.DataObject = null;
+            this.txtPreviewWidth.Decimals = 0;
+            this.txtPreviewWidth.DecimalValue = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.txtPreviewWidth.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.txtPreviewWidth.Int32Value = 0;
+            this.txtPreviewWidth.Int64Value = ((long)(0));
+            this.txtPreviewWidth.Location = new System.Drawing.Point(12, 98);
+            this.txtPreviewWidth.Name = "txtPreviewWidth";
+            this.txtPreviewWidth.Size = new System.Drawing.Size(100, 23);
+            this.txtPreviewWidth.TabIndex = 17;
+            this.txtPreviewWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.txtPreviewWidth.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            this.txtPreviewWidth.TextChanged += new System.EventHandler(this.txtPreviewWidth_TextChanged);
             // 
             // FrmResolutionBitrateEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.ClientSize = new System.Drawing.Size(914, 307);
+            this.Controls.Add(this.lblPreviewBitrate);
+            this.Controls.Add(this.lblPreviewHeight);
+            this.Controls.Add(this.lblPreviewWidth);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.txtPreviewBitRate);
+            this.Controls.Add(this.txtPreviewHeight);
+            this.Controls.Add(this.txtPreviewWidth);
             this.Controls.Add(this.grpPreview);
             this.Controls.Add(this.lblCurveFittingType);
             this.Controls.Add(this.cmbCurveFittingType);
@@ -289,5 +410,13 @@
         private System.Windows.Forms.Label lblCurveFittingType;
         private System.Windows.Forms.PictureBox picPreview;
         private System.Windows.Forms.GroupBox grpPreview;
+        private System.Windows.Forms.Label lblPreviewBitrate;
+        private System.Windows.Forms.Label lblPreviewHeight;
+        private System.Windows.Forms.Label lblPreviewWidth;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label5;
+        private GTextBox txtPreviewBitRate;
+        private GTextBox txtPreviewHeight;
+        private GTextBox txtPreviewWidth;
     }
 }

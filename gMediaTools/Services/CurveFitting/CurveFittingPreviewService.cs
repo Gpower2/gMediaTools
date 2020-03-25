@@ -109,5 +109,24 @@ namespace gMediaTools.Services.CurveFitting
 
             return bmp;
         }
+
+        public int GetPreviewBitrateInKbps(CurveFittingSettings curveSettings, int imgWidth, int imgHeight)
+        {
+            // Get the Curve Fitting Function
+            ICurveFittingService service = _curveFittingFactory.GetCurveFittingService(curveSettings.CurveFittingType);
+            var func = service.GetCurveFittingFunction(
+                curveSettings.Data.
+                    ToDictionary(
+                        k => (double)k.Width * k.Height,
+                        v => (double)v.Bitrate / (double)(v.Width * v.Height)
+                    )
+            );
+
+            var targetRatio = func(imgWidth * imgHeight);
+
+            var targetBitrate = Convert.ToInt32(imgWidth * imgHeight * targetRatio / 1000.0);
+
+            return targetBitrate;
+        }
     }
 }

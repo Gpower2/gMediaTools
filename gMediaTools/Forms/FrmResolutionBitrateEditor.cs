@@ -11,6 +11,7 @@ using gMediaTools.Factories;
 using gMediaTools.Models.CurveFitting;
 using gMediaTools.Services;
 using gMediaTools.Services.CurveFitting;
+using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 
 namespace gMediaTools.Forms
@@ -248,6 +249,43 @@ namespace gMediaTools.Forms
                 cmbCurveFittingType.SelectedItem = _curveFittingSettings.CurveFittingType;
 
                 picPreview.Image = _curveFittingPreviewService.GetPreviewImage(_curveFittingSettings, picPreview.Width, picPreview.Height);
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void SetPreviewBitRate()
+        {
+            if (txtPreviewWidth.Int32Value > 0 && txtPreviewHeight.Int32Value > 0 && cmbCurveFittingType.SelectedIndex > -1)
+            {
+                var bitrate = _curveFittingPreviewService.GetPreviewBitrateInKbps(_curveFittingSettings, txtPreviewWidth.Int32Value, txtPreviewHeight.Int32Value);
+                txtPreviewBitRate.Int32Value = bitrate;
+            }
+            else
+            {
+                txtPreviewBitRate.Clear();
+            }
+        }
+
+        private void txtPreviewWidth_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SetPreviewBitRate();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }            
+        }
+
+        private void txtPreviewHeight_TextChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                SetPreviewBitRate();
             }
             catch (Exception ex)
             {

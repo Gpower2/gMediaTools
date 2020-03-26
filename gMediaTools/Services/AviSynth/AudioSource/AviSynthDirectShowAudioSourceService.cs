@@ -10,7 +10,7 @@ namespace gMediaTools.Services.AviSynth.AudioSource
     {
         public string GetAviSynthAudioSource(string fileName, int trackNumber, bool overWriteScriptFile)
         {
-            return $"DirectShowSource(\"{fileName}\", seek = true, video = false, audio = audio, convertfps = false)";
+            return $"DirectShowSource(\"{fileName}\", seek = true, video = false, audio = true, convertfps = false)";
         }
     }
 }

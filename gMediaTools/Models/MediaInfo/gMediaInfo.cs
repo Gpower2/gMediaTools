@@ -591,6 +591,8 @@ namespace gMediaTools.Models.MediaInfo
                 tmpVideoTrack.BitRate = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "BitRate");
                 tmpVideoTrack.BitRateString = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "BitRate/String");
                 tmpVideoTrack.BitRateMode = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "BitRate_Mode");
+                tmpVideoTrack.BitRateNominal = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "BitRate_Nominal");
+                tmpVideoTrack.BitRateNominalString = GetSpecificMediaInfo(MediaInfoStreamKind.Audio, i, "BitRate_Nominal/String");
                 tmpVideoTrack.EncodedLibrary = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "Encoded_Library");
                 tmpVideoTrack.EncodedLibrarySettings = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "Encoded_Library_Settings");
                 tmpVideoTrack.Width = GetSpecificMediaInfo(MediaInfoStreamKind.Video, i, "Width");

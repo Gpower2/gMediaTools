@@ -177,7 +177,8 @@ namespace gMediaTools.Services.MediaAnalyzer
                 // Check if we have valid video track info
                 if (int.TryParse(videoTrack.Width, out int width)
                    && int.TryParse(videoTrack.Height, out int height)
-                   && int.TryParse(videoTrack.BitRate, out int bitrate))
+                   && (int.TryParse(videoTrack.BitRate, out int bitrate)
+                   || int.TryParse(videoTrack.BitRateNominal, out bitrate)))
                 {
                     MediaAnalyzeVideoInfo videoResult = new MediaAnalyzeVideoInfo();
                     // Check for pixel aspect ration
@@ -207,7 +208,7 @@ namespace gMediaTools.Services.MediaAnalyzer
                 }
                 else
                 {
-                    actions.LogErrorAction($"ERROR! {width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {request.MediaFile}");
+                    actions.LogErrorAction($"ERROR! {videoTrack.Width}x{videoTrack.Height} : {videoTrack.BitRate} : {videoTrack.CodecID} : {request.MediaFile}");
                     return;
                 }
 
@@ -220,7 +221,8 @@ namespace gMediaTools.Services.MediaAnalyzer
                 // Check if we have valid audio track info
                 if (audioTrack != null 
                     && int.TryParse(audioTrack.Channels, out int audioChannels)
-                    && int.TryParse(audioTrack.BitRate, out int audioBitrate))
+                    && (int.TryParse(audioTrack.BitRate, out int audioBitrate)
+                    || int.TryParse(audioTrack.BitRateNominal, out audioBitrate)))
                 {
                     MediaAnalyzeAudioInfo audioResult = new MediaAnalyzeAudioInfo();
                     audioResult.Channels = audioChannels;

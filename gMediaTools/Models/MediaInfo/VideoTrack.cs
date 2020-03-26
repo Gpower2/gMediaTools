@@ -26,6 +26,8 @@ namespace gMediaTools.Models.MediaInfo
         private string _BitRate;
         private string _BitRateString;
         private string _BitRateMode;
+        private string _BitRateNominal;
+        private string _BitRateNominalString;
         private string _EncodedLibrary;
         private string _EncodedLibrarySettings;
         private string _Width;
@@ -365,6 +367,36 @@ namespace gMediaTools.Models.MediaInfo
             set
             {
                 _BitRateMode = value;
+            }
+        }
+
+        ///<summary> Nominal Bit rate in bps </summary>
+        public string BitRateNominal
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_BitRateNominal))
+                    _BitRateNominal = "";
+                return _BitRateNominal;
+            }
+            set
+            {
+                _BitRateNominal = value;
+            }
+        }
+
+        ///<summary> Nominal Bit rate (with measurement)</summary>
+        public string BitRateNominalString
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_BitRateNominalString))
+                    _BitRateNominalString = "";
+                return _BitRateNominalString;
+            }
+            set
+            {
+                _BitRateNominalString = value;
             }
         }
 

@@ -345,16 +345,31 @@ namespace gMediaTools.Forms
                     return;
                 }
 
+                lstMediaInfoItems.Enabled = false;
+                btnEncode.Enabled = false;
+                btnEncodeAll.Enabled = false;
+                BtnScanMediaFiles.Enabled = false;
+
                 var mediaInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
 
                 string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
 
                 // Log
                 txtEncodeLog.Text = $"Muxed {mediaInfo.Filename} => {muxedFilename}";
+
+                lstMediaInfoItems.Enabled = true;
+                btnEncode.Enabled = true;
+                btnEncodeAll.Enabled = true;
+                BtnScanMediaFiles.Enabled = true;
             }
             catch (Exception ex)
             {
                 ShowExceptionMessage(ex);
+
+                lstMediaInfoItems.Enabled = true;
+                btnEncode.Enabled = true;
+                btnEncodeAll.Enabled = true;
+                BtnScanMediaFiles.Enabled = true;
             }
         }
 

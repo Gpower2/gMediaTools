@@ -67,7 +67,7 @@ namespace gMediaTools.Services.MediaAnalyzer
 
             var files = Directory.GetFiles(request.MediaDirectoryName);
 
-            var mediaFiles = files.Where(f => _mediaExtensions.Any(m => m.Equals(Path.GetExtension(f).Substring(1).ToLower()))).ToList();
+            var mediaFiles = files.Where(f => _mediaExtensions.Any(m => m.Equals(Path.GetExtension(f).Substring(1).ToLower()))).OrderBy(f => f).ToList();
             if (mediaFiles.Any())
             {
                 foreach (var mediaFile in mediaFiles)
@@ -86,7 +86,7 @@ namespace gMediaTools.Services.MediaAnalyzer
 
             if (subDirs.Any())
             {
-                foreach (var subDir in subDirs)
+                foreach (var subDir in subDirs.OrderBy(d => d).ToList())
                 {
                     AnalyzePathInternal(
                         new MediaAnalyzePathRequest(subDir, request),
@@ -318,12 +318,28 @@ namespace gMediaTools.Services.MediaAnalyzer
                         // Height exeeds allowed value
                         targetHeight = maxWidth;
                         targetWidth = Convert.ToInt32(targetHeight * (double)width / height);
+
+                        // Check if the target width still exceeds allowed value
+                        if (targetWidth > maxHeight)
+                        {
+                            // Calculate based on max allowed width
+                            targetWidth = maxHeight;
+                            targetHeight = Convert.ToInt32(targetWidth * (double)height / width);
+                        }
                     }
                     else
                     {
                         // Width exceeds allowed value
                         targetWidth = maxHeight;
                         targetHeight = Convert.ToInt32(targetWidth * (double)height / width);
+
+                        // Check if the target height still exceeds allowed value
+                        if (targetHeight > maxWidth)
+                        {
+                            // Calculate based on max allowed height
+                            targetHeight = maxWidth;
+                            targetWidth = Convert.ToInt32(targetHeight * (double)width / height);
+                        }
                     }
                 }
                 else
@@ -335,12 +351,28 @@ namespace gMediaTools.Services.MediaAnalyzer
                         // Height exeeds allowed value
                         targetHeight = maxHeight;
                         targetWidth = Convert.ToInt32(targetHeight * (double)width / height);
+
+                        // Check if the target width still exceeds allowed value
+                        if (targetWidth > maxWidth)
+                        {
+                            // Calculate based on max allowed width
+                            targetWidth = maxWidth;
+                            targetHeight = Convert.ToInt32(targetWidth * (double)height / width);
+                        }
                     }
                     else
                     {
                         // Width exceeds allowed value
                         targetWidth = maxWidth;
                         targetHeight = Convert.ToInt32(targetWidth * (double)height / width);
+
+                        // Check if the target height still exceeds allowed value
+                        if (targetHeight > maxHeight)
+                        {
+                            // Calculate based on max allowed height
+                            targetHeight = maxHeight;
+                            targetWidth = Convert.ToInt32(targetHeight * (double)width / height);
+                        }
                     }
                 }
 
@@ -355,7 +387,7 @@ namespace gMediaTools.Services.MediaAnalyzer
             // Sanity Check!
             if (pixels > maxPixels)
             {
-                throw new Exception($"Something went wrong calculating new video resolution! original resolution : {width}x{height} new resolution : {targetWidth}x{targetHeight} max allowed resolution : {maxWidth}x{maxHeight}");
+                throw new Exception($"Something went wrong calculating new video resolution!{Environment.NewLine}original resolution : {width}x{height}{Environment.NewLine}new resolution : {targetWidth}x{targetHeight}{Environment.NewLine}max allowed resolution : {maxWidth}x{maxHeight}");
             }
 
             var targetRatio = targetFunction(pixels);

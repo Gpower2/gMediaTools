@@ -186,7 +186,7 @@ namespace gMediaTools.Models.MediaAnalyze
 
         public override string ToString()
         {
-            return Filename;
+            return PreviewText;
         }
     }
 }

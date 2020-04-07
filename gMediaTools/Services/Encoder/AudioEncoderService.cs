@@ -3,6 +3,7 @@ using gMediaTools.Models.AviSynth;
 using gMediaTools.Models.Encoder;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services.AviSynth;
+using gMediaTools.Services.AviSynth.AudioSource;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -24,10 +25,39 @@ namespace gMediaTools.Services.Encoder
             // Get AviSynth script
             AviSynthScriptService aviSynthScriptService = ServiceFactory.GetService<AviSynthScriptService>();
 
-            string avsScript = aviSynthScriptService.CreateAviSynthAudioScript(mediaAnalyzeInfo);
-
             // Open the AviSynth script
             AviSynthFileService aviSynthFileService = ServiceFactory.GetService<AviSynthFileService>();
+
+            // Get the AviSynth audio script
+            string avsScript = aviSynthScriptService.CreateAviSynthAudioScript(mediaAnalyzeInfo);
+
+            // Try to open the Avs Script
+            IAviSynthAudioSourceService audioSourceService = null;
+            while (true)
+            {
+                try
+                {
+                    using (var avsFile = aviSynthFileService.OpenAviSynthScriptFile(avsScript))
+                    {
+                        break;
+                    }
+                }
+                catch (Exception)
+                {
+                    // Check if we already tried again
+                    if (audioSourceService != null)
+                    {
+                        throw;
+                    }
+
+                    // In case it fails, try to create audio AviSynth script with the DirectShowSource
+                    audioSourceService = ServiceFactory.GetService<AviSynthDirectShowAudioSourceService>();
+
+                    avsScript = aviSynthScriptService.CreateAviSynthAudioScript(mediaAnalyzeInfo, audioSourceService: audioSourceService);
+
+                    continue;
+                }
+            }
 
             // Determine the output filename
             outputFileName = $"{mediaAnalyzeInfo.Filename}.reencode.{settings.FileExtension}".GetNewFileName();

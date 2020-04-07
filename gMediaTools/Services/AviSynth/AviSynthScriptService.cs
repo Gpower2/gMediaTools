@@ -95,7 +95,7 @@ namespace gMediaTools.Services.AviSynth
             return avsScriptFilename;
         }
 
-        public string CreateAviSynthAudioScript(MediaAnalyzeInfo mediaInfo, bool overWriteScriptFile = true)
+        public string CreateAviSynthAudioScript(MediaAnalyzeInfo mediaInfo, bool overWriteScriptFile = true, IAviSynthAudioSourceService audioSourceService = null)
         {
             if (mediaInfo == null)
             {
@@ -116,25 +116,33 @@ namespace gMediaTools.Services.AviSynth
 
             StringBuilder avsScriptBuilder = new StringBuilder();
 
-            // Use AviSynthLWLibavAudioSourceService Source filter to get the audio
-            //=============================
-            // Currently it has a bug in the latest versions that do not produce clips with correct audio length
-            // Last good working version: r920-20161216
-            // Use FFMS2 till then which seems to produce correct results
-            // UPDATE: LSMASH 20200322 fixes the audio issues, switch to AviSynthLWLibavAudioSourceService
-            // UPDATE: LSMASH still seems to have problems with some Windows Meadia Audio, so use FFMS2 for those files
-            // UPDATE: FFMS2 also struggles with those particular audio formats, switch to DirectShowSource
             IAviSynthAudioSourceService sourceService;
 
-            string fileContainerFormat = mediaInfo.FileContainerFormat.Trim().ToLower();
-            if (fileContainerFormat.Equals("windows media"))
+            // Check if no audio source service was provided
+            if (audioSourceService == null)
             {
-                //sourceService = ServiceFactory.GetService<AviSynthFfms2AudioSourceService>();
-                sourceService = ServiceFactory.GetService<AviSynthDirectShowAudioSourceService>();
+                // Use AviSynthLWLibavAudioSourceService Source filter to get the audio
+                //=============================
+                // Currently it has a bug in the latest versions that do not produce clips with correct audio length
+                // Last good working version: r920-20161216
+                // Use FFMS2 till then which seems to produce correct results
+                // UPDATE: LSMASH 20200322 fixes the audio issues, switch to AviSynthLWLibavAudioSourceService
+                // UPDATE: LSMASH still seems to have problems with some Windows Meadia Audio, so use FFMS2 for those files
+                // UPDATE: FFMS2 also struggles with those particular audio formats, switch to DirectShowSource
+                string fileContainerFormat = mediaInfo.FileContainerFormat.Trim().ToLower();
+                if (fileContainerFormat.Equals("windows media"))
+                {
+                    //sourceService = ServiceFactory.GetService<AviSynthFfms2AudioSourceService>();
+                    sourceService = ServiceFactory.GetService<AviSynthDirectShowAudioSourceService>();
+                }
+                else
+                {
+                    sourceService = ServiceFactory.GetService<AviSynthLWLibavAudioSourceService>();
+                }
             }
             else
             {
-                sourceService = ServiceFactory.GetService<AviSynthLWLibavAudioSourceService>();
+                sourceService = audioSourceService;
             }
 
             avsScriptBuilder.AppendLine(sourceService.GetAviSynthAudioSource(mediaInfo.Filename, -1, false));

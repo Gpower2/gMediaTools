@@ -293,10 +293,12 @@
             this.txtMediaInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMediaInfo.BackColor = System.Drawing.SystemColors.Window;
             this.txtMediaInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.txtMediaInfo.Location = new System.Drawing.Point(15, 449);
             this.txtMediaInfo.Name = "txtMediaInfo";
-            this.txtMediaInfo.Size = new System.Drawing.Size(871, 100);
+            this.txtMediaInfo.ReadOnly = true;
+            this.txtMediaInfo.Size = new System.Drawing.Size(871, 300);
             this.txtMediaInfo.TabIndex = 18;
             this.txtMediaInfo.Text = "";
             // 
@@ -366,7 +368,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(984, 561);
+            this.ClientSize = new System.Drawing.Size(984, 761);
             this.Controls.Add(this.txtEncodeLogProgress);
             this.Controls.Add(this.txtEncodeProgress);
             this.Controls.Add(this.txtEncodeLog);

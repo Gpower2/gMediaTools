@@ -229,7 +229,7 @@ namespace gMediaTools.Forms
         private void EncodeLog(string log)
         {
             Debug.WriteLine(log);
-            this.Invoke(new Action(() => txtEncodeLog.Text = log));
+            this.Invoke(new Action(() => txtEncodeLog.Text = $"{DateTime.Now:[yyyy-MM-dd HH:mm:ss.fff]} {log}"));
         }
 
         private void EncodeProgress(string progress)
@@ -253,7 +253,7 @@ namespace gMediaTools.Forms
             }
 
             // Log
-            txtEncodeLog.Text = $"Start Encoding: {mediaInfo.Filename}";
+            EncodeLog($"Start Encoding: {mediaInfo.Filename}");
 
             txtMediaInfo.Text = GetMediaInfoAnalysis(mediaInfo);
 
@@ -262,7 +262,7 @@ namespace gMediaTools.Forms
             // Encode video
             if (mediaInfo.NeedsVideoReencode)
             {
-                txtEncodeLog.Text = $"Video Encoding: {mediaInfo.Filename}...";
+                EncodeLog($"Video Encoding: {mediaInfo.Filename}...");
 
                 X264VideoEncoderService videoEncoderService = ServiceFactory.GetService<X264VideoEncoderService>();
 
@@ -276,7 +276,7 @@ namespace gMediaTools.Forms
 
                 if (res != 0)
                 {
-                    txtEncodeLog.Text = $"Video Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
+                    EncodeLog($"Video Encoder failed for {mediaInfo.Filename}! Exit code : {res}");
                     return "";
                 }
             }
@@ -286,7 +286,7 @@ namespace gMediaTools.Forms
             // Encode Audio
             if (mediaInfo.NeedsAudioReencode)
             {
-                txtEncodeLog.Text = $"Audio Encoding: {mediaInfo.Filename}...";
+                EncodeLog($"Audio Encoding: {mediaInfo.Filename}...");
 
                 AudioEncoderService audioEncoderService = ServiceFactory.GetService<AudioEncoderService>();
 
@@ -305,13 +305,13 @@ namespace gMediaTools.Forms
 
                 if (res != 0)
                 {
-                    txtEncodeLog.Text = $"Audio Encoder failed for {mediaInfo.Filename}! Exit code : {res}";
+                    EncodeLog($"Audio Encoder failed for {mediaInfo.Filename}! Exit code : {res}");
                     return "";
                 }
             }
 
             // Mux final video!
-            txtEncodeLog.Text = $"Muxing: {mediaInfo.Filename}...";
+            EncodeLog($"Muxing: {mediaInfo.Filename}...");
 
             DefaultMuxerSettings muxerSettings = new DefaultMuxerSettings(
                 videoOutputFileName,
@@ -355,7 +355,7 @@ namespace gMediaTools.Forms
                 string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
 
                 // Log
-                txtEncodeLog.Text = $"Muxed {mediaInfo.Filename} => {muxedFilename}";
+                EncodeLog($"Muxed {mediaInfo.Filename} => {muxedFilename}");
 
                 lstMediaInfoItems.Enabled = true;
                 btnEncode.Enabled = true;
@@ -390,17 +390,17 @@ namespace gMediaTools.Forms
 
                 int i = 0;
 
-                foreach (var item in lstMediaInfoItems.Items)
+                var mediaInfoList = lstMediaInfoItems.Items.Cast<MediaAnalyzeInfo>().ToList();
+
+                foreach (var mediaInfo in mediaInfoList)
                 {
                     i++;
-                    txtEncodeProgress.Text = $"{i}/{lstMediaInfoItems.Items.Count}";
-
-                    var mediaInfo = item as MediaAnalyzeInfo;
+                    txtEncodeProgress.Text = $"{i}/{mediaInfoList.Count}";
 
                     string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
 
                     // Log
-                    txtEncodeLog.Text = $"Muxed {mediaInfo.Filename} => {muxedFilename}";
+                    EncodeLog($"Muxed {mediaInfo.Filename} => {muxedFilename}");
                 }
 
                 lstMediaInfoItems.Enabled = true;

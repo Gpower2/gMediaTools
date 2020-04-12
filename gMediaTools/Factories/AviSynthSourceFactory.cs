@@ -40,6 +40,11 @@ namespace gMediaTools.Factories
                 // FLV => FFMS2
                 return ServiceFactory.GetService<AviSynthFfms2VideoSourceService>();
             }
+            else if (container.Equals("realmedia"))
+            {
+                // RM => FFMS2
+                return ServiceFactory.GetService<AviSynthFfms2VideoSourceService>();
+            }
             else
             {
                 // Could not identify container/format

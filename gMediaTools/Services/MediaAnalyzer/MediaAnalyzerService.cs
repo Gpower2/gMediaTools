@@ -177,8 +177,13 @@ namespace gMediaTools.Services.MediaAnalyzer
                 // Check if we have valid video track info
                 if (int.TryParse(videoTrack.Width, out int width)
                    && int.TryParse(videoTrack.Height, out int height)
-                   && (int.TryParse(videoTrack.BitRate, out int bitrate)
-                   || int.TryParse(videoTrack.BitRateNominal, out bitrate)))
+                   && (
+                        int.TryParse(videoTrack.BitRate, out int bitrate)
+                        || (videoTrack.BitRate.Contains("/") && int.TryParse(videoTrack.BitRate.Substring(videoTrack.BitRate.IndexOf("/") + 1), out bitrate))
+                        || int.TryParse(videoTrack.BitRateNominal, out bitrate)
+                        || (videoTrack.BitRateNominal.Contains("/") && int.TryParse(videoTrack.BitRateNominal.Substring(videoTrack.BitRate.IndexOf("/") + 1), out bitrate))
+                   )
+                )
                 {
                     MediaAnalyzeVideoInfo videoResult = new MediaAnalyzeVideoInfo();
                     // Check for pixel aspect ration

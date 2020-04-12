@@ -52,6 +52,7 @@
             this.txtEncodeLog = new System.Windows.Forms.TextBox();
             this.txtEncodeProgress = new gMediaTools.GTextBox();
             this.txtEncodeLogProgress = new System.Windows.Forms.TextBox();
+            this.btnOpenFolder = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
@@ -364,11 +365,23 @@
             this.txtEncodeLogProgress.Size = new System.Drawing.Size(957, 23);
             this.txtEncodeLogProgress.TabIndex = 23;
             // 
+            // btnOpenFolder
+            // 
+            this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenFolder.Location = new System.Drawing.Point(892, 589);
+            this.btnOpenFolder.Name = "btnOpenFolder";
+            this.btnOpenFolder.Size = new System.Drawing.Size(80, 45);
+            this.btnOpenFolder.TabIndex = 24;
+            this.btnOpenFolder.Text = "Open Folder";
+            this.btnOpenFolder.UseVisualStyleBackColor = true;
+            this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 761);
+            this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.txtEncodeLogProgress);
             this.Controls.Add(this.txtEncodeProgress);
             this.Controls.Add(this.txtEncodeLog);
@@ -427,6 +440,7 @@
         private System.Windows.Forms.TextBox txtEncodeLog;
         private GTextBox txtEncodeProgress;
         private System.Windows.Forms.TextBox txtEncodeLogProgress;
+        private System.Windows.Forms.Button btnOpenFolder;
     }
 }
 

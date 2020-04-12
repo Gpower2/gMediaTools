@@ -418,5 +418,34 @@ namespace gMediaTools.Forms
                 BtnScanMediaFiles.Enabled = true;
             }
         }
+
+        private void btnOpenFolder_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    return;
+                }
+
+                var mediaInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
+
+                if (Directory.Exists(Path.GetDirectoryName(mediaInfo.Filename)))
+                {
+                    if (File.Exists(mediaInfo.Filename))
+                    {
+                        Process.Start("explorer.exe", String.Format("/select, \"{0}\"", mediaInfo.Filename));
+                    }
+                    else
+                    {
+                        Process.Start("explorer.exe", Path.GetFullPath(mediaInfo.Filename));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
     }
 }

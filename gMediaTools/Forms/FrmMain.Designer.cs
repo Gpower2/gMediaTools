@@ -53,6 +53,7 @@
             this.txtEncodeProgress = new gMediaTools.GTextBox();
             this.txtEncodeLogProgress = new System.Windows.Forms.TextBox();
             this.btnOpenFolder = new System.Windows.Forms.Button();
+            this.btnAbort = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
@@ -368,7 +369,7 @@
             // btnOpenFolder
             // 
             this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFolder.Location = new System.Drawing.Point(892, 589);
+            this.btnOpenFolder.Location = new System.Drawing.Point(892, 652);
             this.btnOpenFolder.Name = "btnOpenFolder";
             this.btnOpenFolder.Size = new System.Drawing.Size(80, 45);
             this.btnOpenFolder.TabIndex = 24;
@@ -376,11 +377,23 @@
             this.btnOpenFolder.UseVisualStyleBackColor = true;
             this.btnOpenFolder.Click += new System.EventHandler(this.btnOpenFolder_Click);
             // 
+            // btnAbort
+            // 
+            this.btnAbort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAbort.Location = new System.Drawing.Point(892, 572);
+            this.btnAbort.Name = "btnAbort";
+            this.btnAbort.Size = new System.Drawing.Size(80, 45);
+            this.btnAbort.TabIndex = 25;
+            this.btnAbort.Text = "Abort";
+            this.btnAbort.UseVisualStyleBackColor = true;
+            this.btnAbort.Click += new System.EventHandler(this.btnAbort_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 761);
+            this.Controls.Add(this.btnAbort);
             this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.txtEncodeLogProgress);
             this.Controls.Add(this.txtEncodeProgress);
@@ -441,6 +454,7 @@
         private GTextBox txtEncodeProgress;
         private System.Windows.Forms.TextBox txtEncodeLogProgress;
         private System.Windows.Forms.Button btnOpenFolder;
+        private System.Windows.Forms.Button btnAbort;
     }
 }
 

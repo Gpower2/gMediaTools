@@ -9,8 +9,10 @@ using System.Threading.Tasks;
 
 namespace gMediaTools.Services.ProcessRunner
 {
-    public class DefaultProcessRunnerService : IProcessRunnerService
+    public class DefaultProcessRunnerService : IProcessRunnerService, IDisposable
     {
+        private Process _process;
+
         public int RunProcess(IProcessRunnerParameters parameters, Action<Process, string> lineAction)
         {
             // Create the ProcessStartInfo object
@@ -30,27 +32,68 @@ namespace gMediaTools.Services.ProcessRunner
                 // ====================================================
             };
 
-            using (Process myProcess = new Process())
+            using (_process = new Process())
             {
-                myProcess.StartInfo = myProcessInfo;
+                _process.StartInfo = myProcessInfo;
 
                 Debug.WriteLine(myProcessInfo.Arguments);
 
                 // Start the process
-                myProcess.Start();
+                _process.Start();
 
                 // Read the Standard output character by character
-                Task.Run(() => myProcess.ReadStreamPerCharacter(parameters.UseOutputStream, lineAction));
+                Task.Run(() => _process.ReadStreamPerCharacter(parameters.UseOutputStream, lineAction));
 
                 // Wait for the process to exit
-                myProcess.WaitForExit();
+                _process.WaitForExit();
 
                 // Debug write the exit code
-                Debug.WriteLine($"Exit code: {myProcess.ExitCode}");
+                Debug.WriteLine($"Exit code: {_process.ExitCode}");
 
                 // Return the process exit code
-                return myProcess.ExitCode;
+                return _process.ExitCode;
             }
         }
+
+        #region IDisposable Support
+
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    // TODO: dispose managed state (managed objects).
+                    try
+                    {
+                        if (_process!= null && !_process.HasExited)
+                        {
+                            _process.Kill();
+
+                            _process.WaitForExit();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                    }
+
+                    _process = null;
+                }
+
+                disposedValue = true;
+            }
+        }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+        }
+
+        #endregion
     }
 }

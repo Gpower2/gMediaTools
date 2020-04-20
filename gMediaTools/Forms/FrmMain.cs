@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 using gMediaTools.Models.Encoder;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Models.Muxer;
@@ -339,6 +340,8 @@ namespace gMediaTools.Forms
         {
             try
             {
+                _requestedAbort = false;
+
                 if (lstMediaInfoItems.SelectedIndex == -1)
                 {
                     txtMediaInfo.Clear();
@@ -349,6 +352,7 @@ namespace gMediaTools.Forms
                 btnEncode.Enabled = false;
                 btnEncodeAll.Enabled = false;
                 BtnScanMediaFiles.Enabled = false;
+                btnAbort.Enabled = true;
 
                 var mediaInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
 
@@ -361,6 +365,7 @@ namespace gMediaTools.Forms
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
+                btnAbort.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -370,13 +375,18 @@ namespace gMediaTools.Forms
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
+                btnAbort.Enabled = false;
             }
         }
+
+        private bool _requestedAbort = false;
 
         private async void btnEncodeAll_Click(object sender, EventArgs e)
         {
             try
             {
+                _requestedAbort = false;
+
                 if (lstMediaInfoItems.Items.Count == 0)
                 {
                     txtMediaInfo.Clear();
@@ -387,6 +397,7 @@ namespace gMediaTools.Forms
                 btnEncode.Enabled = false;
                 btnEncodeAll.Enabled = false;
                 BtnScanMediaFiles.Enabled = false;
+                btnAbort.Enabled = true;
 
                 int i = 0;
 
@@ -394,6 +405,11 @@ namespace gMediaTools.Forms
 
                 foreach (var mediaInfo in mediaInfoList)
                 {
+                    if (_requestedAbort)
+                    {
+                        break;
+                    }
+
                     i++;
                     txtEncodeProgress.Text = $"{i}/{mediaInfoList.Count}";
 
@@ -407,6 +423,7 @@ namespace gMediaTools.Forms
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
+                btnAbort.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -416,6 +433,7 @@ namespace gMediaTools.Forms
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
+                btnAbort.Enabled = false;
             }
         }
 
@@ -441,6 +459,19 @@ namespace gMediaTools.Forms
                         Process.Start("explorer.exe", Path.GetFullPath(mediaInfo.Filename));
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnAbort_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                _requestedAbort = true;
+                btnAbort.Enabled = false;
             }
             catch (Exception ex)
             {

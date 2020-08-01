@@ -77,6 +77,16 @@ namespace gMediaTools.Extensions
             return decimal.TryParse(stringToParse.PrepareStringForNumericParse(), NumberStyles.Any, INV_CULTURE, out decimalValue);
         }
 
+        public static string GetOnlyDigits(this string stringToProcess)
+        {
+            if (stringToProcess == null)
+            {
+                return stringToProcess;
+            }
+
+            return new string(stringToProcess.Where(c => char.IsDigit(c)).ToArray());
+        }
+
         public static string RemoveSpaces(this string stringToProcess)
         {
             while(stringToProcess.Contains(" "))

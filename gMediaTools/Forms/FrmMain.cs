@@ -10,12 +10,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using gMediaTools.Models;
 using gMediaTools.Models.Encoder;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Models.Muxer;
 using gMediaTools.Services;
 using gMediaTools.Services.CurveFitting;
 using gMediaTools.Services.Encoder;
+using gMediaTools.Services.FormState;
 using gMediaTools.Services.MediaAnalyzer;
 using gMediaTools.Services.Muxer;
 
@@ -27,16 +29,75 @@ namespace gMediaTools.Forms
 
         private readonly MediaAnalyzerService _mediaAnalyzerService = new MediaAnalyzerService();
 
+        private readonly FormStateRepository _formStateRepository = new FormStateRepository();
+
+        private bool _ignoreEvents = false;
+
         public FrmMain()
         {
-            InitializeComponent();
+            try
+            {
+                _ignoreEvents = true;
 
-            // Default values
-            txtBitratePercentageThreshold.Int32Value = 10;
-            txtGainPercentageThreshold.Int32Value = 20;
-            txtMaxAllowedWidth.Int32Value = 1280;
-            txtMaxAllowedHeight.Int32Value = 720;
-            txtMinAllowedBitrate.Int32Value = 700;
+                InitializeComponent();
+
+                // Get Form State
+                var formStateInfo = _formStateRepository.GetFormStateInfo();
+
+                SetFormState(formStateInfo);
+
+                _ignoreEvents = false;
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+
+                _ignoreEvents = false;
+            }
+        }
+
+        private void SetFormState(FormStateInfo formStateInfo)
+        {
+            txtInputFolder.Text = formStateInfo.InputFolder;
+
+            txtBitratePercentageThreshold.Int32Value = formStateInfo.BitratePercentageThreshold;
+            txtGainPercentageThreshold.Int32Value = formStateInfo.GainPercentageThreshold;
+            txtMaxAllowedWidth.Int32Value = formStateInfo.MaxAllowedWidth;
+            txtMaxAllowedHeight.Int32Value = formStateInfo.MaxAllowedHeight;
+            txtMinAllowedBitrate.Int32Value = formStateInfo.MinAllowedBitrate;
+
+            lstMediaInfoItems.Items.AddRange(formStateInfo.MediaAnalyzeInfos.ToArray());
+            UpdateListCounter();
+        }
+
+        private FormStateInfo GetCurrentFormStateInfo()
+        {
+            return new FormStateInfo
+            {
+                InputFolder = txtInputFolder.Text,
+
+                BitratePercentageThreshold = txtBitratePercentageThreshold.Int32Value,
+                GainPercentageThreshold = txtGainPercentageThreshold.Int32Value,
+                MaxAllowedWidth = txtMaxAllowedWidth.Int32Value,
+                MaxAllowedHeight = txtMaxAllowedHeight.Int32Value,
+                MinAllowedBitrate = txtMinAllowedBitrate.Int32Value,
+
+                MediaAnalyzeInfos = lstMediaInfoItems.Items.Cast<MediaAnalyzeInfo>()
+            };
+        }
+
+        private void UpdateCurrentFormState()
+        {
+            if (!_ignoreEvents)
+            {
+                _formStateRepository.SaveFormStateInfo(GetCurrentFormStateInfo());
+            }
+            UpdateListCounter();
+        }
+
+        private void UpdateListCounter()
+        {
+            grpItems.Text = $"Items ({lstMediaInfoItems.Items.Count})";
         }
 
         private void BtnScanMediaFiles_Click(object sender, EventArgs e)
@@ -61,6 +122,7 @@ namespace gMediaTools.Forms
 
                 txtLog.Clear();
                 lstMediaInfoItems.Items.Clear();
+                UpdateCurrentFormState();
 
                 // Get the CurveFittingSettings for calculating the CurveFittingFunction
                 var curveSettings = _curveFittingRepo.GetCurveFittingSettings();
@@ -106,9 +168,11 @@ namespace gMediaTools.Forms
                 );
 
                 lstMediaInfoItems.Items.AddRange(mediaToReencode.ToArray());
+                UpdateCurrentFormState();
             }
             catch (Exception ex)
             {
+                UpdateCurrentFormState();
                 ShowExceptionMessage(ex);
             }
         }
@@ -349,6 +413,7 @@ namespace gMediaTools.Forms
                 }
 
                 lstMediaInfoItems.Enabled = false;
+                btnRemove.Enabled = false;
                 btnEncode.Enabled = false;
                 btnEncodeAll.Enabled = false;
                 BtnScanMediaFiles.Enabled = false;
@@ -362,6 +427,7 @@ namespace gMediaTools.Forms
                 EncodeLog($"Muxed {mediaInfo.Filename} => {muxedFilename}");
 
                 lstMediaInfoItems.Enabled = true;
+                btnRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -372,6 +438,7 @@ namespace gMediaTools.Forms
                 ShowExceptionMessage(ex);
 
                 lstMediaInfoItems.Enabled = true;
+                btnRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -394,6 +461,7 @@ namespace gMediaTools.Forms
                 }
 
                 lstMediaInfoItems.Enabled = false;
+                btnRemove.Enabled = false;
                 btnEncode.Enabled = false;
                 btnEncodeAll.Enabled = false;
                 BtnScanMediaFiles.Enabled = false;
@@ -420,6 +488,7 @@ namespace gMediaTools.Forms
                 }
 
                 lstMediaInfoItems.Enabled = true;
+                btnRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -430,6 +499,7 @@ namespace gMediaTools.Forms
                 ShowExceptionMessage(ex);
 
                 lstMediaInfoItems.Enabled = true;
+                btnRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -472,6 +542,47 @@ namespace gMediaTools.Forms
             {
                 _requestedAbort = true;
                 btnAbort.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnRemove_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    return;
+                }
+
+                lstMediaInfoItems.Items.Remove(lstMediaInfoItems.SelectedItem);
+                UpdateCurrentFormState();
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void UserInputChanged(object sender, EventArgs e)
+        {
+            UpdateCurrentFormState();
+        }
+
+        private void btnRemoveDeleted_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                var deletedFiles = lstMediaInfoItems.Items.Cast<MediaAnalyzeInfo>().Where(m => !File.Exists(m.Filename)).ToList();
+
+                foreach (var deletedFile in deletedFiles)
+                {
+                    lstMediaInfoItems.Items.Remove(deletedFile);
+                    UpdateCurrentFormState();
+                }
             }
             catch (Exception ex)
             {

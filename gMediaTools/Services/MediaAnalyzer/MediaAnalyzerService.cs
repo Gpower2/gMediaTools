@@ -209,6 +209,8 @@ namespace gMediaTools.Services.MediaAnalyzer
                     videoResult.ChromaSubsampling = videoTrack.ChromaSubsampling;
                     videoResult.ColorSpace = videoTrack.ColorSpace;
 
+                    videoResult.Rotation = videoTrack.Rotation;
+
                     result.VideoInfo = videoResult;
                 }
                 else

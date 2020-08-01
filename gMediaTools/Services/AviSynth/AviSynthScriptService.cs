@@ -79,6 +79,33 @@ namespace gMediaTools.Services.AviSynth
                 avsScriptBuilder.AppendLine($"Lanczos4resize({mediaInfo.TargetVideoWidth}, {mediaInfo.TargetVideoHeight})");
             }
 
+            // Decide if we need rotation
+            //=============================
+            if (!string.IsNullOrWhiteSpace(mediaInfo.VideoInfo.Rotation))
+            {
+                // check if it's a valid rotation number (degrees)
+                if (mediaInfo.VideoInfo.Rotation.PrepareStringForNumericParse().TryParseDecimal(out decimal rotation))
+                {
+                    // Check if the degrees are valid
+                    if (rotation % 90 == 0)
+                    {
+                        // Check if it's a negative number
+                        bool isNegative = mediaInfo.VideoInfo.Rotation.Contains("-");
+
+                        // Determine turn command
+                        string turnCommand = isNegative ? "turnLeft()" : "turnRight()";
+
+                        // Get number of 90 degrees rotations
+                        int numberOfRotations = Convert.ToInt32(rotation / 90.0m);
+
+                        for (int i = 0; i < numberOfRotations; i++)
+                        {
+                            avsScriptBuilder.AppendLine(turnCommand);
+                        }
+                    }
+                }
+            }
+
             // Decide if we need colorspace conversion
             //=============================
             if (!mediaInfo.VideoInfo.ColorSpace.Trim().ToLower().Equals("yv12"))

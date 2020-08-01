@@ -111,6 +111,7 @@
     <Compile Include="Models\Encoder\IAudioEncoder.cs" />
     <Compile Include="Models\Encoder\IAudioEncoderSettings.cs" />
     <Compile Include="Models\Encoder\NeroAacAudioEncoder.cs" />
+    <Compile Include="Models\FormStateInfo.cs" />
     <Compile Include="Models\Muxer\DefaultMuxerSettings.cs" />
     <Compile Include="Models\Muxer\IMuxer.cs" />
     <Compile Include="Models\Muxer\IMuxerSettings.cs" />
@@ -180,6 +181,7 @@
     <Compile Include="Services\CurveFitting\LogarithmicCurveFittingService.cs" />
     <Compile Include="Services\Encoder\AudioEncoderService.cs" />
     <Compile Include="Services\Encoder\X264VideoEncoderService.cs" />
+    <Compile Include="Services\FormState\FormStateRepository.cs" />
     <Compile Include="Services\MediaAnalyzer\MediaAnalyzerService.cs" />
     <Compile Include="Services\CurveFitting\PowerLawCurveFittingService.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

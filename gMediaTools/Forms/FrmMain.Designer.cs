@@ -54,6 +54,10 @@
             this.txtEncodeLogProgress = new System.Windows.Forms.TextBox();
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.btnAbort = new System.Windows.Forms.Button();
+            this.btnRemove = new System.Windows.Forms.Button();
+            this.btnRemoveDeleted = new System.Windows.Forms.Button();
+            this.grpItems = new System.Windows.Forms.GroupBox();
+            this.grpItems.SuspendLayout();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
@@ -76,6 +80,7 @@
             this.txtInputFolder.Name = "txtInputFolder";
             this.txtInputFolder.Size = new System.Drawing.Size(956, 23);
             this.txtInputFolder.TabIndex = 1;
+            this.txtInputFolder.TextChanged += new System.EventHandler(this.UserInputChanged);
             this.txtInputFolder.DragDrop += new System.Windows.Forms.DragEventHandler(this.txtInputFolder_DragDrop);
             this.txtInputFolder.DragEnter += new System.Windows.Forms.DragEventHandler(this.txtInputFolder_DragEnter);
             // 
@@ -143,6 +148,7 @@
             this.txtBitratePercentageThreshold.TabIndex = 6;
             this.txtBitratePercentageThreshold.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtBitratePercentageThreshold.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            this.txtBitratePercentageThreshold.TextChanged += new System.EventHandler(this.UserInputChanged);
             // 
             // txtGainPercentageThreshold
             // 
@@ -163,6 +169,7 @@
             this.txtGainPercentageThreshold.TabIndex = 7;
             this.txtGainPercentageThreshold.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtGainPercentageThreshold.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            this.txtGainPercentageThreshold.TextChanged += new System.EventHandler(this.UserInputChanged);
             // 
             // txtMaxAllowedWidth
             // 
@@ -183,6 +190,7 @@
             this.txtMaxAllowedWidth.TabIndex = 8;
             this.txtMaxAllowedWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtMaxAllowedWidth.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            this.txtMaxAllowedWidth.TextChanged += new System.EventHandler(this.UserInputChanged);
             // 
             // txtMaxAllowedHeight
             // 
@@ -203,6 +211,7 @@
             this.txtMaxAllowedHeight.TabIndex = 9;
             this.txtMaxAllowedHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtMaxAllowedHeight.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            this.txtMaxAllowedHeight.TextChanged += new System.EventHandler(this.UserInputChanged);
             // 
             // txtMinAllowedBitrate
             // 
@@ -223,6 +232,7 @@
             this.txtMinAllowedBitrate.TabIndex = 10;
             this.txtMinAllowedBitrate.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.txtMinAllowedBitrate.TextBoxType = gMediaTools.GTextBox.GTextBoxType.Numeric;
+            this.txtMinAllowedBitrate.TextChanged += new System.EventHandler(this.UserInputChanged);
             // 
             // lblBitratePercentageThreshold
             // 
@@ -280,20 +290,18 @@
             // 
             // lstMediaInfoItems
             // 
-            this.lstMediaInfoItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstMediaInfoItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstMediaInfoItems.FormattingEnabled = true;
             this.lstMediaInfoItems.ItemHeight = 15;
-            this.lstMediaInfoItems.Location = new System.Drawing.Point(15, 261);
+            this.lstMediaInfoItems.Location = new System.Drawing.Point(3, 19);
             this.lstMediaInfoItems.Name = "lstMediaInfoItems";
-            this.lstMediaInfoItems.Size = new System.Drawing.Size(957, 124);
+            this.lstMediaInfoItems.Size = new System.Drawing.Size(951, 102);
             this.lstMediaInfoItems.TabIndex = 17;
             this.lstMediaInfoItems.SelectedIndexChanged += new System.EventHandler(this.lstMediaInfoItems_SelectedIndexChanged);
             // 
             // txtMediaInfo
             // 
-            this.txtMediaInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtMediaInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtMediaInfo.BackColor = System.Drawing.SystemColors.Window;
             this.txtMediaInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
@@ -306,10 +314,10 @@
             // 
             // btnEncode
             // 
-            this.btnEncode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncode.Location = new System.Drawing.Point(892, 449);
+            this.btnEncode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEncode.Location = new System.Drawing.Point(892, 550);
             this.btnEncode.Name = "btnEncode";
-            this.btnEncode.Size = new System.Drawing.Size(80, 45);
+            this.btnEncode.Size = new System.Drawing.Size(80, 40);
             this.btnEncode.TabIndex = 19;
             this.btnEncode.Text = "Encode";
             this.btnEncode.UseVisualStyleBackColor = true;
@@ -317,10 +325,10 @@
             // 
             // btnEncodeAll
             // 
-            this.btnEncodeAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncodeAll.Location = new System.Drawing.Point(892, 504);
+            this.btnEncodeAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnEncodeAll.Location = new System.Drawing.Point(892, 596);
             this.btnEncodeAll.Name = "btnEncodeAll";
-            this.btnEncodeAll.Size = new System.Drawing.Size(80, 45);
+            this.btnEncodeAll.Size = new System.Drawing.Size(80, 40);
             this.btnEncodeAll.TabIndex = 20;
             this.btnEncodeAll.Text = "Encode All";
             this.btnEncodeAll.UseVisualStyleBackColor = true;
@@ -328,7 +336,7 @@
             // 
             // txtEncodeLog
             // 
-            this.txtEncodeLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtEncodeLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEncodeLog.Location = new System.Drawing.Point(15, 390);
             this.txtEncodeLog.Name = "txtEncodeLog";
@@ -338,7 +346,7 @@
             // 
             // txtEncodeProgress
             // 
-            this.txtEncodeProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtEncodeProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEncodeProgress.DataObject = null;
             this.txtEncodeProgress.Decimals = 2;
             this.txtEncodeProgress.DecimalValue = new decimal(new int[] {
@@ -358,7 +366,7 @@
             // 
             // txtEncodeLogProgress
             // 
-            this.txtEncodeLogProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtEncodeLogProgress.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtEncodeLogProgress.Location = new System.Drawing.Point(15, 419);
             this.txtEncodeLogProgress.Name = "txtEncodeLogProgress";
@@ -368,10 +376,10 @@
             // 
             // btnOpenFolder
             // 
-            this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFolder.Location = new System.Drawing.Point(892, 652);
+            this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenFolder.Location = new System.Drawing.Point(892, 704);
             this.btnOpenFolder.Name = "btnOpenFolder";
-            this.btnOpenFolder.Size = new System.Drawing.Size(80, 45);
+            this.btnOpenFolder.Size = new System.Drawing.Size(80, 40);
             this.btnOpenFolder.TabIndex = 24;
             this.btnOpenFolder.Text = "Open Folder";
             this.btnOpenFolder.UseVisualStyleBackColor = true;
@@ -379,20 +387,58 @@
             // 
             // btnAbort
             // 
-            this.btnAbort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAbort.Location = new System.Drawing.Point(892, 572);
+            this.btnAbort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAbort.Location = new System.Drawing.Point(892, 655);
             this.btnAbort.Name = "btnAbort";
-            this.btnAbort.Size = new System.Drawing.Size(80, 45);
+            this.btnAbort.Size = new System.Drawing.Size(80, 40);
             this.btnAbort.TabIndex = 25;
             this.btnAbort.Text = "Abort";
             this.btnAbort.UseVisualStyleBackColor = true;
             this.btnAbort.Click += new System.EventHandler(this.btnAbort_Click);
+            // 
+            // btnRemove
+            // 
+            this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemove.Location = new System.Drawing.Point(892, 449);
+            this.btnRemove.Name = "btnRemove";
+            this.btnRemove.Size = new System.Drawing.Size(80, 40);
+            this.btnRemove.TabIndex = 26;
+            this.btnRemove.Text = "Remove";
+            this.btnRemove.UseVisualStyleBackColor = true;
+            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            // 
+            // btnRemoveDeleted
+            // 
+            this.btnRemoveDeleted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnRemoveDeleted.Location = new System.Drawing.Point(892, 494);
+            this.btnRemoveDeleted.Name = "btnRemoveDeleted";
+            this.btnRemoveDeleted.Size = new System.Drawing.Size(80, 40);
+            this.btnRemoveDeleted.TabIndex = 27;
+            this.btnRemoveDeleted.Text = "Remove Deleted";
+            this.btnRemoveDeleted.UseVisualStyleBackColor = true;
+            this.btnRemoveDeleted.Click += new System.EventHandler(this.btnRemoveDeleted_Click);
+            // 
+            // grpItems
+            // 
+            this.grpItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.grpItems.Controls.Add(this.lstMediaInfoItems);
+            this.grpItems.Location = new System.Drawing.Point(15, 261);
+            this.grpItems.Name = "grpItems";
+            this.grpItems.Size = new System.Drawing.Size(957, 124);
+            this.grpItems.TabIndex = 28;
+            this.grpItems.TabStop = false;
+            this.grpItems.Text = "Items";
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 761);
+            this.Controls.Add(this.grpItems);
+            this.Controls.Add(this.btnRemoveDeleted);
+            this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAbort);
             this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.txtEncodeLogProgress);
@@ -401,7 +447,6 @@
             this.Controls.Add(this.btnEncodeAll);
             this.Controls.Add(this.btnEncode);
             this.Controls.Add(this.txtMediaInfo);
-            this.Controls.Add(this.lstMediaInfoItems);
             this.Controls.Add(this.lblInputFolder);
             this.Controls.Add(this.lblMinAllowedBitrate);
             this.Controls.Add(this.lblMaxAllowedHeight);
@@ -422,6 +467,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
             this.Name = "FrmMain";
             this.Text = "gMediaTools";
+            this.grpItems.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -455,6 +501,9 @@
         private System.Windows.Forms.TextBox txtEncodeLogProgress;
         private System.Windows.Forms.Button btnOpenFolder;
         private System.Windows.Forms.Button btnAbort;
+        private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnRemoveDeleted;
+        private System.Windows.Forms.GroupBox grpItems;
     }
 }
 

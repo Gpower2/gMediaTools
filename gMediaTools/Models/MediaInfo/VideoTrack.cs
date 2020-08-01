@@ -82,6 +82,7 @@ namespace gMediaTools.Models.MediaInfo
         private string _ForcedString;
         private string _ColorSpace;
         private string _ChromaSubsampling;
+        private string _Rotation;
 
         ///<summary> Count of objects available in this stream </summary>
         public string Count
@@ -1205,6 +1206,20 @@ namespace gMediaTools.Models.MediaInfo
             set
             {
                 _ChromaSubsampling = value;
+            }
+        }
+
+        public string Rotation
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(_Rotation))
+                    _Rotation = "";
+                return _Rotation;
+            }
+            set
+            {
+                _Rotation = value;
             }
         }
 

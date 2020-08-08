@@ -73,8 +73,8 @@ namespace gMediaTools.Services.AviSynth
 
             // Decide if we need resize
             //=============================
-            if (mediaInfo.TargetVideoWidth != mediaInfo.VideoInfo.Width
-                || mediaInfo.TargetVideoHeight != mediaInfo.VideoInfo.Height)
+            if (mediaInfo.TargetVideoWidth != mediaInfo.VideoInfo.OriginalWidth
+                || mediaInfo.TargetVideoHeight != mediaInfo.VideoInfo.OriginalHeight)
             {
                 avsScriptBuilder.AppendLine($"Lanczos4resize({mediaInfo.TargetVideoWidth}, {mediaInfo.TargetVideoHeight})");
             }

@@ -186,7 +186,12 @@ namespace gMediaTools.Services.MediaAnalyzer
                 )
                 {
                     MediaAnalyzeVideoInfo videoResult = new MediaAnalyzeVideoInfo();
-                    // Check for pixel aspect ration
+
+                    // Keep the original dimensions
+                    int originalWidth = width;
+                    int originalHeight = height;
+
+                    // Check for pixel aspect ratio
                     if (videoTrack.PixelAspectRatio.TryParseDecimal(out decimal pixelAspectRatio))
                     {
                         // Check if pixel aspect ration is not equal to 1
@@ -196,6 +201,9 @@ namespace gMediaTools.Services.MediaAnalyzer
                             width = Convert.ToInt32(Math.Ceiling(width * pixelAspectRatio));
                         }
                     }
+
+                    videoResult.OriginalWidth = originalWidth;
+                    videoResult.OriginalHeight = originalHeight;
 
                     videoResult.Width = width;
                     videoResult.Height = height;
@@ -301,7 +309,7 @@ namespace gMediaTools.Services.MediaAnalyzer
             long pixels = width * height;
 
             // Initialize out variables
-            // and recaluclate to closest mod 2 value
+            // and recalculate to closest mod 2 value
             targetWidth = width.ClosestModValue(2);
             targetHeight = height.ClosestModValue(2);
 

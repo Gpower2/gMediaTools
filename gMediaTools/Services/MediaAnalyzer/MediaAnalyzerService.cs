@@ -219,6 +219,8 @@ namespace gMediaTools.Services.MediaAnalyzer
 
                     videoResult.Rotation = videoTrack.Rotation;
 
+                    videoResult.ScanType = videoTrack.ScanType;
+
                     result.VideoInfo = videoResult;
                 }
                 else

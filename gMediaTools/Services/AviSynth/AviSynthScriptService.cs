@@ -71,6 +71,13 @@ namespace gMediaTools.Services.AviSynth
                 avsScriptBuilder.AppendLine(timeCodesAviSynthScript);
             }
 
+            // Decide if we need to de interlace
+            if (!string.IsNullOrWhiteSpace(mediaInfo.VideoInfo.ScanType) && mediaInfo.VideoInfo.ScanType.ToLower().Equals("interlaced"))
+            {
+                // It seems we have an interlaced video, deinterlace it!
+                avsScriptBuilder.AppendLine($"FieldDeinterlace(full=true, blend=false)");
+            }
+
             // Decide if we need resize
             //=============================
             if (mediaInfo.TargetVideoWidth != mediaInfo.VideoInfo.OriginalWidth

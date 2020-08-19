@@ -98,6 +98,7 @@
     <Compile Include="Extensions\FileNameExtensions.cs" />
     <Compile Include="Extensions\IntegerExtensions.cs" />
     <Compile Include="Extensions\IProcessRunnerParametersExtensions.cs" />
+    <Compile Include="Extensions\ListBoxExtensions.cs" />
     <Compile Include="Extensions\ListVideoFrameInfoExtensions.cs" />
     <Compile Include="Extensions\ProcessExtensions.cs" />
     <Compile Include="Models\AviSynth\AviSynthClip.cs" />

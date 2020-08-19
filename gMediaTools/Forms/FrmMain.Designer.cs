@@ -54,10 +54,16 @@
             this.txtEncodeLogProgress = new System.Windows.Forms.TextBox();
             this.btnOpenFolder = new System.Windows.Forms.Button();
             this.btnAbort = new System.Windows.Forms.Button();
-            this.btnRemove = new System.Windows.Forms.Button();
+            this.btnItemRemove = new System.Windows.Forms.Button();
             this.btnRemoveDeleted = new System.Windows.Forms.Button();
             this.grpItems = new System.Windows.Forms.GroupBox();
+            this.tlpItems = new System.Windows.Forms.TableLayoutPanel();
+            this.pnlItemActions = new System.Windows.Forms.Panel();
+            this.btnItemDown = new System.Windows.Forms.Button();
+            this.btnItempUp = new System.Windows.Forms.Button();
             this.grpItems.SuspendLayout();
+            this.tlpItems.SuspendLayout();
+            this.pnlItemActions.SuspendLayout();
             this.SuspendLayout();
             // 
             // BtnScanMediaFiles
@@ -293,9 +299,9 @@
             this.lstMediaInfoItems.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lstMediaInfoItems.FormattingEnabled = true;
             this.lstMediaInfoItems.ItemHeight = 15;
-            this.lstMediaInfoItems.Location = new System.Drawing.Point(3, 19);
+            this.lstMediaInfoItems.Location = new System.Drawing.Point(3, 3);
             this.lstMediaInfoItems.Name = "lstMediaInfoItems";
-            this.lstMediaInfoItems.Size = new System.Drawing.Size(951, 102);
+            this.lstMediaInfoItems.Size = new System.Drawing.Size(895, 96);
             this.lstMediaInfoItems.TabIndex = 17;
             this.lstMediaInfoItems.SelectedIndexChanged += new System.EventHandler(this.lstMediaInfoItems_SelectedIndexChanged);
             // 
@@ -315,7 +321,7 @@
             // btnEncode
             // 
             this.btnEncode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncode.Location = new System.Drawing.Point(892, 550);
+            this.btnEncode.Location = new System.Drawing.Point(892, 528);
             this.btnEncode.Name = "btnEncode";
             this.btnEncode.Size = new System.Drawing.Size(80, 40);
             this.btnEncode.TabIndex = 19;
@@ -326,7 +332,7 @@
             // btnEncodeAll
             // 
             this.btnEncodeAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncodeAll.Location = new System.Drawing.Point(892, 596);
+            this.btnEncodeAll.Location = new System.Drawing.Point(892, 574);
             this.btnEncodeAll.Name = "btnEncodeAll";
             this.btnEncodeAll.Size = new System.Drawing.Size(80, 40);
             this.btnEncodeAll.TabIndex = 20;
@@ -396,21 +402,20 @@
             this.btnAbort.UseVisualStyleBackColor = true;
             this.btnAbort.Click += new System.EventHandler(this.btnAbort_Click);
             // 
-            // btnRemove
+            // btnItemRemove
             // 
-            this.btnRemove.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemove.Location = new System.Drawing.Point(892, 449);
-            this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(80, 40);
-            this.btnRemove.TabIndex = 26;
-            this.btnRemove.Text = "Remove";
-            this.btnRemove.UseVisualStyleBackColor = true;
-            this.btnRemove.Click += new System.EventHandler(this.btnRemove_Click);
+            this.btnItemRemove.Location = new System.Drawing.Point(3, 68);
+            this.btnItemRemove.Name = "btnItemRemove";
+            this.btnItemRemove.Size = new System.Drawing.Size(42, 30);
+            this.btnItemRemove.TabIndex = 26;
+            this.btnItemRemove.Text = "X";
+            this.btnItemRemove.UseVisualStyleBackColor = true;
+            this.btnItemRemove.Click += new System.EventHandler(this.btnRemove_Click);
             // 
             // btnRemoveDeleted
             // 
             this.btnRemoveDeleted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemoveDeleted.Location = new System.Drawing.Point(892, 494);
+            this.btnRemoveDeleted.Location = new System.Drawing.Point(892, 449);
             this.btnRemoveDeleted.Name = "btnRemoveDeleted";
             this.btnRemoveDeleted.Size = new System.Drawing.Size(80, 40);
             this.btnRemoveDeleted.TabIndex = 27;
@@ -423,13 +428,63 @@
             this.grpItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.grpItems.Controls.Add(this.lstMediaInfoItems);
+            this.grpItems.Controls.Add(this.tlpItems);
             this.grpItems.Location = new System.Drawing.Point(15, 261);
             this.grpItems.Name = "grpItems";
             this.grpItems.Size = new System.Drawing.Size(957, 124);
             this.grpItems.TabIndex = 28;
             this.grpItems.TabStop = false;
             this.grpItems.Text = "Items";
+            // 
+            // tlpItems
+            // 
+            this.tlpItems.ColumnCount = 2;
+            this.tlpItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpItems.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tlpItems.Controls.Add(this.lstMediaInfoItems, 0, 0);
+            this.tlpItems.Controls.Add(this.pnlItemActions, 1, 0);
+            this.tlpItems.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpItems.Location = new System.Drawing.Point(3, 19);
+            this.tlpItems.Name = "tlpItems";
+            this.tlpItems.RowCount = 1;
+            this.tlpItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpItems.Size = new System.Drawing.Size(951, 102);
+            this.tlpItems.TabIndex = 0;
+            // 
+            // pnlItemActions
+            // 
+            this.pnlItemActions.Controls.Add(this.btnItemDown);
+            this.pnlItemActions.Controls.Add(this.btnItempUp);
+            this.pnlItemActions.Controls.Add(this.btnItemRemove);
+            this.pnlItemActions.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlItemActions.Location = new System.Drawing.Point(901, 0);
+            this.pnlItemActions.Margin = new System.Windows.Forms.Padding(0);
+            this.pnlItemActions.Name = "pnlItemActions";
+            this.pnlItemActions.Size = new System.Drawing.Size(50, 102);
+            this.pnlItemActions.TabIndex = 18;
+            // 
+            // btnItemDown
+            // 
+            this.btnItemDown.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnItemDown.Location = new System.Drawing.Point(3, 35);
+            this.btnItemDown.Name = "btnItemDown";
+            this.btnItemDown.Size = new System.Drawing.Size(42, 30);
+            this.btnItemDown.TabIndex = 1;
+            this.btnItemDown.Text = "Dn";
+            this.btnItemDown.UseVisualStyleBackColor = true;
+            this.btnItemDown.Click += new System.EventHandler(this.btnItemDown_Click);
+            // 
+            // btnItempUp
+            // 
+            this.btnItempUp.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnItempUp.Location = new System.Drawing.Point(3, 3);
+            this.btnItempUp.Name = "btnItempUp";
+            this.btnItempUp.Size = new System.Drawing.Size(42, 30);
+            this.btnItempUp.TabIndex = 0;
+            this.btnItempUp.Text = "Up";
+            this.btnItempUp.UseVisualStyleBackColor = true;
+            this.btnItempUp.Click += new System.EventHandler(this.btnItempUp_Click);
             // 
             // FrmMain
             // 
@@ -438,7 +493,6 @@
             this.ClientSize = new System.Drawing.Size(984, 761);
             this.Controls.Add(this.grpItems);
             this.Controls.Add(this.btnRemoveDeleted);
-            this.Controls.Add(this.btnRemove);
             this.Controls.Add(this.btnAbort);
             this.Controls.Add(this.btnOpenFolder);
             this.Controls.Add(this.txtEncodeLogProgress);
@@ -468,6 +522,8 @@
             this.Name = "FrmMain";
             this.Text = "gMediaTools";
             this.grpItems.ResumeLayout(false);
+            this.tlpItems.ResumeLayout(false);
+            this.pnlItemActions.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -501,9 +557,13 @@
         private System.Windows.Forms.TextBox txtEncodeLogProgress;
         private System.Windows.Forms.Button btnOpenFolder;
         private System.Windows.Forms.Button btnAbort;
-        private System.Windows.Forms.Button btnRemove;
+        private System.Windows.Forms.Button btnItemRemove;
         private System.Windows.Forms.Button btnRemoveDeleted;
         private System.Windows.Forms.GroupBox grpItems;
+        private System.Windows.Forms.TableLayoutPanel tlpItems;
+        private System.Windows.Forms.Panel pnlItemActions;
+        private System.Windows.Forms.Button btnItemDown;
+        private System.Windows.Forms.Button btnItempUp;
     }
 }
 

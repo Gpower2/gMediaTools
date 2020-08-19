@@ -47,6 +47,8 @@ namespace gMediaTools.Models.MediaAnalyze
         public string ChromaSubsampling { get; set; }
 
         public string Rotation { get; set; }
+
+        public string ScanType { get; set; }
     }
 
     public class MediaAnalyzeAudioInfo

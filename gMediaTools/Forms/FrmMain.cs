@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.VisualStyles;
+using gMediaTools.Extensions;
 using gMediaTools.Models;
 using gMediaTools.Models.Encoder;
 using gMediaTools.Models.MediaAnalyze;
@@ -413,7 +414,7 @@ namespace gMediaTools.Forms
                 }
 
                 lstMediaInfoItems.Enabled = false;
-                btnRemove.Enabled = false;
+                btnItemRemove.Enabled = false;
                 btnEncode.Enabled = false;
                 btnEncodeAll.Enabled = false;
                 BtnScanMediaFiles.Enabled = false;
@@ -427,7 +428,7 @@ namespace gMediaTools.Forms
                 EncodeLog($"Muxed {mediaInfo.Filename} => {muxedFilename}");
 
                 lstMediaInfoItems.Enabled = true;
-                btnRemove.Enabled = true;
+                btnItemRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -438,7 +439,7 @@ namespace gMediaTools.Forms
                 ShowExceptionMessage(ex);
 
                 lstMediaInfoItems.Enabled = true;
-                btnRemove.Enabled = true;
+                btnItemRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -461,7 +462,7 @@ namespace gMediaTools.Forms
                 }
 
                 lstMediaInfoItems.Enabled = false;
-                btnRemove.Enabled = false;
+                btnItemRemove.Enabled = false;
                 btnEncode.Enabled = false;
                 btnEncodeAll.Enabled = false;
                 BtnScanMediaFiles.Enabled = false;
@@ -481,14 +482,24 @@ namespace gMediaTools.Forms
                     i++;
                     txtEncodeProgress.Text = $"{i}/{mediaInfoList.Count}";
 
-                    string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
+                    try
+                    {
+                        string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
 
-                    // Log
-                    EncodeLog($"Muxed {mediaInfo.Filename} => {muxedFilename}");
+                        // Log
+                        EncodeLog($"Muxed {mediaInfo.Filename} => {muxedFilename}");
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                        
+                        // Log
+                        EncodeLog($"Exception occured with {mediaInfo.Filename} => {ex.Message}");
+                    }
                 }
 
                 lstMediaInfoItems.Enabled = true;
-                btnRemove.Enabled = true;
+                btnItemRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -499,7 +510,7 @@ namespace gMediaTools.Forms
                 ShowExceptionMessage(ex);
 
                 lstMediaInfoItems.Enabled = true;
-                btnRemove.Enabled = true;
+                btnItemRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
@@ -558,7 +569,15 @@ namespace gMediaTools.Forms
                     return;
                 }
 
+                int selectedIndex = lstMediaInfoItems.SelectedIndex;
                 lstMediaInfoItems.Items.Remove(lstMediaInfoItems.SelectedItem);
+
+                if (selectedIndex > lstMediaInfoItems.Items.Count - 1)
+                {
+                    selectedIndex = lstMediaInfoItems.Items.Count - 1;
+                }
+                lstMediaInfoItems.SelectedIndex = selectedIndex;
+
                 UpdateCurrentFormState();
             }
             catch (Exception ex)
@@ -583,6 +602,39 @@ namespace gMediaTools.Forms
                     lstMediaInfoItems.Items.Remove(deletedFile);
                     UpdateCurrentFormState();
                 }
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnItempUp_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1) return;
+
+                if (lstMediaInfoItems.SelectedIndex == 0) return;
+
+                lstMediaInfoItems.MoveSelectedItemUp();
+                
+            }
+            catch (Exception ex)
+            {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnItemDown_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1) return;
+
+                if (lstMediaInfoItems.SelectedIndex == lstMediaInfoItems.Items.Count - 1) return;
+
+                lstMediaInfoItems.MoveSelectedItemDown();
             }
             catch (Exception ex)
             {

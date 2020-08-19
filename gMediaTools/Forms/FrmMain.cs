@@ -618,7 +618,8 @@ namespace gMediaTools.Forms
                 if (lstMediaInfoItems.SelectedIndex == 0) return;
 
                 lstMediaInfoItems.MoveSelectedItemUp();
-                
+
+                UpdateCurrentFormState();
             }
             catch (Exception ex)
             {
@@ -635,6 +636,8 @@ namespace gMediaTools.Forms
                 if (lstMediaInfoItems.SelectedIndex == lstMediaInfoItems.Items.Count - 1) return;
 
                 lstMediaInfoItems.MoveSelectedItemDown();
+
+                UpdateCurrentFormState();
             }
             catch (Exception ex)
             {

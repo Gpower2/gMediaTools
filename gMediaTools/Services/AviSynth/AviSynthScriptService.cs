@@ -117,6 +117,12 @@ namespace gMediaTools.Services.AviSynth
             //=============================
             if (!mediaInfo.VideoInfo.ColorSpace.Trim().ToLower().Equals("yv12"))
             {
+                // Check if we need to convert to 8 bit depth
+                if (!mediaInfo.VideoInfo.BitDepth.Trim().ToLower().Equals("8"))
+                {
+                    avsScriptBuilder.AppendLine("ConvertTo8bit(bits=8)");
+                }
+                
                 avsScriptBuilder.AppendLine("ConvertToYV12()");
             }
 

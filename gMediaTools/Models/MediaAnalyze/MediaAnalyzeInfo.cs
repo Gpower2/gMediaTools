@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using gMediaTools.Models.MediaInfo;
 
 namespace gMediaTools.Models.MediaAnalyze
 {
@@ -49,6 +50,8 @@ namespace gMediaTools.Models.MediaAnalyze
         public string Rotation { get; set; }
 
         public string ScanType { get; set; }
+
+        public string BitDepth { get; set; }
     }
 
     public class MediaAnalyzeAudioInfo
@@ -183,7 +186,7 @@ namespace gMediaTools.Models.MediaAnalyze
         {
             get
             {
-                string logText = $"{VideoInfo?.Width}x{VideoInfo?.Height} => {TargetVideoWidth}x{TargetVideoHeight} : {VideoInfo?.CodecID} : {BitrateInKbps:#####0.000} kbps => {TargetVideoBitrateInKbps:#####0.000} kbps ({BitrateGainPercentage}%) {Filename}";
+                string logText = $"{VideoInfo?.Width}x{VideoInfo?.Height} => {TargetVideoWidth}x{TargetVideoHeight} : {VideoInfo?.CodecID} : {BitrateInKbps:#####0.000} kbps => {TargetVideoBitrateInKbps:#####0.000} kbps ({BitrateGainPercentage}%) ({new TimeSpan(0, 0, 0, 0, (int)(AudioInfo?.Length ?? 0))}) {Filename}";
 
                 return logText;
             }

@@ -257,7 +257,7 @@ namespace gMediaTools.Forms
                 sb.AppendLine("######################");
                 sb.AppendLine($"{nameof(mediaInfo.NeedsAudioReencode)}: {mediaInfo.NeedsAudioReencode}");
                 sb.AppendLine($"{nameof(mediaInfo.TargetAudioBitrate)}: {mediaInfo.TargetAudioBitrate}");
-                sb.AppendLine($"{nameof(mediaInfo.AudioInfo.Length)}: {new TimeSpan(0, 0, 0, 0, (int)mediaInfo.AudioInfo?.Length)}");
+                sb.AppendLine($"{nameof(mediaInfo.AudioInfo.Length)}: {new TimeSpan(0, 0, 0, 0, (int)(mediaInfo.AudioInfo?.Length ?? 0))}");
             }
             sb.AppendLine("######################");
             sb.AppendLine($"{nameof(mediaInfo.Size)}: {Math.Round((double)mediaInfo.Size / 1024.0 / 1024.0, 2, MidpointRounding.AwayFromZero)} MB");
@@ -461,7 +461,7 @@ namespace gMediaTools.Forms
                     return;
                 }
 
-                lstMediaInfoItems.Enabled = false;
+                //lstMediaInfoItems.Enabled = false;
                 btnItemRemove.Enabled = false;
                 btnEncode.Enabled = false;
                 btnEncodeAll.Enabled = false;
@@ -498,7 +498,7 @@ namespace gMediaTools.Forms
                     }
                 }
 
-                lstMediaInfoItems.Enabled = true;
+                //lstMediaInfoItems.Enabled = true;
                 btnItemRemove.Enabled = true;
                 btnEncode.Enabled = true;
                 btnEncodeAll.Enabled = true;

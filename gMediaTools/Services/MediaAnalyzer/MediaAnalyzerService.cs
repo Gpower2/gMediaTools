@@ -17,7 +17,7 @@ namespace gMediaTools.Services.MediaAnalyzer
 {
     public class MediaAnalyzerService
     {
-        private static readonly string[] _mediaExtensions = new string[] { "mkv", "mp4", "m4v", "mov", "avi", "mpg", "mpeg", "flv", "wmv", "asf", "rm" };
+        private static readonly string[] _mediaExtensions = new string[] { "mkv", "mp4", "m4v", "mov", "avi", "mpg", "mpeg", "flv", "wmv", "asf", "rm", "ts" };
 
         private int _reEncodeFiles = 0;
         private int _totalFiles = 0;
@@ -67,7 +67,16 @@ namespace gMediaTools.Services.MediaAnalyzer
 
             var files = Directory.GetFiles(request.MediaDirectoryName);
 
-            var mediaFiles = files.Where(f => _mediaExtensions.Any(m => m.Equals(Path.GetExtension(f).Substring(1).ToLower()))).OrderBy(f => f).ToList();
+            var mediaFiles = files
+                .Where(f => _mediaExtensions
+                    .Any(m => 
+                    m.Equals(
+                        Path.GetExtension(f).Length > 1 
+                        ? Path.GetExtension(f).Substring(1).ToLower()
+                        : String.Empty)))
+                .OrderBy(f => f)
+                .ToList();
+
             if (mediaFiles.Any())
             {
                 foreach (var mediaFile in mediaFiles)
@@ -220,6 +229,7 @@ namespace gMediaTools.Services.MediaAnalyzer
                     videoResult.Rotation = videoTrack.Rotation;
 
                     videoResult.ScanType = videoTrack.ScanType;
+                    videoResult.BitDepth = videoTrack.BitDepth;
 
                     result.VideoInfo = videoResult;
                 }

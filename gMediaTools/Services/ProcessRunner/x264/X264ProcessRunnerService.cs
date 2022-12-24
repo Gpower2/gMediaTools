@@ -396,6 +396,22 @@ namespace gMediaTools.Services.ProcessRunner.x264
             );
 
             optionsGroup.Parameters.Add(
+               new NonEmptyValueProcessRunnerParameter("demuxer", "--", " ", false)
+            );
+
+            optionsGroup.Parameters.Add(
+               new NonEmptyValueProcessRunnerParameter("input", "--", " ", false)
+            );
+
+            optionsGroup.Parameters.Add(
+                new NonEmptyValueProcessRunnerParameter("input-depth", "--", " ", false)
+            );
+
+            optionsGroup.Parameters.Add(
+                new NonEmptyValueProcessRunnerParameter("output-depth", "--", " ", false)
+            );
+
+            optionsGroup.Parameters.Add(
                 new NonEmptyValueProcessRunnerParameter("level", "--", " ", false)
             );
             

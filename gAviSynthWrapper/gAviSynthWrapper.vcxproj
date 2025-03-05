@@ -115,7 +115,9 @@
     </Link>
     <PostBuildEvent>
       <Command>start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Debug\$(TargetName).dll"
-start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Debug\$(TargetName).pdb"</Command>
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Debug\$(TargetName).pdb"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\Debug\$(TargetName).dll"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\Debug\$(TargetName).pdb"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -136,7 +138,9 @@ start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\
     </Link>
     <PostBuildEvent>
       <Command>start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Debug\$(TargetName).dll"
-start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Debug\$(TargetName).pdb"</Command>
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Debug\$(TargetName).pdb"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\Debug\$(TargetName).dll"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\Debug\$(TargetName).pdb"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -160,7 +164,9 @@ start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\
     </Link>
     <PostBuildEvent>
       <Command>start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Release\$(TargetName).dll"
-start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Release\$(TargetName).pdb"</Command>
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Release\$(TargetName).pdb"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\Release\$(TargetName).dll"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\Release\$(TargetName).pdb"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -184,7 +190,9 @@ start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\
     </Link>
     <PostBuildEvent>
       <Command>start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Release\$(TargetName).dll"
-start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Release\$(TargetName).pdb"</Command>
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\$(PlatformTarget)\Release\$(TargetName).pdb"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).dll" "$(SolutionDir)gMediaTools\bin\Release\$(TargetName).dll"
+start xcopy /F /Y /R "$(TargetDir)$(TargetName).pdb" "$(SolutionDir)gMediaTools\bin\Release\$(TargetName).pdb"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

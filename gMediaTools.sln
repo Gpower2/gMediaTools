@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29409.12
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "gMediaTools", "gMediaTools\gMediaTools.csproj", "{2D92BA09-D3FB-410F-B770-2EA16D386EFC}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -32,7 +32,8 @@ Global
 		{2D92BA09-D3FB-410F-B770-2EA16D386EFC}.Release|x64.Build.0 = Release|x64
 		{2D92BA09-D3FB-410F-B770-2EA16D386EFC}.Release|x86.ActiveCfg = Release|x86
 		{2D92BA09-D3FB-410F-B770-2EA16D386EFC}.Release|x86.Build.0 = Release|x86
-		{A231BA27-3F9A-4795-B2F1-7976A1DAB577}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{A231BA27-3F9A-4795-B2F1-7976A1DAB577}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{A231BA27-3F9A-4795-B2F1-7976A1DAB577}.Debug|Any CPU.Build.0 = Debug|x64
 		{A231BA27-3F9A-4795-B2F1-7976A1DAB577}.Debug|x64.ActiveCfg = Debug|x64
 		{A231BA27-3F9A-4795-B2F1-7976A1DAB577}.Debug|x64.Build.0 = Debug|x64
 		{A231BA27-3F9A-4795-B2F1-7976A1DAB577}.Debug|x86.ActiveCfg = Debug|Win32

@@ -61,6 +61,13 @@
             this.pnlItemActions = new System.Windows.Forms.Panel();
             this.btnItemDown = new System.Windows.Forms.Button();
             this.btnItempUp = new System.Windows.Forms.Button();
+            this.lstFiles = new System.Windows.Forms.ListBox();
+            this.txtOutputFilename = new System.Windows.Forms.RichTextBox();
+            this.btnOpenSourceFile = new System.Windows.Forms.Button();
+            this.btnOpenOutputFile = new System.Windows.Forms.Button();
+            this.btnDeleteTempFiles = new System.Windows.Forms.Button();
+            this.btnDeleteOutputFile = new System.Windows.Forms.Button();
+            this.btnDeleteAllCompletedFiles = new System.Windows.Forms.Button();
             this.grpItems.SuspendLayout();
             this.tlpItems.SuspendLayout();
             this.pnlItemActions.SuspendLayout();
@@ -245,7 +252,7 @@
             this.lblBitratePercentageThreshold.AutoSize = true;
             this.lblBitratePercentageThreshold.Location = new System.Drawing.Point(16, 57);
             this.lblBitratePercentageThreshold.Name = "lblBitratePercentageThreshold";
-            this.lblBitratePercentageThreshold.Size = new System.Drawing.Size(173, 15);
+            this.lblBitratePercentageThreshold.Size = new System.Drawing.Size(174, 15);
             this.lblBitratePercentageThreshold.TabIndex = 11;
             this.lblBitratePercentageThreshold.Text = "BitratePercentageThreshold (%)";
             // 
@@ -254,7 +261,7 @@
             this.lblGainPercentageThreshold.AutoSize = true;
             this.lblGainPercentageThreshold.Location = new System.Drawing.Point(197, 57);
             this.lblGainPercentageThreshold.Name = "lblGainPercentageThreshold";
-            this.lblGainPercentageThreshold.Size = new System.Drawing.Size(163, 15);
+            this.lblGainPercentageThreshold.Size = new System.Drawing.Size(164, 15);
             this.lblGainPercentageThreshold.TabIndex = 12;
             this.lblGainPercentageThreshold.Text = "GainPercentageThreshold (%)";
             // 
@@ -263,7 +270,7 @@
             this.lblMaxAllowedWidth.AutoSize = true;
             this.lblMaxAllowedWidth.Location = new System.Drawing.Point(389, 57);
             this.lblMaxAllowedWidth.Name = "lblMaxAllowedWidth";
-            this.lblMaxAllowedWidth.Size = new System.Drawing.Size(105, 15);
+            this.lblMaxAllowedWidth.Size = new System.Drawing.Size(104, 15);
             this.lblMaxAllowedWidth.TabIndex = 13;
             this.lblMaxAllowedWidth.Text = "MaxAllowedWidth";
             // 
@@ -272,7 +279,7 @@
             this.lblMaxAllowedHeight.AutoSize = true;
             this.lblMaxAllowedHeight.Location = new System.Drawing.Point(508, 57);
             this.lblMaxAllowedHeight.Name = "lblMaxAllowedHeight";
-            this.lblMaxAllowedHeight.Size = new System.Drawing.Size(109, 15);
+            this.lblMaxAllowedHeight.Size = new System.Drawing.Size(108, 15);
             this.lblMaxAllowedHeight.TabIndex = 14;
             this.lblMaxAllowedHeight.Text = "MaxAllowedHeight";
             // 
@@ -307,21 +314,20 @@
             // 
             // txtMediaInfo
             // 
-            this.txtMediaInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtMediaInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.txtMediaInfo.BackColor = System.Drawing.SystemColors.Window;
             this.txtMediaInfo.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
-            this.txtMediaInfo.Location = new System.Drawing.Point(15, 449);
+            this.txtMediaInfo.Location = new System.Drawing.Point(15, 452);
             this.txtMediaInfo.Name = "txtMediaInfo";
             this.txtMediaInfo.ReadOnly = true;
-            this.txtMediaInfo.Size = new System.Drawing.Size(871, 300);
+            this.txtMediaInfo.Size = new System.Drawing.Size(471, 288);
             this.txtMediaInfo.TabIndex = 18;
             this.txtMediaInfo.Text = "";
             // 
             // btnEncode
             // 
             this.btnEncode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncode.Location = new System.Drawing.Point(892, 528);
+            this.btnEncode.Location = new System.Drawing.Point(892, 599);
             this.btnEncode.Name = "btnEncode";
             this.btnEncode.Size = new System.Drawing.Size(80, 40);
             this.btnEncode.TabIndex = 19;
@@ -332,7 +338,7 @@
             // btnEncodeAll
             // 
             this.btnEncodeAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnEncodeAll.Location = new System.Drawing.Point(892, 574);
+            this.btnEncodeAll.Location = new System.Drawing.Point(892, 645);
             this.btnEncodeAll.Name = "btnEncodeAll";
             this.btnEncodeAll.Size = new System.Drawing.Size(80, 40);
             this.btnEncodeAll.TabIndex = 20;
@@ -383,7 +389,7 @@
             // btnOpenFolder
             // 
             this.btnOpenFolder.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOpenFolder.Location = new System.Drawing.Point(892, 704);
+            this.btnOpenFolder.Location = new System.Drawing.Point(806, 700);
             this.btnOpenFolder.Name = "btnOpenFolder";
             this.btnOpenFolder.Size = new System.Drawing.Size(80, 40);
             this.btnOpenFolder.TabIndex = 24;
@@ -394,7 +400,7 @@
             // btnAbort
             // 
             this.btnAbort.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAbort.Location = new System.Drawing.Point(892, 655);
+            this.btnAbort.Location = new System.Drawing.Point(892, 700);
             this.btnAbort.Name = "btnAbort";
             this.btnAbort.Size = new System.Drawing.Size(80, 40);
             this.btnAbort.TabIndex = 25;
@@ -415,11 +421,11 @@
             // btnRemoveDeleted
             // 
             this.btnRemoveDeleted.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnRemoveDeleted.Location = new System.Drawing.Point(892, 449);
+            this.btnRemoveDeleted.Location = new System.Drawing.Point(806, 452);
             this.btnRemoveDeleted.Name = "btnRemoveDeleted";
-            this.btnRemoveDeleted.Size = new System.Drawing.Size(80, 40);
+            this.btnRemoveDeleted.Size = new System.Drawing.Size(166, 40);
             this.btnRemoveDeleted.TabIndex = 27;
-            this.btnRemoveDeleted.Text = "Remove Deleted";
+            this.btnRemoveDeleted.Text = "Remove Deleted Source/Temp Files";
             this.btnRemoveDeleted.UseVisualStyleBackColor = true;
             this.btnRemoveDeleted.Click += new System.EventHandler(this.btnRemoveDeleted_Click);
             // 
@@ -448,7 +454,7 @@
             this.tlpItems.Name = "tlpItems";
             this.tlpItems.RowCount = 1;
             this.tlpItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpItems.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 105F));
             this.tlpItems.Size = new System.Drawing.Size(951, 102);
             this.tlpItems.TabIndex = 0;
             // 
@@ -486,11 +492,97 @@
             this.btnItempUp.UseVisualStyleBackColor = true;
             this.btnItempUp.Click += new System.EventHandler(this.btnItempUp_Click);
             // 
+            // lstFiles
+            // 
+            this.lstFiles.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lstFiles.FormattingEnabled = true;
+            this.lstFiles.ItemHeight = 15;
+            this.lstFiles.Location = new System.Drawing.Point(492, 496);
+            this.lstFiles.Name = "lstFiles";
+            this.lstFiles.Size = new System.Drawing.Size(308, 244);
+            this.lstFiles.TabIndex = 29;
+            // 
+            // txtOutputFilename
+            // 
+            this.txtOutputFilename.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtOutputFilename.BackColor = System.Drawing.SystemColors.Window;
+            this.txtOutputFilename.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.txtOutputFilename.Location = new System.Drawing.Point(492, 452);
+            this.txtOutputFilename.Name = "txtOutputFilename";
+            this.txtOutputFilename.ReadOnly = true;
+            this.txtOutputFilename.Size = new System.Drawing.Size(308, 38);
+            this.txtOutputFilename.TabIndex = 30;
+            this.txtOutputFilename.Text = "";
+            // 
+            // btnOpenSourceFile
+            // 
+            this.btnOpenSourceFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenSourceFile.Location = new System.Drawing.Point(806, 599);
+            this.btnOpenSourceFile.Name = "btnOpenSourceFile";
+            this.btnOpenSourceFile.Size = new System.Drawing.Size(80, 40);
+            this.btnOpenSourceFile.TabIndex = 31;
+            this.btnOpenSourceFile.Text = "Open Source File";
+            this.btnOpenSourceFile.UseVisualStyleBackColor = true;
+            this.btnOpenSourceFile.Click += new System.EventHandler(this.btnOpenSourceFile_Click);
+            // 
+            // btnOpenOutputFile
+            // 
+            this.btnOpenOutputFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOpenOutputFile.Location = new System.Drawing.Point(806, 645);
+            this.btnOpenOutputFile.Name = "btnOpenOutputFile";
+            this.btnOpenOutputFile.Size = new System.Drawing.Size(80, 40);
+            this.btnOpenOutputFile.TabIndex = 32;
+            this.btnOpenOutputFile.Text = "Open Output File";
+            this.btnOpenOutputFile.UseVisualStyleBackColor = true;
+            this.btnOpenOutputFile.Click += new System.EventHandler(this.btnOpenOutputFile_Click);
+            // 
+            // btnDeleteTempFiles
+            // 
+            this.btnDeleteTempFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteTempFiles.Location = new System.Drawing.Point(806, 498);
+            this.btnDeleteTempFiles.Name = "btnDeleteTempFiles";
+            this.btnDeleteTempFiles.Size = new System.Drawing.Size(80, 40);
+            this.btnDeleteTempFiles.TabIndex = 33;
+            this.btnDeleteTempFiles.Text = "Delete Temp Files";
+            this.btnDeleteTempFiles.UseVisualStyleBackColor = true;
+            this.btnDeleteTempFiles.Click += new System.EventHandler(this.btnDeleteTempFiles_Click);
+            // 
+            // btnDeleteOutputFile
+            // 
+            this.btnDeleteOutputFile.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteOutputFile.Location = new System.Drawing.Point(892, 498);
+            this.btnDeleteOutputFile.Name = "btnDeleteOutputFile";
+            this.btnDeleteOutputFile.Size = new System.Drawing.Size(80, 40);
+            this.btnDeleteOutputFile.TabIndex = 34;
+            this.btnDeleteOutputFile.Text = "Delete Output File";
+            this.btnDeleteOutputFile.UseVisualStyleBackColor = true;
+            this.btnDeleteOutputFile.Click += new System.EventHandler(this.btnDeleteOutputFile_Click);
+            // 
+            // btnDeleteAllCompletedFiles
+            // 
+            this.btnDeleteAllCompletedFiles.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnDeleteAllCompletedFiles.Location = new System.Drawing.Point(806, 544);
+            this.btnDeleteAllCompletedFiles.Name = "btnDeleteAllCompletedFiles";
+            this.btnDeleteAllCompletedFiles.Size = new System.Drawing.Size(166, 40);
+            this.btnDeleteAllCompletedFiles.TabIndex = 35;
+            this.btnDeleteAllCompletedFiles.Text = "Delete All Source/Temp Files";
+            this.btnDeleteAllCompletedFiles.UseVisualStyleBackColor = true;
+            this.btnDeleteAllCompletedFiles.Click += new System.EventHandler(this.btnDeleteAllCompletedFiles_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(984, 761);
+            this.Controls.Add(this.btnDeleteAllCompletedFiles);
+            this.Controls.Add(this.btnDeleteOutputFile);
+            this.Controls.Add(this.btnDeleteTempFiles);
+            this.Controls.Add(this.btnOpenOutputFile);
+            this.Controls.Add(this.btnOpenSourceFile);
+            this.Controls.Add(this.txtOutputFilename);
+            this.Controls.Add(this.lstFiles);
             this.Controls.Add(this.grpItems);
             this.Controls.Add(this.btnRemoveDeleted);
             this.Controls.Add(this.btnAbort);
@@ -519,6 +611,7 @@
             this.Controls.Add(this.txtInputFolder);
             this.Controls.Add(this.BtnScanMediaFiles);
             this.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(161)));
+            this.MinimumSize = new System.Drawing.Size(800, 800);
             this.Name = "FrmMain";
             this.Text = "gMediaTools";
             this.grpItems.ResumeLayout(false);
@@ -564,6 +657,13 @@
         private System.Windows.Forms.Panel pnlItemActions;
         private System.Windows.Forms.Button btnItemDown;
         private System.Windows.Forms.Button btnItempUp;
+        private System.Windows.Forms.ListBox lstFiles;
+        private System.Windows.Forms.RichTextBox txtOutputFilename;
+        private System.Windows.Forms.Button btnOpenSourceFile;
+        private System.Windows.Forms.Button btnOpenOutputFile;
+        private System.Windows.Forms.Button btnDeleteTempFiles;
+        private System.Windows.Forms.Button btnDeleteOutputFile;
+        private System.Windows.Forms.Button btnDeleteAllCompletedFiles;
     }
 }
 

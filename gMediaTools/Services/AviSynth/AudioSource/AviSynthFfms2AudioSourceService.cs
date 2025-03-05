@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using gMediaTools.Extensions;
+using gMediaTools.Models.MediaAnalyze;
 
 namespace gMediaTools.Services.AviSynth.AudioSource
 {
     public class AviSynthFfms2AudioSourceService : IAviSynthAudioSourceService
     {
-        public string GetAviSynthAudioSource(string fileName, int trackNumber, bool overWriteScriptFile)
+        public string GetAviSynthAudioSource(MediaAnalyzeInfo mediaAnalyzeInfo, string fileName, int trackNumber, bool overWriteScriptFile)
         {
             // Find cache file
             string cacheFileName = $"{fileName}.ffindex";
@@ -17,6 +14,7 @@ namespace gMediaTools.Services.AviSynth.AudioSource
             {
                 cacheFileName = cacheFileName.GetNewFileName();
             }
+            mediaAnalyzeInfo.TempFiles.Add(cacheFileName);
 
             StringBuilder sb = new StringBuilder();
 

@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using gMediaTools.Models.MediaAnalyze;
 
 namespace gMediaTools.Services.AviSynth.VideoSource
 {
     public class AviSynthLSMASHVideoSourceService : IAviSynthVideoSourceService
     {
-        public string GetAviSynthVideoSource(string fileName, bool overWriteScriptFile)
+        public string GetAviSynthVideoSource(MediaAnalyzeInfo mediaAnalyzeInfo, string fileName, bool overWriteScriptFile)
         {
             StringBuilder sb = new StringBuilder();
 

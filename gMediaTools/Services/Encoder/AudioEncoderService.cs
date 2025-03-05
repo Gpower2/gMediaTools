@@ -1,18 +1,16 @@
-﻿using gMediaTools.Extensions;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using gMediaTools.Extensions;
 using gMediaTools.Models.AviSynth;
 using gMediaTools.Models.Encoder;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services.AviSynth;
 using gMediaTools.Services.AviSynth.AudioSource;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace gMediaTools.Services.Encoder
 {
@@ -20,7 +18,12 @@ namespace gMediaTools.Services.Encoder
     {
         private const int MAX_SAMPLES_PER_ONCE = 4096;
 
-        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, IAudioEncoder audioEncoder, IAudioEncoderSettings settings, Action<string> logAction, Action<string> progressAction, out string outputFileName)
+        public int Encode(
+            MediaAnalyzeInfo mediaAnalyzeInfo, 
+            IAudioEncoder audioEncoder, 
+            IAudioEncoderSettings settings, 
+            Action<string> logAction, Action<string> progressAction, 
+            out string outputFileName)
         {
             // Get AviSynth script
             AviSynthScriptService aviSynthScriptService = ServiceFactory.GetService<AviSynthScriptService>();
@@ -232,7 +235,13 @@ namespace gMediaTools.Services.Encoder
             }
         }
 
-        private void WriteHeader(AudioHeaderType headerType, Stream target, AviSynthFile avsFile, long totalSizeInBytes, int channelMask, int formatTypeTag)
+        private void WriteHeader(
+            AudioHeaderType headerType, 
+            Stream target, 
+            AviSynthFile avsFile, 
+            long totalSizeInBytes, 
+            int channelMask, 
+            int formatTypeTag)
         {
             const uint FAAD_MAGIC_VALUE = 0xFFFFFF00;
 
@@ -338,6 +347,5 @@ namespace gMediaTools.Services.Encoder
                 target.Write(BitConverter.GetBytes(Greater4GB ? FAAD_MAGIC_VALUE : (uint)totalSizeInBytes), 0, 4);
             }
         }
-
     }
 }

@@ -1,25 +1,26 @@
-﻿using gMediaTools.Extensions;
+﻿using System;
+using System.Diagnostics;
+using gMediaTools.Extensions;
 using gMediaTools.Models.MediaAnalyze;
 using gMediaTools.Services.AviSynth;
 using gMediaTools.Services.ProcessRunner;
 using gMediaTools.Services.ProcessRunner.x264;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace gMediaTools.Services.Encoder
 {
     public class X264VideoEncoderService
     {
-        public int Encode(MediaAnalyzeInfo mediaAnalyzeInfo, string x264FileName, Action<string> logAction, Action<string> progressAction, out string outputFileName)
+        public int Encode(
+            MediaAnalyzeInfo mediaAnalyzeInfo, 
+            string x264FileName, 
+            Action<string> logAction, Action<string> progressAction, 
+            out string outputFileName)
         {
             // Get AviSynth script
             AviSynthScriptService aviSynthScriptService = ServiceFactory.GetService<AviSynthScriptService>();
 
             string avsScript = aviSynthScriptService.CreateAviSynthVideoScript(mediaAnalyzeInfo);
+            mediaAnalyzeInfo.TempFiles.Add(avsScript);
 
             outputFileName = $"{mediaAnalyzeInfo.Filename}.reencode.mkv".GetNewFileName();
 

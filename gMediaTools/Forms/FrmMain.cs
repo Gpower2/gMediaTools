@@ -270,6 +270,8 @@ namespace gMediaTools.Forms
                 if (lstMediaInfoItems.SelectedIndex == -1)
                 {
                     txtMediaInfo.Clear();
+                    txtOutputFilename.Clear();
+                    lstFiles.Items.Clear();
                     return;
                 }
 
@@ -278,10 +280,15 @@ namespace gMediaTools.Forms
                 if (mediaInfo == null)
                 {
                     txtMediaInfo.Clear();
+                    txtOutputFilename.Clear();
+                    lstFiles.Items.Clear();
                     return;
                 }
 
                 txtMediaInfo.Text = GetMediaInfoAnalysis(mediaInfo);
+                txtOutputFilename.Text = mediaInfo.FinalOutputFile;
+                lstFiles.Items.Clear();
+                lstFiles.Items.AddRange(mediaInfo.TempFiles.ToArray());
             }
             catch (Exception ex)
             {
@@ -306,6 +313,8 @@ namespace gMediaTools.Forms
             if (mediaInfo == null)
             {
                 txtMediaInfo.Clear();
+                txtOutputFilename.Clear();
+                lstFiles.Items.Clear();
                 return "";
             }
 
@@ -319,6 +328,9 @@ namespace gMediaTools.Forms
             EncodeLog($"Start Encoding: {mediaInfo.Filename}");
 
             txtMediaInfo.Text = GetMediaInfoAnalysis(mediaInfo);
+            txtOutputFilename.Text = mediaInfo.FinalOutputFile;
+            lstFiles.Items.Clear();
+            lstFiles.Items.AddRange(mediaInfo.TempFiles.ToArray());
 
             string videoOutputFileName = "";
 
@@ -336,10 +348,12 @@ namespace gMediaTools.Forms
                     new Action<string>((progress) => EncodeProgress(progress)),
                     out videoOutputFileName)
                 );
+                mediaInfo.TempFiles.Add(videoOutputFileName);
 
                 if (res != 0)
                 {
                     EncodeLog($"Video Encoder failed for {mediaInfo.Filename}! Exit code : {res}");
+                    UpdateCurrentFormState();
                     return "";
                 }
             }
@@ -365,10 +379,12 @@ namespace gMediaTools.Forms
                     new Action<string>((progress) => EncodeProgress(progress)),
                     out audioOutputFileName)
                 );
+                mediaInfo.TempFiles.Add(audioOutputFileName);
 
                 if (res != 0)
                 {
                     EncodeLog($"Audio Encoder failed for {mediaInfo.Filename}! Exit code : {res}");
+                    UpdateCurrentFormState();
                     return "";
                 }
             }
@@ -394,6 +410,9 @@ namespace gMediaTools.Forms
                 new Action<string>((progress) => EncodeProgress(progress)),
                 out muxedFilename)
             );
+            mediaInfo.FinalOutputFile = muxedFilename;
+
+            UpdateCurrentFormState();
 
             return muxedFilename;
         }
@@ -407,6 +426,8 @@ namespace gMediaTools.Forms
                 if (lstMediaInfoItems.SelectedIndex == -1)
                 {
                     txtMediaInfo.Clear();
+                    txtOutputFilename.Clear();
+                    lstFiles.Items.Clear();
                     return;
                 }
 
@@ -419,6 +440,7 @@ namespace gMediaTools.Forms
 
                 var mediaInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
 
+                this.Cursor = Cursors.WaitCursor;
                 string muxedFilename = await EncodeMediaInfoAsync(mediaInfo);
 
                 // Log
@@ -430,9 +452,18 @@ namespace gMediaTools.Forms
                 btnEncodeAll.Enabled = true;
                 BtnScanMediaFiles.Enabled = true;
                 btnAbort.Enabled = false;
+
+                lstMediaInfoItems.SuspendLayout();
+                lstMediaInfoItems.SelectedIndex = -1;
+                lstMediaInfoItems.ResumeLayout();
+                lstMediaInfoItems.SelectedItem = mediaInfo;
+
+                this.Cursor = Cursors.Default;
+                ShowInformationMessage("Encoding completed!");
             }
             catch (Exception ex)
             {
+                this.Cursor = Cursors.Default;
                 ShowExceptionMessage(ex);
 
                 lstMediaInfoItems.Enabled = true;
@@ -455,6 +486,8 @@ namespace gMediaTools.Forms
                 if (lstMediaInfoItems.Items.Count == 0)
                 {
                     txtMediaInfo.Clear();
+                    txtOutputFilename.Clear();
+                    lstFiles.Items.Clear();
                     return;
                 }
 
@@ -592,6 +625,8 @@ namespace gMediaTools.Forms
         {
             try
             {
+                this.Cursor = Cursors.WaitCursor;
+
                 var deletedFiles = lstMediaInfoItems.Items.Cast<MediaAnalyzeInfo>().Where(m => !File.Exists(m.Filename)).ToList();
 
                 foreach (var deletedFile in deletedFiles)
@@ -599,9 +634,31 @@ namespace gMediaTools.Forms
                     lstMediaInfoItems.Items.Remove(deletedFile);
                     UpdateCurrentFormState();
                 }
+
+                // For each media info, check if the temp files or the output file exists
+                foreach (var mediaInfo in lstMediaInfoItems.Items.Cast<MediaAnalyzeInfo>())
+                {
+                    var deletedTempFiles = mediaInfo.TempFiles.Where(f => !File.Exists(f)).ToList();
+                    foreach (var deletedTempFile in deletedTempFiles)
+                    {
+                        mediaInfo.TempFiles.Remove(deletedTempFile);
+                    }
+                    if (!File.Exists(mediaInfo.FinalOutputFile))
+                    {
+                        mediaInfo.FinalOutputFile = "";
+                    }
+                    UpdateCurrentFormState();
+                }
+
+                // Update the state even if no files were removed
+                UpdateCurrentFormState();
+
+                this.Cursor = Cursors.Default;
+                ShowInformationMessage($"{deletedFiles.Count} files removed!");
             }
             catch (Exception ex)
             {
+                this.Cursor = Cursors.Default;
                 ShowExceptionMessage(ex);
             }
         }
@@ -638,6 +695,241 @@ namespace gMediaTools.Forms
             }
             catch (Exception ex)
             {
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnOpenSourceFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    return;
+                }
+                MediaAnalyzeInfo mediaAnalyzeInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
+                if (mediaAnalyzeInfo == null)
+                {
+                    return;
+                }
+                this.Cursor = Cursors.WaitCursor;
+                if (File.Exists(mediaAnalyzeInfo.Filename))
+                {
+                    Process.Start(mediaAnalyzeInfo.Filename);
+                }
+                this.Cursor = Cursors.Default;
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Default;
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnOpenOutputFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    return;
+                }
+                MediaAnalyzeInfo mediaAnalyzeInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
+                if (mediaAnalyzeInfo == null)
+                {
+                    return;
+                }
+                this.Cursor = Cursors.WaitCursor;
+                if (File.Exists(mediaAnalyzeInfo.FinalOutputFile))
+                {
+                    Process.Start(mediaAnalyzeInfo.FinalOutputFile);
+                }
+                this.Cursor = Cursors.Default;
+            }
+            catch (Exception ex)
+            {
+                this.Cursor = Cursors.Default;
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnDeleteTempFiles_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    return;
+                }
+                MediaAnalyzeInfo mediaAnalyzeInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
+                if (mediaAnalyzeInfo == null)
+                {
+                    return;
+                }
+
+                // Ask the user if he is really sure to delete the temp files
+                if (ShowQuestion("Are you sure you want to delete the temp files?", "Are you sure?", false) != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                // Delete the Temp Files of the selected MediaAnalyzeInfo from the list
+                this.Cursor = Cursors.WaitCursor;
+                long successCount = 0;
+                foreach (string tempFile in mediaAnalyzeInfo.TempFiles.ToList())
+                {
+                    if (File.Exists(tempFile))
+                    {
+                        File.Delete(tempFile);
+                        successCount++;
+                    }
+                    mediaAnalyzeInfo.TempFiles.Remove(tempFile);
+                }
+                UpdateCurrentFormState();
+
+                lstMediaInfoItems.SuspendLayout();
+                lstMediaInfoItems.SelectedIndex = -1;
+                lstMediaInfoItems.ResumeLayout();
+                lstMediaInfoItems.SelectedItem = mediaAnalyzeInfo;
+
+                this.Cursor = Cursors.Default;
+                ShowInformationMessage($"{successCount} Temp files deleted!");
+            }
+            catch (Exception ex)
+            {
+                UpdateCurrentFormState();
+                this.Cursor = Cursors.Default;
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnDeleteOutputFile_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (lstMediaInfoItems.SelectedIndex == -1)
+                {
+                    return;
+                }
+                MediaAnalyzeInfo mediaAnalyzeInfo = lstMediaInfoItems.SelectedItem as MediaAnalyzeInfo;
+                if (mediaAnalyzeInfo == null)
+                {
+                    return;
+                }
+                if (string.IsNullOrWhiteSpace(mediaAnalyzeInfo.FinalOutputFile))
+                {
+                    return;
+                }
+
+                // Ask the user if he is really sure to delete the temp files
+                if (ShowQuestion("Are you sure you want to delete the Output file?", "Are you sure?", false) != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                // Delete the final output file of the selected MediaAnalyzeInfo from the list
+                this.Cursor = Cursors.WaitCursor;
+                long successCount = 0;
+                if (File.Exists(mediaAnalyzeInfo.FinalOutputFile))
+                {
+                    File.Delete(mediaAnalyzeInfo.FinalOutputFile);
+                    mediaAnalyzeInfo.FinalOutputFile = "";
+                    successCount++;
+                }
+                UpdateCurrentFormState();
+
+                lstMediaInfoItems.SuspendLayout();
+                lstMediaInfoItems.SelectedIndex = -1;
+                lstMediaInfoItems.ResumeLayout();
+                lstMediaInfoItems.SelectedItem = mediaAnalyzeInfo;
+
+                this.Cursor = Cursors.Default;
+                ShowInformationMessage($"{successCount} Output files deleted!");
+            }
+            catch (Exception ex)
+            {
+                UpdateCurrentFormState();
+                this.Cursor = Cursors.Default;
+                ShowExceptionMessage(ex);
+            }
+        }
+
+        private void btnDeleteAllCompletedFiles_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Ask the user if he is really sure to delete the temp files
+                if (ShowQuestion("Are you sure you want to delete all temp and source files?", "Are you sure?", false) != DialogResult.Yes)
+                {
+                    return;
+                }
+
+                // Check all media info items, and for those that have final output file,
+                // delete the temp files, delete the source file, and remove the item from the list
+                this.Cursor = Cursors.WaitCursor;
+                List<MediaAnalyzeInfo> mediaAnalyzeInfos = lstMediaInfoItems.Items.Cast<MediaAnalyzeInfo>().ToList();
+                long successCount = 0;
+                long failCount = 0;
+                this.Cursor = Cursors.WaitCursor;
+                foreach (MediaAnalyzeInfo mediaAnalyzeInfo in mediaAnalyzeInfos)
+                {
+                    try
+                    {
+                        if (string.IsNullOrWhiteSpace(mediaAnalyzeInfo.FinalOutputFile))
+                        {
+                            continue;
+                        }
+
+                        this.Invoke((MethodInvoker)(() => { this.txtEncodeLog.Text = $"Deleting {mediaAnalyzeInfo.Filename} files..." ; }));
+                        Application.DoEvents();
+
+                        // Delete the Temp Files of the selected MediaAnalyzeInfo from the list
+                        foreach (string tempFile in mediaAnalyzeInfo.TempFiles.ToList())
+                        {
+                            if (File.Exists(tempFile))
+                            {
+                                this.Invoke((MethodInvoker)(() => { this.txtEncodeLogProgress.Text = $"Deleting {tempFile}..."; }));
+
+                                File.Delete(tempFile);
+                            }
+                            mediaAnalyzeInfo.TempFiles.Remove(tempFile);
+                        }
+
+                        // Delete the source file of the selected MediaAnalyzeInfo from the list
+                        if (File.Exists(mediaAnalyzeInfo.Filename))
+                        {
+                            this.Invoke((MethodInvoker)(() => { this.txtEncodeLogProgress.Text = $"Deleting {mediaAnalyzeInfo.Filename}..."; }));
+
+                            File.Delete(mediaAnalyzeInfo.Filename);
+                            lstMediaInfoItems.Items.Remove(mediaAnalyzeInfo);
+                        }
+                        successCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex);
+                        failCount++;
+                    }
+                }
+                UpdateCurrentFormState();
+
+                lstMediaInfoItems.SelectedIndex = -1;
+
+                this.Cursor = Cursors.Default;
+
+                if (failCount > 0)
+                {
+                    ShowWarningMessage($"{successCount} files deleted, {failCount} failed!");
+                }
+                else
+                {
+                    ShowInformationMessage($"{successCount} files deleted!");
+                }
+            }
+            catch (Exception ex)
+            {
+                UpdateCurrentFormState();
+                this.Cursor = Cursors.Default;
                 ShowExceptionMessage(ex);
             }
         }

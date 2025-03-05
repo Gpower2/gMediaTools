@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using gMediaTools.Models.MediaAnalyze;
 
 namespace gMediaTools.Services.AviSynth.AudioSource
 {
     public class AviSynthLSMASHAudioSourceService : IAviSynthAudioSourceService
     {
-        public string GetAviSynthAudioSource(string fileName, int trackNumber, bool overWriteScriptFile)
+        public string GetAviSynthAudioSource(MediaAnalyzeInfo mediaAnalyzeInfo, string fileName, int trackNumber, bool overWriteScriptFile)
         {
             StringBuilder sb = new StringBuilder();
 

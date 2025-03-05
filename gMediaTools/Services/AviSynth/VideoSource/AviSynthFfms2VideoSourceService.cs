@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using gMediaTools.Extensions;
+using gMediaTools.Models.MediaAnalyze;
 
 namespace gMediaTools.Services.AviSynth.VideoSource
 {
     public class AviSynthFfms2VideoSourceService : IAviSynthVideoSourceService
     {
-        public string GetAviSynthVideoSource(string fileName, bool overWriteScriptFile)
+        public string GetAviSynthVideoSource(MediaAnalyzeInfo mediaAnalyzeInfo, string fileName, bool overWriteScriptFile)
         {
             // Find cache file
             string cacheFileName = $"{fileName}.ffindex";
@@ -18,6 +14,7 @@ namespace gMediaTools.Services.AviSynth.VideoSource
             {
                 cacheFileName = cacheFileName.GetNewFileName();
             }
+            mediaAnalyzeInfo.TempFiles.Add(cacheFileName);
 
             // Find timecodes file
             string timeCodesFileName = $"{fileName}.tcodes.txt";
@@ -25,6 +22,7 @@ namespace gMediaTools.Services.AviSynth.VideoSource
             {
                 timeCodesFileName = timeCodesFileName.GetNewFileName();
             }
+            mediaAnalyzeInfo.TempFiles.Add(timeCodesFileName);
 
             return GetScript(fileName, cacheFileName, timeCodesFileName);
         }

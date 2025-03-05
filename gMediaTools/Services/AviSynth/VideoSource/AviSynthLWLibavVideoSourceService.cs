@@ -1,15 +1,12 @@
-﻿using gMediaTools.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using gMediaTools.Extensions;
+using gMediaTools.Models.MediaAnalyze;
 
 namespace gMediaTools.Services.AviSynth.VideoSource
 {
     public class AviSynthLWLibavVideoSourceService : IAviSynthVideoSourceService
     {
-        public string GetAviSynthVideoSource(string fileName, bool overWriteScriptFile)
+        public string GetAviSynthVideoSource(MediaAnalyzeInfo mediaAnalyzeInfo, string fileName, bool overWriteScriptFile)
         {
             // Find cache file
             string cacheFileName = $"{fileName}.lwi";

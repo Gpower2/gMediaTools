@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Text;
 using gMediaTools.Extensions;
 using gMediaTools.Factories;
+using gMediaTools.Models;
 using gMediaTools.Models.MediaAnalyze;
+using gMediaTools.Services.AviSynth.AudioSource;
 using gMediaTools.Services.AviSynth.VideoSource;
 using gMediaTools.Services.TimeCodes;
-using gMediaTools.Models;
-using gMediaTools.Services.AviSynth.AudioSource;
 
 namespace gMediaTools.Services.AviSynth
 {
@@ -51,7 +49,7 @@ namespace gMediaTools.Services.AviSynth
             // Get the Source Service
             IAviSynthVideoSourceService sourceService = _aviSynthSourceFactory.GetAviSynthSourceService(fileContainerFormat);
 
-            avsScriptBuilder.AppendLine(sourceService.GetAviSynthVideoSource(mediaInfo.Filename, false));
+            avsScriptBuilder.AppendLine(sourceService.GetAviSynthVideoSource(mediaInfo, mediaInfo.Filename, false));
 
             // Decide what to do with VFR
             // Note: Windows Media files may report CFR frame rate mode, but in reality they are VFR inside
@@ -135,7 +133,10 @@ namespace gMediaTools.Services.AviSynth
             return avsScriptFilename;
         }
 
-        public string CreateAviSynthAudioScript(MediaAnalyzeInfo mediaInfo, bool overWriteScriptFile = true, IAviSynthAudioSourceService audioSourceService = null)
+        public string CreateAviSynthAudioScript(
+            MediaAnalyzeInfo mediaInfo, 
+            bool overWriteScriptFile = true, 
+            IAviSynthAudioSourceService audioSourceService = null)
         {
             if (mediaInfo == null)
             {
@@ -153,6 +154,7 @@ namespace gMediaTools.Services.AviSynth
             {
                 avsScriptFilename = avsScriptFilename.GetNewFileName();
             }
+            mediaInfo.TempFiles.Add(avsScriptFilename);
 
             StringBuilder avsScriptBuilder = new StringBuilder();
 
@@ -167,7 +169,7 @@ namespace gMediaTools.Services.AviSynth
                 // Last good working version: r920-20161216
                 // Use FFMS2 till then which seems to produce correct results
                 // UPDATE: LSMASH 20200322 fixes the audio issues, switch to AviSynthLWLibavAudioSourceService
-                // UPDATE: LSMASH still seems to have problems with some Windows Meadia Audio, so use FFMS2 for those files
+                // UPDATE: LSMASH still seems to have problems with some Windows Media Audio, so use FFMS2 for those files
                 // UPDATE: FFMS2 also struggles with those particular audio formats, switch to DirectShowSource
                 string fileContainerFormat = mediaInfo.FileContainerFormat.Trim().ToLower();
                 if (fileContainerFormat.Equals("windows media"))
@@ -185,7 +187,7 @@ namespace gMediaTools.Services.AviSynth
                 sourceService = audioSourceService;
             }
 
-            avsScriptBuilder.AppendLine(sourceService.GetAviSynthAudioSource(mediaInfo.Filename, -1, false));
+            avsScriptBuilder.AppendLine(sourceService.GetAviSynthAudioSource(mediaInfo, mediaInfo.Filename, -1, false));
 
             // Write the file
             using (StreamWriter sw = new StreamWriter(avsScriptFilename, false, Encoding.GetEncoding(1253)))

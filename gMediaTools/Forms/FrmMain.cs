@@ -98,7 +98,7 @@ namespace gMediaTools.Forms
             grpItems.Text = $"Items ({lstMediaInfoItems.Items.Count})";
         }
 
-        private void BtnScanMediaFiles_Click(object sender, EventArgs e)
+        private async void BtnScanMediaFiles_Click(object sender, EventArgs e)
         {
             try
             {
@@ -127,50 +127,60 @@ namespace gMediaTools.Forms
 
                 List<MediaAnalyzeInfo> mediaToReencode = new List<MediaAnalyzeInfo>();
 
-                _mediaAnalyzerService.AnalyzePath(
-                    new MediaAnalyzePathRequest
-                    {
-                        MediaDirectoryName = rootPath,
-                        BitratePercentageThreshold = txtBitratePercentageThreshold.Int32Value,
-                        GainPercentageThreshold = txtGainPercentageThreshold.Int32Value,
-                        MaxAllowedWidth = txtMaxAllowedWidth.Int32Value,
-                        MaxAllowedHeight = txtMaxAllowedHeight.Int32Value,
-                        MinAllowedBitrate = txtMinAllowedBitrate.Int32Value * 1000
-                    },
-                    curveSettings,
-                    new MediaAnalyzeActions
-                    {
-                        SetCurrentFileAction = (string currentFile) =>
-                           {
-                               this.Invoke((MethodInvoker)(() => { this.txtCurrentFile.Text = currentFile; }));
-                               Application.DoEvents();
-                           },
-                        LogErrorAction = (string logText) =>
-                             {
-                                 this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
-                                 Application.DoEvents();
-                             },
-                        UpdateProgressAction = (int reencodeFiles, int totalFiles) =>
-                             {
-                                 this.Invoke((MethodInvoker)(() => { this.txtFilesProgress.Text = $"{reencodeFiles}/{totalFiles} ({Math.Round((double)reencodeFiles / (double)totalFiles * 100.0, 2)}%)"; }));
-                                 Application.DoEvents();
-                             },
-                        HandleMediaForReencodeAction = (MediaAnalyzeInfo info) =>
-                        {
-                            mediaToReencode.Add(info);
+                this.Cursor = Cursors.WaitCursor;
 
-                            this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(info.PreviewText + Environment.NewLine); }));
-                            Application.DoEvents();
-                        }
-                    }
-                );
+                await Task.Factory.StartNew(() =>
+                    {
+                        _mediaAnalyzerService.AnalyzePath(
+                            new MediaAnalyzePathRequest
+                            {
+                                MediaDirectoryName = rootPath,
+                                BitratePercentageThreshold = txtBitratePercentageThreshold.Int32Value,
+                                GainPercentageThreshold = txtGainPercentageThreshold.Int32Value,
+                                MaxAllowedWidth = txtMaxAllowedWidth.Int32Value,
+                                MaxAllowedHeight = txtMaxAllowedHeight.Int32Value,
+                                MinAllowedBitrate = txtMinAllowedBitrate.Int32Value * 1000
+                            },
+                            curveSettings,
+                            new MediaAnalyzeActions
+                            {
+                                SetCurrentFileAction = (string currentFile) =>
+                                   {
+                                       this.Invoke((MethodInvoker)(() => { this.txtCurrentFile.Text = currentFile; }));
+                                       Application.DoEvents();
+                                   },
+                                LogErrorAction = (string logText) =>
+                                     {
+                                         this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(logText + Environment.NewLine); }));
+                                         Application.DoEvents();
+                                     },
+                                UpdateProgressAction = (int reencodeFiles, int totalFiles) =>
+                                     {
+                                         this.Invoke((MethodInvoker)(() => { this.txtFilesProgress.Text = $"{reencodeFiles}/{totalFiles} ({Math.Round((double)reencodeFiles / (double)totalFiles * 100.0, 2)}%)"; }));
+                                         Application.DoEvents();
+                                     },
+                                HandleMediaForReencodeAction = (MediaAnalyzeInfo info) =>
+                                {
+                                    mediaToReencode.Add(info);
+
+                                    this.Invoke((MethodInvoker)(() => { this.txtLog.AppendText(info.PreviewText + Environment.NewLine); }));
+                                    Application.DoEvents();
+                                }
+                            }
+                        );
+                    }, 
+                TaskCreationOptions.LongRunning);
 
                 lstMediaInfoItems.Items.AddRange(mediaToReencode.ToArray());
                 UpdateCurrentFormState();
+
+                this.Cursor = Cursors.Default;
+                ShowInformationMessage("Media files scanned!");
             }
             catch (Exception ex)
             {
                 UpdateCurrentFormState();
+                this.Cursor = Cursors.Default;
                 ShowExceptionMessage(ex);
             }
         }
@@ -231,7 +241,7 @@ namespace gMediaTools.Forms
 
         private string GetMediaInfoAnalysis(MediaAnalyzeInfo mediaInfo)
         {
-            if(mediaInfo == null)
+            if (mediaInfo == null)
             {
                 return "";
             }
